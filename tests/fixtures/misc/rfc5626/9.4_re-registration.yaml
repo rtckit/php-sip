@@ -1,0 +1,24 @@
+# https://tools.ietf.org/html/rfc5626
+# 9.4. Re-Registration
+#
+#     Bob         EP1   EP2     Proxy     Alice
+#      |           |     |        |         |
+#   35)|------2CRLF----->|        |         |
+#   36)|<------CRLF------|        |         |
+#   37)|--2CRLF->X |     |        |         |
+#      |           |     |        |         |
+#   38)|-REGISTER->|     |        |         |
+#   39)|           |---REGISTER-->|         |
+#   40)|           |<----200 OK---|         |
+#   41)|<-200 OK---|     |        |         |
+#      |           |     |        |         |
+- |+
+  REGISTER sip:example.com SIP/2.0
+  From: Bob <sip:bob@example.com>;tag=7F94778B653B
+  To: Bob <sip:bob@example.com>
+  Call-ID: 16CB75F21C70
+  CSeq: 2 REGISTER
+  Supported: path, outbound
+  Route: <sip:ep1.example.com;lr>
+  Contact: <sip:bob@192.0.2.2;transport=tcp>;reg-id=1
+   ;+sip.instance="<urn:uuid:00000000-0000-1000-8000-AABBCCDDEEFF>"

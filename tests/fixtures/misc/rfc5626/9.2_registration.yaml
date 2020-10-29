@@ -1,0 +1,79 @@
+# https://tools.ietf.org/html/rfc5626
+# 9.2. Registration
+#
+#     Bob         EP1   EP2     Proxy     Alice
+#      |           |     |        |         |
+#    9)|-REGISTER->|     |        |         |
+#   10)|           |---REGISTER-->|         |
+#   11)|           |<----200 OK---|         |
+#   12)|<-200 OK---|     |        |         |
+#   13)|----REGISTER---->|        |         |
+#   14)|           |     |--REG-->|         |
+#   15)|           |     |<-200---|         |
+#   16)|<----200 OK------|        |         |
+#      |           |     |        |         |
+#      |  about 120 seconds later...        |
+#      |           |     |        |         |
+#   17)|--2CRLF--->|     |        |         |
+#   18)|<--CRLF----|     |        |         |
+#   19)|------2CRLF----->|        |         |
+#   20)|<------CRLF------|        |         |
+#      |           |     |        |         |
+- |+
+  REGISTER sip:example.com SIP/2.0
+  Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnashds7
+  Max-Forwards: 70
+  From: Bob <sip:bob@example.com>;tag=7F94778B653B
+  To: Bob <sip:bob@example.com>
+  Call-ID: 16CB75F21C70
+  CSeq: 1 REGISTER
+  Supported: path, outbound
+  Route: <sip:ep1.example.com;lr>
+  Contact: <sip:bob@192.0.2.2;transport=tcp>;reg-id=1
+   ;+sip.instance="<urn:uuid:00000000-0000-1000-8000-AABBCCDDEEFF>"
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP 192.0.2.15;branch=z9hG4bKnuiqisi
+  Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnashds7
+  From: Bob <sip:bob@example.com>;tag=7F94778B653B
+  To: Bob <sip:bob@example.com>;tag=6AF99445E44A
+  Call-ID: 16CB75F21C70
+  CSeq: 1 REGISTER
+  Supported: path, outbound
+  Require: outbound
+  Contact: <sip:bob@192.0.2.2;transport=tcp>;reg-id=1;expires=3600
+   ;+sip.instance="<urn:uuid:00000000-0000-1000-8000-AABBCCDDEEFF>"
+  Path: <sip:VskztcQ/S8p4WPbOnHbuyh5iJvJIW3ib@ep1.example.com;lr;ob>
+  Content-Length: 0
+
+- |+
+  REGISTER sip:example.com SIP/2.0
+  Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnqr9bym
+  Max-Forwards: 70
+  From: Bob <sip:bob@example.com>;tag=755285EABDE2
+  To: Bob <sip:bob@example.com>
+  Call-ID: E05133BD26DD
+  CSeq: 1 REGISTER
+  Supported: path, outbound
+  Route: <sip:ep2.example.com;lr>
+  Contact: <sip:bob@192.0.2.2;transport=tcp>;reg-id=2
+   ;+sip.instance="<urn:uuid:00000000-0000-1000-8000-AABBCCDDEEFF>"
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnqr9bym
+  From: Bob <sip:bob@example.com>;tag=755285EABDE2
+  To: Bob <sip:bob@example.com>;tag=49A9AD0B3F6A
+  Call-ID: E05133BD26DD
+  Supported: path, outbound
+  Require: outbound
+  CSeq: 1 REGISTER
+  Contact: <sip:bob@192.0.2.2;transport=tcp>;reg-id=1;expires=3600
+   ;+sip.instance="<urn:uuid:X0000000-0000-1000-8000-AABBCCDDEEFF>"
+  Contact: <sip:bob@192.0.2.2;transport=tcp>;reg-id=2;expires=3600
+   ;+sip.instance="<urn:uuid:W0000000-0000-1000-8000-AABBCCDDEEFF>"
+  Path: <sip:wazHDLdIMtUg6r0I/oRZ15zx3zHE1w1Z@ep2.example.com;lr;ob>
+  Content-Length: 0

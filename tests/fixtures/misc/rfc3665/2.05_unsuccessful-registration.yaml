@@ -1,0 +1,66 @@
+# https://tools.ietf.org/html/rfc3665
+# 2.5. Unsuccessful Registration
+#
+#   Bob                        SIP Server
+#     |                               |
+#     |          REGISTER F1          |
+#     |------------------------------>|
+#     |      401 Unauthorized F2      |
+#     |<------------------------------|
+#     |          REGISTER F3          |
+#     |------------------------------>|
+#     |      401 Unauthorized F4      |
+#     |<------------------------------|
+#     |                               |
+- |+
+  REGISTER sips:ss2.biloxi.example.com SIP/2.0
+  Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashds7
+   ;received=192.0.2.201
+  From: Bob <sips:bob@biloxi.example.com>;tag=a73kszlfl
+  To: Bob <sips:bob@biloxi.example.com>
+  Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
+  CSeq: 1 REGISTER
+  Contact: <sips:bob@client.biloxi.example.com>
+  Content-Length: 0
+
+- |+
+  SIP/2.0 401 Unauthorized
+  Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashds7
+   ;received=192.0.2.201
+  From: Bob <sips:bob@biloxi.example.com>;tag=a73kszlfl
+  To: Bob <sips:bob@biloxi.example.com>;tag=1410948204
+  Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
+  CSeq: 1 REGISTER
+  WWW-Authenticate: Digest realm="atlanta.example.com", qop="auth",
+   nonce="f1cec4341ae6ca9c8e88df84be55a359",
+   opaque="", stale=FALSE, algorithm=MD5
+  Content-Length: 0
+
+- |+
+  REGISTER sips:ss2.biloxi.example.com SIP/2.0
+  Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashd92
+  Max-Forwards: 70
+  From: Bob <sips:bob@biloxi.example.com>;tag=JueHGuidj28dfga
+  To: Bob <sips:bob@biloxi.example.com>
+  Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
+  CSeq: 2 REGISTER
+  Contact: <sips:bob@client.biloxi.example.com>
+  Authorization: Digest username="bob", realm="atlanta.example.com",
+   nonce="f1cec4341ae6ca9c8e88df84be55a359", opaque="",
+   uri="sips:ss2.biloxi.example.com",
+   response="61f8470ceb87d7ebf508220214ed438b"
+  Content-Length: 0
+
+- |+
+  SIP/2.0 401 Unauthorized
+  Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashd92
+   ;received=192.0.2.201
+  From: Bob <sips:bob@biloxi.example.com>;tag=JueHGuidj28dfga
+  To: Bob <sips:bob@biloxi.example.com>;tag=1410948204
+  Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
+  CSeq: 2 REGISTER
+  WWW-Authenticate: Digest realm="atlanta.example.com", qop="auth",
+   nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",
+   opaque="", stale=FALSE, algorithm=MD5
+  Content-Length: 0
+

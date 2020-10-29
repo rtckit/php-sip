@@ -1,0 +1,419 @@
+# https://tools.ietf.org/html/rfc3665
+# 3.3. Session with Multiple Proxy Authentication
+#
+#     Alice        Proxy 1     Proxy 2         Bob
+#       |            |           |             |
+#       |  INVITE F1 |           |             |
+#       |----------->|           |             |
+#       |  407 Proxy Authorization Required F2 |
+#       |<-----------|           |             |
+#       |   ACK F3   |           |             |
+#       |----------->|           |             |
+#       |  INVITE F4 |           |             |
+#       |----------->|           |             |
+#       |   100 F5   |           |             |
+#       |<-----------| INVITE F6 |             |
+#       |            |---------->|             |
+#       |            |  407 Proxy Authorization Required F7
+#       |            |<----------|             |
+#       |            |   ACK F8  |             |
+#       |            |---------->|             |
+#       |  407 Proxy Authorization Required F9 |
+#       |<-----------|           |             |
+#       |   ACK F10  |           |             |
+#       |----------->|           |             |
+#       |  INVITE F11|           |             |
+#       |----------->|           |             |
+#       |   100 F12  |           |             |
+#       |<-----------| INVITE F13|             |
+#       |            |---------->|             |
+#       |            |  100 F14  |             |
+#       |            |<----------|  INVITE F15 |
+#       |            |           |------------>|
+#       |            |           | 200 OK F16  |
+#       |            | 200 OK F17|<------------|
+#       | 200 OK F18 |<----------|             |
+#       |<-----------|           |             |
+#       |   ACK F19  |           |             |
+#       |----------->|  ACK F20  |             |
+#       |            |---------->|   ACK F21   |
+#       |            |           |------------>|
+#       |           RTP Media Path             |
+#       |<====================================>|
+- |+
+  INVITE sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b03
+  Max-Forwards: 70
+  Route: <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 407 Proxy Authorization Required
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b03
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=876321
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 INVITE
+  Proxy-Authenticate: Digest realm="atlanta.example.com", qop="auth",
+   nonce="wf84f1cczx41ae6cbeaea9ce88d359",
+   opaque="", stale=FALSE, algorithm=MD5
+  Content-Length: 0
+
+- |+
+  ACK sip:bob@biloxi.example.com SIP/2.0
+  Max-Forwards: 70
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b03
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=876321
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 ACK
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+  Max-Forwards: 70
+  Route: <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Proxy-Authorization: Digest username="alice",
+   realm="atlanta.example.com",
+   nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com",
+   response="42ce3cef44b22f50c6a6071bc8"
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 100 Trying
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+   ;received=192.0.2.101
+  Max-Forwards: 69
+  Record-Route: <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 407 Proxy Authorization Required
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+   ;received=192.0.2.111
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=838209
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Proxy-Authenticate: Digest realm="biloxi.example.com", qop="auth",
+   nonce="c1e22c41ae6cbe5ae983a9c8e88d359",
+   opaque="", stale=FALSE, algorithm=MD5
+  Content-Length: 0
+
+- |+
+  ACK sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+  Max-Forwards: 70
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=838209
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 ACK
+  Content-Length: 0
+
+- |+
+  SIP/2.0 407 Proxy Authorization Required
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=838209
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Proxy-Authenticate: Digest realm="biloxi.example.com", qop="auth",
+   nonce="c1e22c41ae6cbe5ae983a9c8e88d359",
+   opaque="", stale=FALSE, algorithm=MD5
+  Content-Length: 0
+
+- |+
+  ACK sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b21
+  Max-Forwards: 70
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=838209
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 ACK
+  Proxy-Authorization: Digest username="alice",
+   realm="atlanta.example.com",
+   nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com",
+   response="42ce3cef44b22f50c6a6071bc8"
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+  Max-Forwards: 70
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Proxy-Authorization: Digest username="alice",
+   realm="atlanta.example.com",
+   nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com",
+   response="42ce3cef44b22f50c6a6071bc8"
+  Proxy-Authorization: Digest username="alice",
+   realm="biloxi.example.com",
+   nonce="c1e22c41ae6cbe5ae983a9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com", response="f44ab22f150c6a56071bce8"
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 100 Trying
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Max-Forwards: 69
+  Record-Route: <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Proxy-Authorization: Digest username="alice",
+   realm="biloxi.example.com",
+   nonce="c1e22c41ae6cbe5ae983a9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com", response="f44ab22f150c6a56071bce8"
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 100 Trying
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+   ;received=192.0.2.111
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@client.biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP ss2.biloxi.example.com:5060;branch=z9hG4bK31972.1
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+   ;received=192.0.2.111
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Max-Forwards: 68
+  Record-Route: <sip:ss2.biloxi.example.com;lr>,
+   <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP ss2.biloxi.example.com:5060;branch=z9hG4bK31972.1
+   ;received=192.0.2.222
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+   ;received=192.0.2.111
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss2.biloxi.example.com;lr>,
+   <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=9103874
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Contact: <sip:bob@client.biloxi.example.com>
+  Content-Type: application/sdp
+  Content-Length: 147
+
+  v=0
+  o=bob 2890844527 2890844527 IN IP4 client.biloxi.example.com
+  s=-
+  c=IN IP4 192.0.2.201
+  t=0 0
+  m=audio 3456 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+   ;received=192.0.2.111
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss2.biloxi.example.com;lr>,
+   <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=9103874
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Contact: <sip:bob@client.biloxi.example.com>
+  Content-Type: application/sdp
+  Content-Length: 147
+
+  v=0
+  o=bob 2890844527 2890844527 IN IP4 client.biloxi.example.com
+  s=-
+  c=IN IP4 192.0.2.201
+  t=0 0
+  m=audio 3456 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss2.biloxi.example.com;lr>,
+   <sip:ss1.atlanta.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=9103874
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 INVITE
+  Contact: <sip:bob@client.biloxi.example.com>
+  Content-Type: application/sdp
+  Content-Length: 147
+
+  v=0
+  o=bob 2890844527 2890844527 IN IP4 client.biloxi.example.com
+  s=-
+  c=IN IP4 192.0.2.201
+  t=0 0
+  m=audio 3456 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  ACK sip:bob@client.biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b44
+  Max-Forwards: 70
+  Route: <sip:ss1.atlanta.example.com;lr>,
+   <sip:ss2.biloxi.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=9103874
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 ACK
+  Proxy-Authorization: Digest username="alice",
+   realm="atlanta.example.com",
+   nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com",
+   response="42ce3cef44b22f50c6a6071bc8"
+  Proxy-Authorization: Digest username="alice",
+   realm="biloxi.example.com",
+   nonce="c1e22c41ae6cbe5ae983a9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com", response="f44ab22f150c6a56071bce8"
+  Content-Length: 0
+
+- |+
+  ACK sip:bob@client.biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b44
+   ;received=192.0.2.101
+  Max-Forwards: 69
+  Route: <sip:ss2.biloxi.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=9103874
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 ACK
+  Contact: <sip:bob@client.biloxi.example.com>
+  Proxy-Authorization: Digest username="alice",
+   realm="biloxi.example.com",
+   nonce="c1e22c41ae6cbe5ae983a9c8e88d359", opaque="",
+   uri="sip:bob@biloxi.example.com", response="f44ab22f150c6a56071bce8"
+  Content-Length: 0
+
+- |+
+  ACK sip:bob@client.biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP ss2.biloxi.example.com:5060;branch=z9hG4bK31972.1
+  Via: SIP/2.0/UDP ss1.atlanta.example.com:5060;branch=z9hG4bK230f2.1
+   ;received=192.0.2.111
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bK74b44
+   ;received=192.0.2.101
+  Max-Forwards: 68
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=9103874
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 3 ACK
+  Contact: <sip:bob@client.biloxi.example.com>
+  Content-Length: 0
+

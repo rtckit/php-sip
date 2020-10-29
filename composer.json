@@ -1,0 +1,42 @@
+{
+  "name": "rtckit/sip",
+  "description": "Parser/Renderer for SIP protocol written in PHP",
+  "version": "0.2.0",
+  "type": "library",
+  "keywords": [
+    "sip",
+    "session initiated protocol",
+    "voip"
+  ],
+  "homepage": "https://github.com/rtckit/php-sip",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ciprian Dosoftei"
+    }
+  ],
+  "support": {
+    "email": "hello@rtckit.io",
+    "issues": "https://github.com/rtckit/php-sip/issues"
+  },
+  "require": {
+    "php": ">=7.4.0"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "^1.9",
+    "phpstan/phpstan": "^0.12",
+    "phpunit/phpunit": "^9.4",
+    "symfony/yaml": "^5.1",
+    "vimeo/psalm": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "RTCKit\\SIP\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RTCKit\\SIP\\": "tests/"
+    }
+  }
+}

@@ -1,0 +1,250 @@
+# https://tools.ietf.org/html/rfc3665
+# 3.6. Session via Redirect and Proxy Servers with SDP in ACK
+#
+#   Alice        Redirect Server     Proxy 3             Bob
+#     |                |                |                |
+#     |   INVITE F1    |                |                |
+#     |--------------->|                |                |
+#     |     302 F2     |                |                |
+#     |<---------------|                |                |
+#     |     ACK F3     |                |                |
+#     |--------------->|                |                |
+#     |     INVITE F4                   |                |
+#     |-------------------------------->|    INVITE F5   |
+#     |             100  F6             |--------------->|
+#     |<--------------------------------|      180 F7    |
+#     |             180 F8              |<---------------|
+#     |<--------------------------------|                |
+#     |                                 |     200 F9     |
+#     |             200 F10             |<---------------|
+#     |<--------------------------------|                |
+#     |             ACK F11             |                |
+#     |-------------------------------->|     ACK F12    |
+#     |                                 |--------------->|
+#     |                Both Way RTP Media                |
+#     |<================================================>|
+#     |                                 |     BYE F13    |
+#     |             BYE F14             |<---------------|
+#     |<--------------------------------|                |
+#     |             200 F15             |                |
+#     |-------------------------------->|     200 F16    |
+#     |                                 |--------------->|
+#     |                                 |                |
+- |+
+  INVITE sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bKbf9f44
+  Max-Forwards: 70
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 INVITE
+  Contact: <sip:alice@client.atlanta.example.com>
+  Content-Length: 0
+
+- |+
+  SIP/2.0 302 Moved Temporarily
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bKbf9f44
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=53fHlqlQ2
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 INVITE
+  Contact: <sip:bob@chicago.example.com;transport=tcp>
+  Content-Length: 0
+
+- |+
+  ACK sip:bob@biloxi.example.com SIP/2.0
+  Via: SIP/2.0/UDP client.atlanta.example.com:5060;branch=z9hG4bKbf9f44
+  Max-Forwards: 70
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=53fHlqlQ2
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 ACK
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@chicago.example.com SIP/2.0
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+  Max-Forwards: 70
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:alice@client.atlanta.example.com;transport=tcp>
+  Content-Length: 0
+
+- |+
+  INVITE sip:bob@client.chicago.example.com SIP/2.0
+  Via: SIP/2.0/TCP ss3.chicago.example.com:5060;branch=z9hG4bK721e.1
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Max-Forwards: 69
+  Record-Route: <sip:ss3.chicago.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:alice@client.atlanta.example.com;transport=tcp>
+  Content-Length: 0
+
+- |+
+  SIP/2.0 100 Trying
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Content-Length: 0
+
+- |+
+  SIP/2.0 180 Ringing
+  Via: SIP/2.0/TCP ss3.chicago.example.com:5060;branch=z9hG4bK721e.1
+   ;received=192.0.2.233
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss3.chicago.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=314159
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:bob@client.chicago.example.com;transport=tcp>
+  Content-Length: 0
+
+- |+
+  SIP/2.0 180 Ringing
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss3.chicago.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=314159
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:bob@client.chicago.example.com;transport=tcp>
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP ss3.chicago.example.com:5060;branch=z9hG4bK721e.1
+   ;received=192.0.2.233
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss3.chicago.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=314159
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:bob@client.chicago.example.com;transport=tcp>
+  Content-Type: application/sdp
+  Content-Length: 148
+
+  v=0
+  o=bob 2890844527 2890844527 IN IP4 client.chicago.example.com
+  s=-
+  c=IN IP4 192.0.2.100
+  t=0 0
+  m=audio 3456 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bf9
+   ;received=192.0.2.101
+  Record-Route: <sip:ss3.chicago.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=314159
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 INVITE
+  Contact: <sip:bob@client.chicago.example.com;transport=tcp>
+  Content-Type: application/sdp
+  Content-Length: 148
+
+  v=0
+  o=bob 2890844527 2890844527 IN IP4 client.chicago.example.com
+  s=-
+  c=IN IP4 192.0.2.100
+  t=0 0
+  m=audio 3456 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  ACK sip:bob@client.chicago.example.com SIP/2.0
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bq9
+  Max-Forwards: 70
+  Route: <sip:ss3.chicago.example.com;lr>
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=314159
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 ACK
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  ACK sip:bob@client.chicago.example.com SIP/2.0
+  Via: SIP/2.0/TCP ss3.chicago.example.com:5060;branch=z9hG4bK721e.1
+  Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74bq9
+   ;received=192.0.2.101
+  Max-Forwards: 69
+  From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  To: Bob <sip:bob@biloxi.example.com>;tag=314159
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 2 ACK
+  Content-Type: application/sdp
+  Content-Length: 151
+
+  v=0
+  o=alice 2890844526 2890844526 IN IP4 client.atlanta.example.com
+  s=-
+  c=IN IP4 192.0.2.101
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  BYE sip:alice@client.atlanta.example.com SIP/2.0
+  Via: SIP/2.0/TCP client.chicago.example.com:5060;branch=z9hG4bKfgaw2
+  Max-Forwards: 70
+  Route: <sip:ss3.chicago.example.com;lr>
+  From: Bob <sip:bob@biloxi.example.com>;tag=314159
+  To: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 BYE
+  Content-Length: 0
+
+- |+
+  BYE sip:alice@client.atlanta.example.com SIP/2.0
+  Via: SIP/2.0/TCP ss3.chicago.example.com:5060;branch=z9hG4bK721e.1
+   ;received=192.0.2.100
+  Via: SIP/2.0/TCP client.chicago.example.com:5060;branch=z9hG4bKfgaw2
+  Max-Forwards: 69
+  From: Bob <sip:bob@biloxi.example.com>;tag=314159
+  To: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 BYE
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP ss3.chicago.example.com:5060;branch=z9hG4bK721e.1
+   ;received=192.0.2.233
+  Via: SIP/2.0/TCP client.chicago.example.com:5060;branch=z9hG4bKfgaw2
+   ;received=192.0.2.100
+  From: Bob <sip:bob@biloxi.example.com>;tag=314159
+  To: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 BYE
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP client.chicago.example.com:5060;branch=z9hG4bKfgaw2
+   ;received=192.0.2.100
+  From: Bob <sip:bob@biloxi.example.com>;tag=314159
+  To: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+  Call-ID: 2xTb9vxSit55XU7p8@atlanta.example.com
+  CSeq: 1 BYE
+  Content-Length: 0

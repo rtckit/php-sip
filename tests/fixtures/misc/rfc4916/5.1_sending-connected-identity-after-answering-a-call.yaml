@@ -1,0 +1,182 @@
+# https://tools.ietf.org/html/rfc4916
+# 5.1. Sending Connected Identity after Answering a Call
+#
+#Alice's UA        PROXY +          Carol's UA
+#              Authentication
+#                 Service
+#
+#      INVITE(1)            INVITE(2)
+#  ---------------->   ---------------->
+#
+#       200(4)                200(3)
+#  <----------------   <----------------
+#
+#       ACK(5)                ACK(6)
+#  ---------------->   ---------------->
+#
+#      UPDATE(8)            UPDATE(7)
+#  <----------------   <----------------
+#
+#       200(9)                200(10)
+#  ---------------->   ---------------->
+- |+
+  INVITE sip:Bob@example.com SIP/2.0
+  Via: SIP/2.0/TLS ua1.example.com;branch=z9hG4bKnashds8
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 1 INVITE
+  Max-Forwards: 70
+  Date: Thu, 21 Feb 2002 13:02:03 GMT
+  Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, UPDATE
+  Supported: from-change
+  Contact: <sip:alice@ua1.example.com>
+  Content-Type: application/sdp
+  Content-Length: 154
+
+  v=0
+  o=UserA 2890844526 2890844526 IN IP4 ua1.example.com
+  s=Session SDP
+  c=IN IP4 ua1.example.com
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  INVITE sip:Carol@ua2.example.com SIP/2.0
+  Via: SIP/2.0/TLS proxy.example.com;branch=z9hG4bK776asdhds
+  Via: SIP/2.0/TLS ua1.example.com;branch=z9hG4bKnashds8;received=192.0.2.1
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 1 INVITE
+  Max-Forwards: 69
+  Date: Thu, 21 Feb 2002 13:02:03 GMT
+  Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, UPDATE
+  Supported: from-change
+  Contact: <sip:alice@ua1.example.com>
+  Record-Route: <sip:proxy.example.com;lr>
+  Identity: "xN6gCHR6KxGM+nyiEM13LcWgAFQD3lkni1DPkwgadxh4BB7G+VwY13uRv5hbCI2VSvKuZ4LYN0JNoe7v8VAzruKMyi4Bi4nUghR/fFGBrpBSjztmfffLTp6SFLxo9XQSVrkm1O4c/4UrKn2ejRz+5BULu9n9kWswzKDNjlYlmmc="
+  Identity-Info: <https://example.com/example.cer>;alg=rsa-sha1
+  Content-Type: application/sdp
+  Content-Length: 154
+
+  v=0
+  o=UserA 2890844526 2890844526 IN IP4 ua1.example.com
+  s=Session SDP
+  c=IN IP4 ua1.example.com
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TLS proxy.example.com;branch=z9hG4bK776asdhds;received=192.0.2.2
+  Via: SIP/2.0/TLS ua1.example.com;branch=z9hG4bKnashds8;received=192.0.2.1
+  To: Bob <sip:bob@example.com>;tag=2ge46ab5
+  From: Alice <sip:alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 1 INVITE
+  Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, UPDATE
+  Supported: from-change
+  Contact: <sip:carol@ua2.example.com>
+  Record-Route: <sip:proxy.example.com;lr>
+  Content-Type: application/sdp
+  Content-Length: 154
+
+  v=0
+  o=UserB 2890844536 2890844536 IN IP4 ua2.example.com
+  s=Session SDP
+  c=IN IP4 ua2.example.com
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TLS ua1.example.com;branch=z9hG4bKnashds8;received=192.0.2.1
+  To: Bob <sip:bob@example.com>;tag=2ge46ab5
+  From: Alice <sip:alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 1 INVITE
+  Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, UPDATE
+  Supported: from-change
+  Contact: <sip:carol@ua2.example.com>
+  Record-Route: <sip:proxy.example.com;lr>
+  Content-Type: application/sdp
+  Content-Length: 154
+
+  v=0
+  o=UserB 2890844536 2890844536 IN IP4 ua2.example.com
+  s=Session SDP
+  c=IN IP4 ua2.example.com
+  t=0 0
+  m=audio 49172 RTP/AVP 0
+  a=rtpmap:0 PCMU/8000
+- |+
+  ACK sip:carol@ua2.example.com SIP/2.0
+  Via: SIP/2.0/TLS ua1.example.com;branch=z9hG4bKnashds9
+  From: Alice <sip:Alice@example.com>;tag=13adc987
+  To: Bob <sip:Bob@example.com>;tag=2ge46ab5
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 1 ACK
+  Max-Forwards: 70
+  Route: <sip:proxy.example.com;lr>
+  Content-Length: 0
+
+- |+
+  ACK sip:carol@ua2.example.com SIP/2.0
+  Via: SIP/2.0/TLS proxy.example.com;branch=z9hG4bK776asdhdt
+  Via: SIP/2.0/TLS ua1.example.com;branch=z9hG4bKnashds9;received=192.0.2.1
+  From: Alice <sip:Alice@example.com>;tag=13adc987
+  To: Bob <sip:Bob@example.com>;tag=2ge46ab5
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 1 ACK
+  Max-Forwards: 69
+  Content-Length: 0
+
+- |+
+  UPDATE sip:Alice@ua1.example.com SIP/2.0
+  Via: SIP/2.0/TLS ua2.example.com;branch=z9hG4bKnashdt1
+  From: Carol <sip:Carol@example.com>;tag=2ge46ab5
+  To: Alice <sip:Alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 2 UPDATE
+  Max-Forwards: 70
+  Date: Thu, 21 Feb 2002 13:02:15 GMT
+  Route: <sip:proxy.example.com;lr>
+  Contact: <sip:Carol@ua2.example.com>
+  Content-Length: 0
+
+- |+
+  UPDATE sip:Alice@ua1.example.com SIP/2.0
+  Via: SIP/2.0/TLS proxy.example.com;branch=z9hG4bK776asdhdu
+  Via: SIP/2.0/TLS ua2.example.com;branch=z9hG4bKnashdt1;received=192.0.2.3
+  From: Carol <sip:Carol@example.com>;tag=2ge46ab5
+  To: Alice <sip:Alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 2 UPDATE
+  Max-Forwards: 69
+  Date: Thu, 21 Feb 2002 13:02:15 GMT
+  Contact: <sip:Carol@ua2.example.com>
+  Identity: "g8WJiVEzrbYum+z2lnS3pL+MIhuI439gDiMCHm01fwX5D8Ft5Ib9tewLfBT9mDOUSn6wkPSWVQfqdMF/QBPkpsIIROIi2sJOYBEMXZpNrhJd8/uboXMl9KRujDFQefZlmXV8dwD6XsPnMgcH8jAcaZ5aS04NyfWadIwTnGeuxko="
+  Identity-Info: <https://example.com/cert>;alg=rsa-sha1
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TLS proxy.example.com;branch=z9hG4bK776asdhdu;received=192.0.2.2
+  Via: SIP/2.0/TLS ua2.example.com;branch=z9hG4bKnashdt1;received=192.0.2.3
+  From: Carol <sip:Carol@example.com>;tag=2ge46ab5
+  To: Alice <sip:Alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 2 UPDATE
+  Contact: <sip:Alice@ua1.example.com>
+  Content-Length: 0
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TLS ua2.example.com;branch=z9hG4bKnashdt1;received=192.0.2.3
+  From: Carol <sip:Carol@example.com>;tag=2ge46ab5
+  To: Alice <sip:Alice@example.com>;tag=13adc987
+  Call-ID: 12345600@ua1.example.com
+  CSeq: 2 UPDATE
+  Contact: <sip:Alice@ua1.example.com>
+  Content-Length: 0

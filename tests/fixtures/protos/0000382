@@ -1,0 +1,27 @@
+973 INVITE sip:<To> SIP/2.0
+Via: SIP/2.0/UDP aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:<Local-Port>;branch=z9hG4bK0000382<Branch-ID>
+From: 382 <sip:<From>>;tag=382
+To: Receiver <sip:<To>>
+Call-ID: <Call-ID>@<From-Address>
+CSeq: <CSeq> INVITE
+Contact: 382 <sip:<From>>
+Expires: 1200
+Max-Forwards: 70
+Content-Type: application/sdp
+Content-Length: <Content-Length>
+
+v=0
+o=382 382 382 IN IP4 <From-Address>
+s=Session SDP
+c=IN IP4 <From-IP>
+t=0 0
+m=audio 9876 RTP/AVP 0
+a=rtpmap:0 PCMU/8000
+759 <Teardown-Method> sip:<To> SIP/2.0
+Via: SIP/2.0/UDP aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:<Local-Port>;branch=z9hG4bK0000382<Branch-ID>
+From: 382 <sip:<From>>;tag=382
+To: Receiver <sip:<To>>
+Call-ID: <Call-ID>@<From-Address>
+CSeq: <CSeq> <Teardown-Method>
+Content-Length: 0
+
