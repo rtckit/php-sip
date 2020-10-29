@@ -1,0 +1,27 @@
+495 INVITE sip:<To> SIP/2.0
+Via: SIP/2.0/UDP <From-Address>:<Local-Port>;branch=z9hG4bK00002582<Branch-ID>
+From: 2582 <sip:<From>>;tag=2582
+To: Receiver <sip:<To>>
+Call-ID: <Call-ID>@<From-Address>
+CSeq: <CSeq> INVITE
+Contact: 2582 <sip:<From>>
+Expires: 1200
+Max-Forwards: 70
+Content-Type: application/sdp
+Content-Length: <Content-Length>
+
+ßï¿÷¿¿û¿¿¿ý¿¿¿¿=0
+o=2582 2582 2582 IN IP4 <From-Address>
+s=Session SDP
+c=IN IP4 <From-IP>
+t=0 0
+m=audio 9876 RTP/AVP 0
+a=rtpmap:0 PCMU/8000
+263 <Teardown-Method> sip:<To> SIP/2.0
+Via: SIP/2.0/UDP <From-Address>:<Local-Port>;branch=z9hG4bK00002582<Branch-ID>
+From: 2582 <sip:<From>>;tag=2582
+To: Receiver <sip:<To>>
+Call-ID: <Call-ID>@<From-Address>
+CSeq: <CSeq> <Teardown-Method>
+Content-Length: 0
+

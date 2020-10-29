@@ -1,0 +1,85 @@
+# https://tools.ietf.org/html/rfc5626
+# 9.3. Incoming Call and Proxy Crash
+#
+#     Bob         EP1   EP2     Proxy     Alice
+#      |           |     |        |         |
+#      |    CRASH  X     |        |         |
+#      |        Reboot   |        |         |
+#      |           |     |        |         |
+#   21)|           |     |        |<-INVITE-|
+#   22)|           |<---INVITE----|         |
+#   23)|           |----430------>|         |
+#   24)|           |     |<-INVITE|         |
+#   25)|<---INVITE-------|        |         |
+#   26)|----200 OK------>|        |         |
+#   27)|           |     |200 OK->|         |
+#   28)|           |     |        |-200 OK->|
+#   29)|           |     |<----------ACK----|
+#   30)|<---ACK----------|        |         |
+#      |           |     |        |         |
+#   31)|           |     |<----------BYE----|
+#   32)|<---BYE----------|        |         |
+#   33)|----200 OK------>|        |         |
+#   34)|           |     |--------200 OK--->|
+#      |           |     |        |         |
+- |+
+  INVITE sip:bob@example.com SIP/2.0
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 INVITE
+
+- |+
+  INVITE sip:bob@192.0.2.2;transport=tcp SIP/2.0
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 INVITE
+  Route: <sip:VskztcQ/S8p4WPbOnHbuyh5iJvJIW3ib@ep1.example.com;lr;ob>
+
+- |+
+  SIP/2.0 430 Flow Failed
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 INVITE
+
+- |+
+  INVITE sip:bob@192.0.2.2;transport=tcp SIP/2.0
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 INVITE
+  Route: <sip:wazHDLdIMtUg6r0I/oRZ15zx3zHE1w1Z@ep2.example.com;lr;ob>
+
+- |+
+  INVITE sip:bob@192.0.2.2;transport=tcp SIP/2.0
+  To: Bob <sip:bob@example.com>
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 INVITE
+  Record-Route: <sip:wazHDLdIMtUg6r0I/oRZ15zx3zHE1w1Z@ep2.example.com;lr>
+
+- |+
+  SIP/2.0 200 OK
+  To: Bob <sip:bob@example.com>;tag=skduk2
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 INVITE
+  Record-Route: <sip:wazHDLdIMtUg6r0I/oRZ15zx3zHE1w1Z@ep2.example.com;lr>
+
+- |+
+  ACK sip:bob@192.0.2.2;transport=tcp SIP/2.0
+  To: Bob <sip:bob@example.com>;tag=skduk2
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 1 ACK
+  Route: <sip:wazHDLdIMtUg6r0I/oRZ15zx3zHE1w1Z@ep2.example.com;lr>
+
+- |+
+  BYE sip:bob@192.0.2.2;transport=tcp SIP/2.0
+  To: Bob <sip:bob@example.com>;tag=skduk2
+  From: Alice <sip:alice@a.example>;tag=02935
+  Call-ID: klmvCxVWGp6MxJp2T2mb
+  CSeq: 2 BYE
+  Route: <sip:wazHDLdIMtUg6r0I/oRZ15zx3zHE1w1Z@ep2.example.com;lr>

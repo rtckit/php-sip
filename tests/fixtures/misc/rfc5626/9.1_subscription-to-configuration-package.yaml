@@ -1,0 +1,48 @@
+# https://tools.ietf.org/html/rfc5626
+# 9.1. Subscription to Configuration Package
+#
+#     [----example.com domain-------------------------]
+#     Bob         EP1   EP2     Proxy             Config
+#      |           |     |        |                  |
+#    1)|SUBSCRIBE->|     |        |                  |
+#    2)|           |---SUBSCRIBE Event: ua-profile ->|
+#    3)|           |<--200 OK -----------------------|
+#    4)|<--200 OK--|     |        |                  |
+#    5)|           |<--NOTIFY------------------------|
+#    6)|<--NOTIFY--|     |        |                  |
+#    7)|---200 OK->|     |        |                  |
+#    8)|           |---200 OK ---------------------->|
+#      |           |     |        |                  |
+- |+
+  SUBSCRIBE sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com SIP/2.0
+  Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnlsdkdj2
+  Max-Forwards: 70
+  From: <anonymous@example.com>;tag=23324
+  To: <sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com>
+  Call-ID: nSz1TWN54x7My0GvpEBj
+  CSeq: 1 SUBSCRIBE
+  Event: ua-profile ;profile-type=device
+   ;vendor="example.com";model="uPhone";version="1.1"
+  Expires: 0
+  Supported: path, outbound
+  Accept: message/external-body, application/x-uPhone-config
+  Contact: <sip:192.0.2.2;transport=tcp;ob>
+   ;+sip.instance="<urn:uuid:00000000-0000-1000-8000-AABBCCDDEEFF>"
+  Content-Length: 0
+
+- |+
+  NOTIFY sip:192.0.2.2;transport=tcp;ob SIP/2.0
+  Via: SIP/2.0/TCP 192.0.2.5;branch=z9hG4bKn81dd2
+  Max-Forwards: 70
+  To: <anonymous@example.com>;tag=23324
+  From: <sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com>;tag=0983
+  Call-ID: nSz1TWN54x7My0GvpEBj
+  CSeq: 1 NOTIFY
+  Route: <sip:GopIKSsn0oGLPXRdV9BAXpT3coNuiGKV@ep1.example.com;lr>
+  Subscription-State: terminated;reason=timeout
+  Event: ua-profile
+  Content-Type: message/external-body; access-type="URL"
+   ;expiration="Thu, 01 Jan 2009 09:00:00 UTC"
+   ;URL="http://example.com/uPhone.cfg"
+   ;size=9999;hash=10AB568E91245681AC1B
+  Content-Length: 0

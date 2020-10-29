@@ -1,0 +1,36 @@
+# https://tools.ietf.org/html/rfc5626
+# 9.5. Outgoing Call
+#
+#     Bob         EP1   EP2     Proxy     Alice
+#      |           |     |        |         |
+#   42)|--INVITE-->|     |        |         |
+#   43)|           |---INVITE---->|         |
+#   44)|           |     |        |-INVITE->|
+#   45)|           |     |        |<--200---|
+#   46)|           |<----200 OK---|         |
+#   47)|<-200 OK---|     |        |         |
+#   48)|--ACK----->|     |        |         |
+#   49)|           |-----ACK--------------->|
+#      |           |     |        |         |
+#   50)|-- BYE---->|     |        |         |
+#   51)|           |-----------BYE--------->|
+#   52)|           |<----------200 OK-------|
+#   53)|<--200 OK--|     |        |         |
+#      |           |     |        |         |
+- |+
+  INVITE sip:alice@a.example SIP/2.0
+  From: Bob <sip:bob@example.com>;tag=ldw22z
+  To: Alice <sip:alice@a.example>
+  Call-ID: 95KGsk2V/Eis9LcpBYy3
+  CSeq: 1 INVITE
+  Route: <sip:ep1.example.com;lr>
+  Contact: <sip:bob@192.0.2.2;transport=tcp;ob>
+
+- |+
+  BYE sip:alice@a.example SIP/2.0
+  From: Bob <sip:bob@example.com>;tag=ldw22z
+  To: Alice <sip:alice@a.example>;tag=plqus8
+  Call-ID: 95KGsk2V/Eis9LcpBYy3
+  CSeq: 2 BYE
+  Route: <sip:3yJEbr1GYZK9cPYk5Snocez6DzO7w+AX@ep1.example.com;lr>
+  Contact: <sip:bob@192.0.2.2;transport=tcp;ob>

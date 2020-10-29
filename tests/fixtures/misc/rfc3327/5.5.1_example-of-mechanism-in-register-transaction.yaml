@@ -1,0 +1,102 @@
+# https://tools.ietf.org/html/rfc3327
+# 5.5.1 Example of Mechanism in REGISTER Transaction
+#
+# UA1----P1-----P2----P3-----REGISTRAR
+- |+
+  REGISTER sip:REGISTRAR.EXAMPLEHOME.COM SIP/2.0
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+
+- |+
+  REGISTER sip:REGISTRAR.EXAMPLEHOME.COM SIP/2.0
+  Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bK34ghi7ab04
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P1.EXAMPLEVISITED.COM;lr>
+
+- |+
+  REGISTER sip:REGISTRAR.EXAMPLEHOME.COM SIP/2.0
+  Via: SIP/2.0/UDP 178.73.76.230:5060;branch=z9hG4bKiokioukju908
+  Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bK34ghi7ab04
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P1.EXAMPLEVISITED.COM;lr>
+
+- |+
+  REGISTER sip:REGISTRAR.EXAMPLEHOME.COM SIP/2.0
+  Via: SIP/2.0/UDP 19.31.97.3:5060;branch=z9hG4bKp3wer654363
+  Via: SIP/2.0/UDP 178.73.76.230:5060;branch=z9hG4bKiokioukju908
+  Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bK34ghi7ab04
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP 19.31.97.3:5060;branch=z9hG4bKp3wer654363
+  Via: SIP/2.0/UDP 178.73.76.230:5060;branch=z9hG4bKiokioukju908
+  Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bK34ghi7ab04
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=251077
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP 178.73.76.230:5060;branch=z9hG4bKiokioukju908
+  Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bK34ghi7ab04
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=251077
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bK34ghi7ab04
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=251077
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7
+  To: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=251077
+  From: UA1 <sip:UA1@EXAMPLEHOME.COM>;tag=456248
+  Call-ID: 843817637684230@998sdasdh09
+  CSeq: 1826 REGISTER
+  Contact: <sip:UA1@192.0.2.4>
+  Supported: path
+  Path: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
