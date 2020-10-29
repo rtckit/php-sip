@@ -144,7 +144,7 @@ You can add the library as project dependency using [Composer](https://getcompos
 composer require rtckit/sip
 ```
 
-If you only need the library during development, for instance when used in your test suite, then you should add it as a development-time dependency:
+If you only need the library during development, for instance when used in your test suite, then you should add it as a development-only dependency:
 
 ```sh
 composer require --dev rtckit/sip
