@@ -2,7 +2,7 @@
 
 [RFC 3261](https://tools.ietf.org/html/rfc3261) compliant SIP parsing and rendering library for PHP 7.4.
 
-[![Build Status](https://travis-ci.com/rtckit/php-sip.svg?branch=master)](https://travis-ci.com/rtckit/php-sip)
+[![Build Status](https://travis-ci.com/rtckit/php-sip.svg?branch=main)](https://travis-ci.com/rtckit/php-sip)
 [![Latest Stable Version](https://poser.pugx.org/rtckit/sip/v/stable.png)](https://packagist.org/packages/rtckit/sip)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/aff5ee8e8ef3b51689c2/test_coverage)](https://codeclimate.com/github/rtckit/php-sip/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/aff5ee8e8ef3b51689c2/maintainability)](https://codeclimate.com/github/rtckit/php-sip/maintainability)
