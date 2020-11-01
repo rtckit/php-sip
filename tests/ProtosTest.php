@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ProtosTest extends TestCase
 {
-    public const CASE_DIR = __DIR__ . '/fixtures/protos';
+    public const CASE_PHAR = 'phar://' . __DIR__ . '/fixtures/protos/protos.phar';
 
     /* Possible goals for test case group */
     public const IGNORE = 0;
@@ -490,7 +490,7 @@ class ProtosTest extends TestCase
 
     public function setUp(): void
     {
-        $cases = scandir(self::CASE_DIR);
+        $cases = scandir(self::CASE_PHAR);
         $faker = Factory::create();
 
         foreach ($cases as $caseNum) {
@@ -498,7 +498,7 @@ class ProtosTest extends TestCase
                 continue;
             }
 
-            $case = self::CASE_DIR . '/' . $caseNum;
+            $case = self::CASE_PHAR . '/' . $caseNum;
             $raw = file_get_contents($case);
 
             $invitePduSize = (int) explode(' ', substr($raw, 0, 16))[0];
