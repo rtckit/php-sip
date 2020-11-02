@@ -1,7 +1,6 @@
 env:
   global:
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
-    - XDEBUG_MODE=coverage
 
 language: php
 
@@ -14,6 +13,7 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
+  - echo "xdebug.mode=coverage" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
   - php -d memory_limit=-1 ./vendor/bin/phpstan analyse -n -vvv --ansi --level=max src
