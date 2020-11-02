@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP;
 
-use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,7 +16,9 @@ use PHPUnit\Framework\TestCase;
  */
 class ProtosTest extends TestCase
 {
+    public const CASE_PHAR_URL = 'https://raw.githubusercontent.com/rtckit/protos-sip-test-cases/main/protos.phar';
     public const CASE_DIR = __DIR__ . '/fixtures/protos';
+    public const CASE_PHAR = self::CASE_DIR . '/protos.phar';
 
     /* Possible goals for test case group */
     public const IGNORE = 0;
@@ -490,15 +491,22 @@ class ProtosTest extends TestCase
 
     public function setUp(): void
     {
-        $cases = scandir(self::CASE_DIR);
-        $faker = Factory::create();
+        if (!is_dir(self::CASE_DIR)) {
+            mkdir(self::CASE_DIR, 0777);
+        }
+
+        if (!is_file(self::CASE_PHAR)) {
+            file_put_contents(self::CASE_PHAR, fopen(self::CASE_PHAR_URL, 'r'));
+        }
+
+        $cases = scandir('phar://' . self::CASE_PHAR);
 
         foreach ($cases as $caseNum) {
             if (is_dir($caseNum) || ($caseNum[0] === '.')) {
                 continue;
             }
 
-            $case = self::CASE_DIR . '/' . $caseNum;
+            $case = 'phar://' . self::CASE_PHAR . '/' . $caseNum;
             $raw = file_get_contents($case);
 
             $invitePduSize = (int) explode(' ', substr($raw, 0, 16))[0];
@@ -510,14 +518,14 @@ class ProtosTest extends TestCase
             $rawResponsePDU = substr($raw, $invitePduPreamble + $invitePduSize + $teardownPduPreamble, $teardownPduSize);
 
             $replacements = [
-                '<To>' => $faker->email,
-                '<From-Address>' => $faker->domainName,
-                '<Local-Port>' => $faker->numberBetween(5000, 6000),
-                '<Branch-ID>' => $faker->bothify('##??####????##??'),
-                '<From>' => $faker->email,
-                '<Call-ID>' => $faker->bothify('##??####????##??-##??####????##??-##??####????##??'),
-                '<CSeq>' => $faker->numberBetween(8000, 12000),
-                '<From-IP>' => $faker->ipv4,
+                '<To>' => $this->randomHex(12) . '@' . $this->randomHex(16) . '.' . $this->randomHex(3),
+                '<From-Address>' => $this->randomHex(16) . '.' . $this->randomHex(3),
+                '<Local-Port>' => (string) rand(5000, 6000),
+                '<Branch-ID>' => $this->randomHex(16),
+                '<From>' => $this->randomHex(12) . '@' . $this->randomHex(16) . '.' . $this->randomHex(3),
+                '<Call-ID>' => $this->randomHex(32),
+                '<CSeq>' => (string) rand(8000, 12000),
+                '<From-IP>' => (string) rand(0, 255) . '.' . (string) rand(0, 255) . '.' . (string) rand(0, 255) . '.' . (string) rand(0, 255),
                 '<Teardown-Method>' => 'CANCEL',
             ];
 
@@ -525,7 +533,7 @@ class ProtosTest extends TestCase
             $teardownPDU = strtr($rawResponsePDU, $replacements);
 
             $bodyPos = strpos($invitePDU, "\r\n\r\n") + 4;
-            $invitePDU = str_replace('<Content-Length>', strlen($invitePDU) - $bodyPos, $invitePDU);
+            $invitePDU = str_replace('<Content-Length>', (string) (strlen($invitePDU) - $bodyPos), $invitePDU);
 
             $this->flows[$caseNum] = [
                 'request' => $invitePDU,
@@ -637,5 +645,17 @@ class ProtosTest extends TestCase
 
             printf("======================================================================================\n");
         }
+    }
+
+    private function randomHex(int $length): string
+    {
+        $ret = '';
+        $rounds = ceil($length / 32);
+
+        for ($i = 0; $i <= $rounds; $i++) {
+            $ret .= md5(uniqid((string) rand(), true));
+        }
+
+        return substr($ret, 0, $length);
     }
 }

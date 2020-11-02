@@ -2,3 +2,4 @@
 reports
 vendor
 composer.lock
+tests/fixtures/protos
