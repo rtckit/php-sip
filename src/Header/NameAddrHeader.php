@@ -34,7 +34,7 @@ class NameAddrHeader
     /**
      * Name-addr header fields parser
      *
-     * @param array<string> $hbody Header body
+     * @param array<array-key, string> $hbody Header body
      * @throws InvalidDuplicateHeader
      * @throws InvalidHeaderLineException
      * @throws InvalidHeaderParameter
