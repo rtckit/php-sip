@@ -533,7 +533,7 @@ class ProtosTest extends TestCase
             $teardownPDU = strtr($rawResponsePDU, $replacements);
 
             $bodyPos = strpos($invitePDU, "\r\n\r\n") + 4;
-            $invitePDU = str_replace('<Content-Length>', strlen($invitePDU) - $bodyPos, $invitePDU);
+            $invitePDU = str_replace('<Content-Length>', (string) (strlen($invitePDU) - $bodyPos), $invitePDU);
 
             $this->flows[$caseNum] = [
                 'request' => $invitePDU,
