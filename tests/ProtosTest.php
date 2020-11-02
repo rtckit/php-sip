@@ -17,7 +17,9 @@ use PHPUnit\Framework\TestCase;
  */
 class ProtosTest extends TestCase
 {
-    public const CASE_PHAR = 'phar://' . __DIR__ . '/fixtures/protos/protos.phar';
+    public const CASE_PHAR_URL = 'https://raw.githubusercontent.com/rtckit/protos-sip-test-cases/main/protos.phar';
+    public const CASE_DIR = __DIR__ . '/fixtures/protos';
+    public const CASE_PHAR = self::CASE_DIR . '/protos.phar';
 
     /* Possible goals for test case group */
     public const IGNORE = 0;
@@ -490,7 +492,15 @@ class ProtosTest extends TestCase
 
     public function setUp(): void
     {
-        $cases = scandir(self::CASE_PHAR);
+        if (!is_dir(self::CASE_DIR)) {
+            mkdir(self::CASE_DIR, 0777);
+        }
+
+        if (!is_file(self::CASE_PHAR)) {
+            file_put_contents(self::CASE_PHAR, fopen(self::CASE_PHAR_URL, 'r'));
+        }
+
+        $cases = scandir('phar://' . self::CASE_PHAR);
         $faker = Factory::create();
 
         foreach ($cases as $caseNum) {
@@ -498,7 +508,7 @@ class ProtosTest extends TestCase
                 continue;
             }
 
-            $case = self::CASE_PHAR . '/' . $caseNum;
+            $case = 'phar://' . self::CASE_PHAR . '/' . $caseNum;
             $raw = file_get_contents($case);
 
             $invitePduSize = (int) explode(' ', substr($raw, 0, 16))[0];
