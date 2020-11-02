@@ -19,7 +19,7 @@ class MultiValueHeader
     /**
      * Multpiple value header parser (no parameters)
      *
-     * @param array<string> $hbody Header body
+     * @param list<string> $hbody Header body
      * @return MultiValueHeader
      */
     public static function parse(array $hbody): MultiValueHeader

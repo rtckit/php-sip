@@ -17,7 +17,7 @@ class FromHeader extends NameAddrHeader
     /**
      * From header value parser
      *
-     * @param array<array-key, string> $hbody Header body
+     * @param list<string> $hbody Header body
      * @throws InvalidHeaderParameter
      * @return NameAddrHeader
      */

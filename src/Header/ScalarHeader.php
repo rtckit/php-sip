@@ -27,7 +27,7 @@ class ScalarHeader
     /**
      * Scalar header value parser
      *
-     * @param array<string> $hbody Header body
+     * @param list<string> $hbody Header body
      * @throws InvalidDuplicateHeader
      * @throws InvalidScalarValue
      * @return ScalarHeader

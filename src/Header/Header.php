@@ -19,7 +19,7 @@ class Header
     /**
      * Generic header value parser
      *
-     * @param array<string> $hbody Header body
+     * @param list<string> $hbody Header body
      * @return Header
      */
     public static function parse(array $hbody): Header
