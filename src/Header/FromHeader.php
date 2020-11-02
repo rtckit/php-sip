@@ -23,7 +23,6 @@ class FromHeader extends NameAddrHeader
      */
     public static function parse(array $hbody): NameAddrHeader
     {
-        /** @var array<array-key, string> $hbody */
         $ret = parent::parse($hbody);
 
         if (!isset($ret->tag[0])) {
