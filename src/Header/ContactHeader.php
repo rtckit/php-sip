@@ -27,7 +27,7 @@ class ContactHeader
     /**
      * Contact header value parser
      *
-     * @param list<string> $hbody Header body
+     * @param array<string> $hbody Header body
      * @throws InvalidHeaderLineException
      * @throws InvalidHeaderParameter
      * @return ContactHeader

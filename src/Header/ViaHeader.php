@@ -26,7 +26,7 @@ class ViaHeader
     /**
      * Single value header field parser, with parameters
      *
-     * @param list<string> $hbody Header body
+     * @param array<string> $hbody Header body
      * @throws InvalidHeaderLineException
      * @throws InvalidHeaderParameter
      * @throws InvalidProtocolVersionException

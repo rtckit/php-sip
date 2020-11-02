@@ -28,7 +28,7 @@ class SingleValueWithParamsHeader
     /**
      * Single value header field parser, with parameters
      *
-     * @param list<string> $hbody Header body
+     * @param array<string> $hbody Header body
      * @throws InvalidDuplicateHeader
      * @throws InvalidHeaderLineException
      * @throws InvalidHeaderParameter

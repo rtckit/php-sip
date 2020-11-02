@@ -24,7 +24,7 @@ class MultiValueWithParamsHeader
     /**
      * Multiple value header parser, with optional parameters
      *
-     * @param list<string> $hbody Header body
+     * @param array<string> $hbody Header body
      * @throws InvalidHeaderLineException
      * @throws InvalidHeaderParameter
      * @return MultiValueWithParamsHeader

@@ -28,7 +28,7 @@ class CSeqHeader
     /**
      * Sequence header value parser
      *
-     * @param list<string> $hbody Header body
+     * @param array<string> $hbody Header body
      * @throws InvalidDuplicateHeader
      * @throws InvalidHeaderLineException
      * @throws InvalidScalarValue
