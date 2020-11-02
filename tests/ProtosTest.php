@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP;
 
-use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -501,7 +500,6 @@ class ProtosTest extends TestCase
         }
 
         $cases = scandir('phar://' . self::CASE_PHAR);
-        $faker = Factory::create();
 
         foreach ($cases as $caseNum) {
             if (is_dir($caseNum) || ($caseNum[0] === '.')) {
@@ -520,14 +518,14 @@ class ProtosTest extends TestCase
             $rawResponsePDU = substr($raw, $invitePduPreamble + $invitePduSize + $teardownPduPreamble, $teardownPduSize);
 
             $replacements = [
-                '<To>' => $faker->email,
-                '<From-Address>' => $faker->domainName,
-                '<Local-Port>' => $faker->numberBetween(5000, 6000),
-                '<Branch-ID>' => $faker->bothify('##??####????##??'),
-                '<From>' => $faker->email,
-                '<Call-ID>' => $faker->bothify('##??####????##??-##??####????##??-##??####????##??'),
-                '<CSeq>' => $faker->numberBetween(8000, 12000),
-                '<From-IP>' => $faker->ipv4,
+                '<To>' => $this->randomHex(12) . '@' . $this->randomHex(16) . '.' . $this->randomHex(3),
+                '<From-Address>' => $this->randomHex(16) . '.' . $this->randomHex(3),
+                '<Local-Port>' => (string) rand(5000, 6000),
+                '<Branch-ID>' => $this->randomHex(16),
+                '<From>' => $this->randomHex(12) . '@' . $this->randomHex(16) . '.' . $this->randomHex(3),
+                '<Call-ID>' => $this->randomHex(32),
+                '<CSeq>' => (string) rand(8000, 12000),
+                '<From-IP>' => (string) rand(0, 255) . '.' . (string) rand(0, 255) . '.' . (string) rand(0, 255) . '.' . (string) rand(0, 255),
                 '<Teardown-Method>' => 'CANCEL',
             ];
 
@@ -647,5 +645,17 @@ class ProtosTest extends TestCase
 
             printf("======================================================================================\n");
         }
+    }
+
+    private function randomHex(int $length): string
+    {
+        $ret = '';
+        $rounds = ceil($length / 32);
+
+        for ($i = 0; $i <= $rounds; $i++) {
+            $ret .= md5(uniqid((string) rand(), true));
+        }
+
+        return substr($ret, 0, $length);
     }
 }
