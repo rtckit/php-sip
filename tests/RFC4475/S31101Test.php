@@ -32,6 +32,10 @@ class S31101Test extends RFC4475Case
         /* a mix of short and long form for the same header field name */
         $this->assertCount(3, $msg->via->values);
 
+        $this->assertEquals('390skdjuw', $msg->via->values['0']->branch);
+        $this->assertEquals('z9hG4bK9ikj8', $msg->via->values['1']->branch);
+        $this->assertEquals('z9hG4bK30239', $msg->via->values['2']->branch);
+
         // 2D! unknown Request-URI parameter
 
         /* unknown header fields */

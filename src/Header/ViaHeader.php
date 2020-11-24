@@ -72,7 +72,7 @@ class ViaHeader
 
                 foreach ($vparams as $param) {
                     $p = explode('=', $param);
-                    $p[0] = rtrim($p[0]);
+                    $p[0] = trim($p[0]);
 
                     if (!isset($p[0][0])) {
                         throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
