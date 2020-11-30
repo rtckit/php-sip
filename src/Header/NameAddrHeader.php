@@ -69,7 +69,6 @@ class NameAddrHeader
                         if ($semiPos !== false) {
                             $ret->addr = substr($ret->addr, 0, $semiPos);
                             $i = $semiPos + 1;
-                            $fetchParams = true;
                         }
 
                         if (strpos($ret->addr, '>') !== false) {
@@ -77,6 +76,7 @@ class NameAddrHeader
                         }
 
                         $afrom = null;
+                        $fetchParams = true;
                     }
                 } else if ($hbody[0][$i] === ':') {
                     $afrom = $lastWsp + 1;

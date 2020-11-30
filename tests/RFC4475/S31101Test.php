@@ -21,6 +21,10 @@ class S31101Test extends RFC4475Case
 
         $this->assertInstanceOf(Request::class, $msg);
 
+        /* tag From/To header value parameters */
+        $this->assertEquals("1918181833n", $msg->to->tag);
+        $this->assertEquals("98asjd8", $msg->from->tag);
+
         /* escaped characters within quotes */
         $this->assertEquals("J Rosenberg \\\\\"", $msg->from->name);
         $this->assertEquals('Quoted string \\"\\"', $msg->contact->values[0]->name);
