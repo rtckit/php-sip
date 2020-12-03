@@ -60,6 +60,19 @@ class StreamParserTest extends TestCase
         fclose($fp);
     }
 
+    public function testShouldParseStreamedMessagesNoDifferentThanPDU()
+    {
+        $bytes = file_get_contents(__DIR__ . '/fixtures/rfc4475/wsinv.dat');
+
+        if ($this->parser->process($bytes, $messages) === StreamParser::SUCCESS) {
+            /* Expect one message and one message only */
+            $this->assertEquals(1, count($messages));
+
+            /* The streamed message to be parsed as if it was an individual PDU */
+            $this->assertEquals(Message::parse($bytes), $messages[0]);
+        }
+    }
+
     public function testFailureWithoutContentLength()
     {
         $bytes =

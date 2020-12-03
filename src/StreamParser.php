@@ -79,6 +79,7 @@ class StreamParser
                     $this->buffer = ltrim(substr($this->buffer, $this->message->contentLength->value));
                 } else {
                     /* We're all set! */
+                    $this->message->body = $this->buffer;
                     $this->buffer = '';
                 }
             } else {
