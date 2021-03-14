@@ -16,7 +16,7 @@ class MiscTest extends TestCase
 
     private array $flows = [];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $dirs = scandir(self::CASE_DIR);
 

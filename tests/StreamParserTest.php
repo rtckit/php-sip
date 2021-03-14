@@ -66,7 +66,7 @@ class StreamParserTest extends TestCase
 
         if ($this->parser->process($bytes, $messages) === StreamParser::SUCCESS) {
             /* Expect one message and one message only */
-            $this->assertEquals(1, count($messages));
+            $this->assertCount(1, $messages);
 
             /* The streamed message to be parsed as if it was an individual PDU */
             $this->assertEquals(Message::parse($bytes), $messages[0]);

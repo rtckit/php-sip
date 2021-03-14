@@ -489,7 +489,7 @@ class ProtosTest extends TestCase
 
     private array $flows = [];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (!is_dir(self::CASE_DIR)) {
             mkdir(self::CASE_DIR, 0777);
