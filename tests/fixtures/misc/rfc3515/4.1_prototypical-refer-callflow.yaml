@@ -1,0 +1,98 @@
+# https://datatracker.ietf.org/doc/html/rfc3515
+# 4.1 Prototypical REFER callflow
+#
+#   Agent A                  Agent B
+#      |                        |
+#      |   F1 REFER             |
+#      |----------------------->|
+#      |        F2 202 Accepted |
+#      |<-----------------------|
+#      |        F3 NOTIFY       |
+#      |<-----------------------|
+#      |  F4 200 OK             |
+#      |----------------------->|
+#      |                        |
+#      |                        |
+#      |                        |------->
+#      |                        |  (whatever)
+#      |                        |<------
+#      |                        |
+#      |         F5 NOTIFY      |
+#      |<-----------------------|
+#      |   F6 200 OK            |
+#      |----------------------->|
+#      |                        |
+#      |                        |
+- |+
+  REFER sip:b@atlanta.example.com SIP/2.0
+  Via: SIP/2.0/UDP agenta.atlanta.example.com;branch=z9hG4bK2293940223
+  To: <sip:b@atlanta.example.com>
+  From: <sip:a@atlanta.example.com>;tag=193402342
+  Call-ID: 898234234@agenta.atlanta.example.com
+  CSeq: 93809823 REFER
+  Max-Forwards: 70
+  Refer-To: (whatever URI)
+  Contact: sip:a@atlanta.example.com
+  Content-Length: 0
+
+- |+
+  SIP/2.0 202 Accepted
+  Via: SIP/2.0/UDP agenta.atlanta.example.com;branch=z9hG4bK2293940223
+  To: <sip:b@atlanta.example.com>;tag=4992881234
+  From: <sip:a@atlanta.example.com>;tag=193402342
+  Call-ID: 898234234@agenta.atlanta.example.com
+  CSeq: 93809823 REFER
+  Contact: sip:b@atlanta.example.com
+  Content-Length: 0
+
+- |+
+  NOTIFY sip:a@atlanta.example.com SIP/2.0
+  Via: SIP/2.0/UDP agentb.atlanta.example.com;branch=z9hG4bK9922ef992-25
+  To: <sip:a@atlanta.example.com>;tag=193402342
+  From: <sip:b@atlanta.example.com>;tag=4992881234
+  Call-ID: 898234234@agenta.atlanta.example.com
+  CSeq: 1993402 NOTIFY
+  Max-Forwards: 70
+  Event: refer
+  Subscription-State: active;expires=(depends on Refer-To URI)
+  Contact: sip:b@atlanta.example.com
+  Content-Type: message/sipfrag;version=2.0
+  Content-Length: 20
+
+  SIP/2.0 100 Trying
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP agentb.atlanta.example.com;branch=z9hG4bK9922ef992-25
+  To: <sip:a@atlanta.example.com>;tag=193402342
+  From: <sip:b@atlanta.example.com>;tag=4992881234
+  Call-ID: 898234234@agenta.atlanta.example.com
+  CSeq: 1993402 NOTIFY
+  Contact: sip:a@atlanta.example.com
+  Content-Length: 0
+
+- |+
+  NOTIFY sip:a@atlanta.example.com SIP/2.0
+  Via: SIP/2.0/UDP agentb.atlanta.example.com;branch=z9hG4bK9323394234
+  To: <sip:a@atlanta.example.com>;tag=193402342
+  From: <sip:b@atlanta.example.com>;tag=4992881234
+  Call-ID: 898234234@agenta.atlanta.example.com
+  CSeq: 1993403 NOTIFY
+  Max-Forwards: 70
+  Event: refer
+  Subscription-State: terminated;reason=noresource
+  Contact: sip:b@atlanta.example.com
+  Content-Type: message/sipfrag;version=2.0
+  Content-Length: 16
+
+  SIP/2.0 200 OK
+
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/UDP agentb.atlanta.example.com;branch=z9hG4bK9323394234
+  To: <sip:a@atlanta.example.com>;tag=193402342
+  From: <sip:b@atlanta.example.com>;tag=4992881234
+  Call-ID: 898234234@agenta.atlanta.example.com
+  CSeq: 1993403 NOTIFY
+  Contact: sip:a@atlanta.example.com
+  Content-Length: 0

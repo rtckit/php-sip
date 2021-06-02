@@ -42,6 +42,7 @@ class Message
         'k' => 'supported',
         'l' => 'content-length',
         'm' => 'contact',
+        'r' => 'refer-to',
         's' => 'subject',
         't' => 'to',
         'v' => 'via',
@@ -114,6 +115,9 @@ class Message
     public Header $userAgent;
     public Header $warning;
     public Header $wwwAuthenticate;
+
+    /* REFER header fields */
+    public Header $referTo;
 
     /** @var string Message body */
     public string $body;
@@ -452,6 +456,12 @@ class Message
 
                     continue 2;
 
+                /* https://datatracker.ietf.org/doc/html/rfc3515#section-2.1 */
+                case 'refer-to':
+                    $msg->referTo = Header::parse($hbody);
+
+                    continue 2;
+
                 default:
                     $msg->extraHeaders[$hname] = Header::parse($hbody);
 
@@ -664,6 +674,10 @@ class Message
 
         if (isset($this->wwwAuthenticate)) {
             $ret .= $this->wwwAuthenticate->render('WWW-Authenticate');
+        }
+
+        if (isset($this->referTo)) {
+            $ret .= $this->referTo->render('Refer-To');
         }
 
         foreach ($this->extraHeaders as $name => $header) {
