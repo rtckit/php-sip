@@ -15,5 +15,9 @@
   <issueHandlers>
     <PropertyNotSetInConstructor errorLevel="suppress" />
     <TypeDoesNotContainType errorLevel="suppress" />
+
+    <!-- https://github.com/vimeo/psalm/issues/4823 -->
+    <RedundantPropertyInitializationCheck errorLevel="suppress" />
+    <RedundantCondition errorLevel="suppress" />
   </issueHandlers>
 </psalm>
