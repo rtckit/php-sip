@@ -120,7 +120,7 @@ while (!feof($fp)) {
 
     /* The actual input string ($bytes) can be retrieved from any stream-like source */
     if ($parser->process($bytes, $messages) === \RTCKit\SIP\StreamParser::SUCCESS) {
-        foreach($messages as $message) {
+        foreach ($messages as $message) {
             /*
              * $message is either a Request or a Response object, using
              * the same structure as messages returned by Message::parse()
