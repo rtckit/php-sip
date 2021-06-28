@@ -16,7 +16,7 @@ before_script:
   - echo "xdebug.mode=coverage" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-  - php -d memory_limit=-1 ./vendor/bin/phpstan analyse -n -vvv --ansi --level=max src
-  - php -d memory_limit=-1 ./vendor/bin/psalm --show-info=true
-  - php -d memory_limit=-1 ./vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+  - php -d memory_limit=-1 ./vendor/bin/phpstan analyse -c ./etc/phpstan.neon -n -vvv --ansi --level=max src
+  - php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml --show-info=true
+  - php -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist --coverage-text --coverage-clover build/logs/clover.xml
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi

@@ -1,3 +1,4 @@
+.editorconfig
 .phpunit.result.cache
 reports
 vendor
