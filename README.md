@@ -1,4 +1,6 @@
-![PHP SIP](https://raw.github.com/rtckit/media/master/php-sip/readme-splash.png)
+<a href="#php-sip-parsingrendering-library">
+  <img loading="lazy" src="https://raw.github.com/rtckit/media/master/php-sip/readme-splash.png" alt="php-sip" class="width-full">
+</a>
 
 # PHP SIP Parsing/Rendering Library
 
