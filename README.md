@@ -1,3 +1,7 @@
+<a href="#php-sip-parsingrendering-library">
+  <img loading="lazy" src="https://raw.github.com/rtckit/media/master/php-sip/readme-splash.png" alt="php-sip" class="width-full">
+</a>
+
 # PHP SIP Parsing/Rendering Library
 
 [RFC 3261](https://tools.ietf.org/html/rfc3261) compliant SIP parsing and rendering library for PHP 7.4.
@@ -161,7 +165,7 @@ composer install
 Then, go to the project root and run:
 
 ```bash
-php -d memory_limit=-1 ./vendor/bin/phpunit
+php -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist
 ```
 
 ### Static Analysis
@@ -169,8 +173,8 @@ php -d memory_limit=-1 ./vendor/bin/phpunit
 In order to ensure high code quality, **RTCKit\SIP** uses [PHPStan](https://github.com/phpstan/phpstan) and [Psalm](https://github.com/vimeo/psalm):
 
 ```sh
-php -d memory_limit=-1 ./vendor/bin/phpstan analyse -n -vvv --ansi --level=max src
-php -d memory_limit=-1 ./vendor/bin/psalm --show-info=true
+php -d memory_limit=-1 ./vendor/bin/phpstan analyse -c ./etc/phpstan.neon -n -vvv --ansi --level=max src
+php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml --show-info=true
 ```
 
 ## License
