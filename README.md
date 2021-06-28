@@ -1,3 +1,5 @@
+<img loading="lazy" src="https://repository-images.githubusercontent.com/308205066/3b054700-d835-11eb-82eb-ca5003b58514" alt="php-sip" class="d-block width-full">
+
 # PHP SIP Parsing/Rendering Library
 
 [RFC 3261](https://tools.ietf.org/html/rfc3261) compliant SIP parsing and rendering library for PHP 7.4.
