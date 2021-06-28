@@ -1,4 +1,6 @@
-<img loading="lazy" src="https://repository-images.githubusercontent.com/308205066/3b054700-d835-11eb-82eb-ca5003b58514" alt="php-sip" class="d-block width-full">
+<a style="max-height: 275px" href="#php-sip-parsingrendering-library" class="overflow-hidden flex-items-center rounded-top-1 border-black-fade border-bottom d-flex position-relative">
+  <img loading="lazy" src="https://repository-images.githubusercontent.com/308205066/3b054700-d835-11eb-82eb-ca5003b58514" alt="php-sip" class="d-block width-full">
+</a>
 
 # PHP SIP Parsing/Rendering Library
 
