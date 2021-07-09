@@ -1,0 +1,449 @@
+REGISTER sip:ims.mnc000.mcc123.3gppnetwork.org SIP/2.0
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+To: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>
+From: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+Call-ID: YJPXBt04YEtA9WxhbqY
+CSeq: 1 REGISTER
+Expires: 3600
+Max-Forwards: 69
+Contact: <sip:123012345678901@[2409:8805:84e3:3603::1]:1388>;useraddr=[2409:8805:84e3:3603::1];userport=1060;+sip.instance="<urn:gsma:imei:12345678-123456-0>";+g.3gpp.smsip;+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";video;expires=3600
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc.1234.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060
+Supported: sec-agree,path
+Require: path
+Path: <sip:abcd_9_2_2@xxatcf12yyy.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;lr>
+P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123;orig-ioi=void
+User-Agent: XXXX VOLTE
+Authorization: Digest username="123012345678901@ims.mnc000.mcc123.3gppnetwork.org",realm="ims.mnc000.mcc123.3gppnetwork.org",nonce="",uri="sip:ims.mnc000.mcc123.3gppnetwork.org",response="",integrity-protection=no
+Feature-Caps: *;+g.3gpp.atcf="<tel:+01233456789>";+g.3gpp.atcf-mgmt-uri="<sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2>";+g.3gpp.atcf-path="<sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2>";+g.3gpp.srvcc;+3gpp.mid-call;+g.3gpp.srvcc-alerting;+g.3gpp.ps2cs-srcc-orig-pre-alerting
+P-Visited-Network-ID: 12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org
+Allow: INVITE,CANCEL,BYE,ACK,REGISTER,OPTIONS,REFER,SUBSCRIBE,NOTIFY,MESSAGE,INFO,PRACK,UPDATE
+Content-Length: 0
+
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+Call-ID: YJPXBt04YEtA9WxhbqY
+From: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+To: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>
+CSeq: 1 REGISTER
+Content-Length: 0
+
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+Call-ID: YJPXBt04YEtA9WxhbqY
+From: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+To: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+CSeq: 1 REGISTER
+WWW-Authenticate: Digest realm="ims.mnc000.mcc123.3gppnetwork.org", nonce="12345678901234567890123456789012345678901234", algorithm=AKAv1-MD5,ik="12345678901234567890123456789012", ck="12345678901234567890123456789012"
+P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123;orig-ioi=void;term-ioi=xx.test1mobile.com
+Content-Length: 0
+
+REGISTER sip:ims.mnc000.mcc123.3gppnetwork.org SIP/2.0
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+To: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>
+From: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+Call-ID: YJPXBt04YEtA9WxhbqY
+CSeq: 2 REGISTER
+Expires: 3600
+Max-Forwards: 69
+Contact: <sip:123012345678901@[2409:8805:84e3:3603::1]:1388>;useraddr=[2409:8805:84e3:3603::1];userport=1060;+sip.instance="<urn:gsma:imei:12345678-123456-0>";+g.3gpp.smsip;+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";video;expires=3600
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc.1234.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060
+Supported: sec-agree,path
+Require: path
+Path: <sip:abcd_9_2_2@xxatcf12yyy.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;lr>
+P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123;orig-ioi=void
+User-Agent: XXXX VOLTE
+Authorization: Digest username="123012345678901@ims.mnc000.mcc123.3gppnetwork.org",realm="ims.mnc000.mcc123.3gppnetwork.org",nonce="12345678901234567890123456789012345678901234",uri="sip:ims.mnc000.mcc123.3gppnetwork.org",response="12345678901234567890123456789012345678901234",integrity-protection=yes
+Feature-Caps: *;+g.3gpp.atcf="<tel:+01233456789>";+g.3gpp.atcf-mgmt-uri="<sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2>";+g.3gpp.atcf-path="<sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2>";+g.3gpp.srvcc;+3gpp.mid-call;+g.3gpp.srvcc-alerting;+g.3gpp.ps2cs-srcc-orig-pre-alerting
+P-Visited-Network-ID: 12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org
+Allow: INVITE,CANCEL,BYE,ACK,REGISTER,OPTIONS,REFER,SUBSCRIBE,NOTIFY,MESSAGE,INFO,PRACK,UPDATE
+Content-Length: 0
+
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+Call-ID: YJPXBt04YEtA9WxhbqY
+From: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+To: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>
+CSeq: 2 REGISTER
+Content-Length: 0
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+Call-ID: YJPXBt04YEtA9WxhbqY
+From: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+To: <sip:123012345678901@ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+CSeq: 2 REGISTER
+Contact: <sip:123012345678901@[2409:8805:84e3:3603::1]:1388>;q=1;expires=3600;useraddr=[2409:8805:84e3:3603::1];userport=1060;+sip.instance="<urn:gsma:imei:12345678-123456-0>";+g.3gpp.smsip;+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";video
+Service-Route: <sip:orig@xxcscf12yyyy.xx.test1mobile.com;lr;Dpt=1234_12345678;ca=123456;TRC=ffffffff-ffffffff>
+Path: <sip:abcd_9_2_2@xxatcf12yyy.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;lr>
+P-Associated-URI: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>,<tel:+1212345678901>
+P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123;orig-ioi=void;term-ioi=xx.test1mobile.com
+Accept-Resource-Priority: wps.4
+Content-Length: 0
+
+SUBSCRIBE sip:sip:123012345678901@xx.ims.mnc000.mcc123.3gppnetwork.org SIP/2.0
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*12345678901-zRoaM-
+To: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>
+From: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678901234
+Call-ID: 12345678901234567@xx.ims.mnc000.mcc123.3gppnetwork.org
+CSeq: 12345 SUBSCRIBE
+Event: reg
+Expires: 600000
+Max-Forwards: 69
+Contact: <sip:123012345678901@10.189.152.104:5060>
+Record-Route: <sip:abcd_9_0_09000004@10.189.152.104:5060;lr>
+Route: <sip:orig@xxcscf12yyyy.xx.test1mobile.com;lr;Dpt=1234_12345678;ca=123456;TRC=ffffffff-ffffffff>
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc.1234.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060
+P-Asserted-Identity: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>
+P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123
+Accept: application/reginfo+xml
+Content-Length: 0
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK-*9*80efbc12524d4630b04b
+Record-Route: <sip:abcd_9_0_09000004@10.189.152.104:5060;lr>
+Call-ID: 12345678901234567@xx.ims.mnc000.mcc123.3gppnetwork.org
+From: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+To: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+CSeq: 12345 SUBSCRIBE
+Contact: <sip:xxcscf12yyyy.xx.test1mobile.com;lr;Dpt=1234_12;RegSubIdx=12345678;trans;TRC=ffffffff-ffffffff>
+Expires: 600000
+P-Asserted-Identity: <sip:xxcscf12yyyy.xx.test1mobile.com>
+Content-Length: 0
+
+NOTIFY sip:123012345678901@10.189.152.104:5060 SIP/2.0
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12;X-abcde=3;TRC=ffffffff-ffffffff
+Route: <sip:abcd_9_0_09000004@10.189.152.104:5060;lr>
+Call-ID: 12345678901234567@xx.ims.mnc000.mcc123.3gppnetwork.org
+From: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+To: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+CSeq: 1 NOTIFY
+Contact: <sip:xxcscf12yyyy.xx.test1mobile.com;lr;Dpt=1234_12;RegSubIdx=12345678;trans;TRC=ffffffff-ffffffff>
+Event: reg
+Subscription-State: active;expires=600000
+Expires: 600000
+P-Charging-Vector: icid-value="12345678901234567890123456789012.1234567890.12345678.123";orig-ioi=xx.test1mobile.com
+Max-Forwards: 70
+Content-Length: 649
+Content-Type: application/reginfo+xml
+
+<?xml version="1.0"?>
+<reginfo xmlns="urn:ietf:params:xml:ns:reginfo" version="0" state="full">
+  <registration aor="sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org" id="1234567" state="active">
+    <contact id="1234567" state="active" event="created" >
+      <uri>sip:123012345678901@[2409:8805:84e3:3603:0000:0000:0000:0001]:1388</uri>
+    </contact>
+  </registration>
+  <registration aor="tel:+1212345678901" id="1234567" state="active">
+    <contact id="1234567" state="active" event="created" >
+      <uri>sip:123012345678901@[2409:8805:84e3:3603:0000:0000:0000:0001]:1388</uri>
+    </contact>
+  </registration>
+</reginfo>
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12;X-abcde=3;TRC=ffffffff-ffffffff
+To: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=DUarLQswr7wSjp
+From: <sip:+1212345678901@xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+Call-ID: 12345678901234567@xx.ims.mnc000.mcc123.3gppnetwork.org
+CSeq: 1 NOTIFY
+P-Asserted-Identity: <sip:xxcscf12yyyy.xx.test1mobile.com>
+P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123
+Content-Length: 0
+
+INVITE sip:123012345678901@[2409:8805:84e3:3603::1]:1388 SIP/2.0
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+CSeq: 12345 INVITE
+Max-Forwards: 57
+Contact: <sip:[2409:8015:8029:9:ffff::21]:5062;Dpt=1234_123>;q=1.000;+q.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";video;+g.3gpp.mid-call
+Record-Route: <sip:abcd_11_0_12345678@[2409:8015:8029:9:ffff::21]:5062;lr>
+Supported: tdialog,replaces,norefersub,from-change,histinfo,timer,precondition,100rel
+P-Early-Media: gated
+Session-Expires: 1800
+Min-SE: 90
+P-Asserted-Identity: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>
+Feature-Caps: *;+g.3gpp.srvcc;+3gpp.mid-call;+g.3gpp.srvcc-alerting;+g.3gpp.remote-leg-info
+Accept: application/sdp,application/vnd.3gpp.state-and-event-info+xml
+Allow: PRACK,INVITE,ACK,BYE,CANCEL,UPDATE,SUBSCRIBE,NOTIFY,REFER,MESSAGE,OPTIONS
+Accept-Contact: *;explicit:require;+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel"
+Reject-Contact: *;+g.3gpp.ics="server"
+Content-Type: application/sdp
+Recv-Info: g.3gpp.state-and-event-info
+Content-Length: 745
+
+v=0
+o=XxxyyyAxx1234 123456789 123456789 IN IP6 2409:8015:8029:9:ffff::3
+s=xxx call
+c=IN IP6 2409:8015:8029:9:ffff::3
+t=0 0
+m=audio 12345 RTP/AVP 8 102 111 101 18 0 100 103
+a=rtpmap:8 PCMA/8000
+a=rtpmap:102 AMR/8000
+a=fmtp:102 mode-set=7;mode-change-capability=2;max-red=0
+a=sendrecv
+a=rtpmap:100 telephone-event/8000
+a=fmtp:100 0-15
+a=curr:qos local none
+a=curr:qos remote none
+a=des:qos mandatory local sendrecv
+a=des:qos mandatory remote sendrecv
+a=ptime:20
+a=maxptime:240
+a=rtpmap:111 AMR-WB/16000
+a=fmtp:111 mode-set=2,8;mode-change-capability=2;max-red=0
+a=rtpmap:101 AMR/8000
+a=fmtp:101 mode-set=7
+a=rtpmap:18 G729/8000
+a=fmtp:18 annexb=no
+a=rtpmap:0 PCMU/8000
+a=rtpmap:103 telephone-event/16000
+a=fmtp:103 0-15
+
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 10.189.156.16:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12
+Via: SIP/2.0/UDP 10.189.156.167:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+CSeq: 12345 INVITE
+User-Agent: XXX-YYY
+Content-Length: 0
+
+SIP/2.0 183 Session Progress
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Record-Route: <sip:abcd_11_0_12345678@[2409:8015:8029:9:ffff::21]:5062;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 INVITE
+Contact: <sip:123012345678901@[2409:8015:84e1:3555::1]:8904>;q=1;+q.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";+g.3gpp.smsip;video;+sip.instance="<urn:gsma:imei:12345678-123456-1>"
+Allow: PRACK, INVITE, ACK, BYE, CANCEL, UPDATE, SUBSCRIBE, NOTIFY, REFER, MESSAGE, OPTIONS
+Require: precondition
+Require: 100rel
+RSeq: 12345
+Content-Type: application/sdp
+Content-Length: 438
+
+v=0
+o=- 1234567890 1234567890 IN IP6 2409:8805:84e1:3555:0000:0000:0000:0001
+s=1234567
+c=IN IP6 2409:8805:84e1:3555:0000:0000:0000:0001
+t=0 0
+m=audio 12345 RTP/AVP 8 100
+a=rtpmap:8 PCMA/8000
+a=sendrecv
+a=rtpmap:100 telephone-event/8000
+a=fmtp:100 0-15
+a=curr:qos local none
+a=curr:qos remote none
+a=des:qos mandatory local sendrecv
+a=des:qos mandatory remote sendrecv
+a=ptime:20
+a=maxptime:240
+a=conf:qos remote sendrecv
+PRACK sip:123012345678901@10.189.152.104:5060 SIP/2.0
+Via: SIP/2.0/UDP 10.189.156.16:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12,SIP/2.0/UDP 10.189.156.167:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12
+Route: <sip:abcd_11_0_12345678@10.189.152.104:5060;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 PRACK
+Max-Forwards: 59
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc4.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060;network-provided
+P-Charging-Vector: icid-value="12345678901234567890123456789012.1234567890.12345678.123";orig-ioi=xx.test1mobile.com
+RAck: 12345 12345 INVITE
+Content-Length: 0
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 PRACK
+Require: timer
+Content-Length: 0
+
+UPDATE sip:123012345678901@10.189.152.104:5060 SIP/2.0
+Via: SIP/2.0/UDP 10.189.156.16:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12,SIP/2.0/UDP 10.189.156.167:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12
+Route: <sip:abcd_11_0_12345678@10.189.152.104:5060;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 UPDATE
+Contact: <sip:10.189.154.164:5060;Dpt=1234_123>;q=1;+q.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";video
+Max-Forwards: 59
+Supported: timer
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc4.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060;network-provided
+P-Charging-Vector: icid-value="12345678901234567890123456789012.1234567890.12345678.123";orig-ioi=xx.test1mobile.com
+P-Early-Media: gated
+Content-Length: 643
+Content-Type: application/sdp
+
+v=0
+o=XxxyyyAxx1234 123456789 123456789 IN IP4 10.189.154.167
+s=xxx call
+c=IN IP4 10.189.154.75
+t=0 0
+m=audio 12345 RTP/AVP 8 100 111 101 18 0 103
+a=rtpmap:8 PCMA/8000
+a=sendrecv
+a=curr:qos local sendrecv
+a=curr:qos remote none
+a=des:qos mandatory local sendrecv
+a=des:qos mandatory remote sendrecv
+a=ptime:20
+a=maxptime:240
+a=rtpmap:100 telephone-event/8000
+a=fmtp:100 0-15
+a=rtpmap:111 AMR-WB/16000
+a=fmtp:111 mode-set=2,8;mode-change-capability=2;max-red=0
+a=rtpmap:101 AMR/8000
+a=fmtp:101 mode-set=7
+a=rtpmap:18 G729/8000
+a=fmtp:18 annexb=no
+a=rtpmap:0 PCMU/8000
+a=rtpmap:103 telephone-event/16000
+a=fmtp:103 0-15
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 UPDATE
+Require: timer
+Contact: <sip:123012345678901@[2409:8015:84e1:3555::1]:8904>;q=1;+q.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";+g.3gpp.smsip;video;+sip.instance="<urn:gsma:imei:12345678-123456-1>"
+Allow: PRACK, INVITE, ACK, BYE, CANCEL, UPDATE, SUBSCRIBE, NOTIFY, REFER, MESSAGE, OPTIONS
+Supported: replaces, 100rel, timer, norefersub, precondition, from-change, histinfo
+Content-Type: application/sdp
+Content-Length: 418
+
+v=0
+o=- 1234567890 1234567890 IN IP6 2409:8805:84e1:3555:0000:0000:0000:0001
+s=1234567
+c=IN IP6 2409:8805:84e1:3555:0000:0000:0000:0001
+t=0 0
+m=audio 12345 RTP/AVP 8 100
+a=rtpmap:8 PCMA/8000
+a=sendrecv
+a=rtpmap:100 telephone-event/8000
+a=fmtp:100 0-15
+a=curr:qos local sendrecv
+a=curr:qos remote sendrecv
+a=des:qos mandatory local sendrecv
+a=des:qos mandatory remote sendrecv
+a=ptime:20
+a=maxptime:240
+
+SIP/2.0 180 Ringing
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Record-Route: <sip:abcd_11_0_12345678@[2409:8015:8029:9:ffff::21]:5062;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 INVITE
+Allow: PRACK, INVITE, ACK, BYE, CANCEL, UPDATE, SUBSCRIBE, NOTIFY, REFER, MESSAGE, OPTIONS
+Require: precondition
+Contact: <sip:123012345678901@[2409:8015:84e1:3555::1]:8904>;q=1;+q.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";+g.3gpp.smsip;video;+sip.instance="<urn:gsma:imei:12345678-123456-1>"
+Require: 100rel
+RSeq: 12345
+Content-Length: 0
+
+PRACK sip:123012345678901@10.189.152.104:5060 SIP/2.0
+Via: SIP/2.0/UDP 10.189.156.16:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12,SIP/2.0/UDP 10.189.156.167:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12
+Route: <sip:abcd_11_0_12345678@10.189.152.104:5060;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 PRACK
+Max-Forwards: 59
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc4.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060;network-provided
+P-Charging-Vector: icid-value="12345678901234567890123456789012.1234567890.12345678.123";orig-ioi=xx.test1mobile.com
+RAck: 12345 12345 INVITE
+Content-Length: 0
+
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 PRACK
+Require: timer
+Content-Length: 0
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Record-Route: <sip:abcd_11_0_12345678@[2409:8015:8029:9:ffff::21]:5062;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 INVITE
+Allow: PRACK, INVITE, ACK, BYE, CANCEL, UPDATE, SUBSCRIBE, NOTIFY, REFER, MESSAGE, OPTIONS
+Require: precondition
+Contact: <sip:123012345678901@[2409:8015:84e1:3555::1]:8904>;q=1;+q.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";+g.3gpp.smsip;video;+sip.instance="<urn:gsma:imei:12345678-123456-1>"
+Supported: replaces, 100rel, timer, norefersub, precondition, from-change, histinfo
+Content-Length: 0
+
+ACK sip:123012345678901@10.189.152.104:5060 SIP/2.0
+Via: SIP/2.0/UDP 10.189.156.16:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12,SIP/2.0/UDP 10.189.156.167:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12
+Route: <sip:abcd_11_0_12345678@10.189.152.104:5060;lr>
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 ACK
+Max-Forwards: 59
+P-Access-Network-Info: 3GPP-E-UTRAN;utran-cell-id-3gpp=1230123456789123;sbc-domain=sbc4.xx.test1mobile.com;ue-ip=[2409:8805:84e3:3603::1];ue-port=1060;network-provided
+P-Charging-Vector: icid-value="12345678901234567890123456789012.1234567890.12345678.123";orig-ioi=xx.test1mobile.com
+Content-Length: 0
+
+BYE sip:123012345678901@[2409:8805:84e3:3603::1]:1388 SIP/2.0
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+CSeq: 12345 BYE
+Max-Forwards: 57
+Content-Length: 0
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP [2409:8015:8029:9:ffff::21]:5062;branch=z9hG4bK-*11*123456789012345678901234
+Call-ID: 12345678901234567890123456789012@10.189.154.164
+From: <tel:12345678901;phone-context=+86;noa=subscriber;srvattri=national>;tag=12345678
+To: <sip:12345678901;phone-context=xx.ims.mnc000.mcc123.3gppnetwork.org@ims.mnc000.mcc123.3gppnetwork.org;user=phone>;tag=12345678-1234-1234-1234-12345678912
+CSeq: 12345 BYE
+Require: timer
+Content-Length: 0
+
+MESSAGE sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2 SIP/2.0
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12;X-abcde=3
+Call-ID: 12345678901234567890123456789012@10.189.153.43
+From: <sip:123456789012.sccas.xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+To: <sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org>
+CSeq: 1 MESSAGE
+P-Asserted-Identity: <sip:123456789012.sccas.xx.ims.mnc000.mcc123.3gppnetwork.org>
+P-Access-Network-Info: 3PTC
+P-Charging-Vector: icid-value=1234567-123456789012345678901;icid-generated-at=xx.ims.mnc000.mcc123.3gppnetwork.org
+Max-Forwards: 70
+Content-Length: 338
+Content-Type: application/vnd.3gpp.SRVCC-info+xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SRVCC-infos>
+<SRVCC-info ATCF-Path-URI="sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2">
+<ATU-STI>sip:atusti@123456789012.sccas.xx.ims.mnc000.mcc123.3gppnetwork.org</ATU-STI>
+<C-MSISDN>tel:+1212345678901</C-MSISDN>
+</SRVCC-info>
+</SRVCC-infos>
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 10.189.152.104:5060;branch=z9hG4bK1234567890123456789012345;Role=3;Dpt=1234_12;X-abcde=3
+To: <sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=123456789012345-1234567890123456-1234
+From: <sip:123456789012.sccas.xx.ims.mnc000.mcc123.3gppnetwork.org>;tag=12345678
+Call-ID: 12345678901234567890123456789012@10.189.153.43
+CSeq: 1 MESSAGE
+User-Agent: XXX-YYYY
+Content-Length: 0
+
