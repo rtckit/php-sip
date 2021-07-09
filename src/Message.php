@@ -19,6 +19,8 @@ use RTCKit\SIP\Header\MaxForwardsHeader;
 use RTCKit\SIP\Header\MultiValueHeader;
 use RTCKit\SIP\Header\MultiValueWithParamsHeader;
 use RTCKit\SIP\Header\NameAddrHeader;
+use RTCKit\SIP\Header\RAckHeader;
+use RTCKit\SIP\Header\RSeqHeader;
 use RTCKit\SIP\Header\ScalarHeader;
 use RTCKit\SIP\Header\SingleValueWithParamsHeader;
 use RTCKit\SIP\Header\ViaHeader;
@@ -118,6 +120,10 @@ class Message
 
     /* REFER header fields */
     public Header $referTo;
+
+    /* PRACK header fields */
+    public RAckHeader $rAck;
+    public ScalarHeader $rSeq;
 
     /** @var string Message body */
     public string $body;
@@ -462,6 +468,18 @@ class Message
 
                     continue 2;
 
+                /* https://datatracker.ietf.org/doc/html/rfc3262#section-7.2 */
+                case 'rack':
+                    $msg->rAck = RAckHeader::parse($hbody);
+
+                    continue 2;
+
+                /* https://datatracker.ietf.org/doc/html/rfc3262#section-7.1 */
+                case 'rseq':
+                    $msg->rSeq = ScalarHeader::parse($hbody);
+
+                    continue 2;
+
                 default:
                     $msg->extraHeaders[$hname] = Header::parse($hbody);
 
@@ -678,6 +696,14 @@ class Message
 
         if (isset($this->referTo)) {
             $ret .= $this->referTo->render('Refer-To');
+        }
+
+        if (isset($this->rAck)) {
+            $ret .= $this->rAck->render('RAck');
+        }
+
+        if (isset($this->rSeq)) {
+            $ret .= $this->rSeq->render('RSeq');
         }
 
         foreach ($this->extraHeaders as $name => $header) {

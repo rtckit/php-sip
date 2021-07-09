@@ -14,7 +14,7 @@ use RTCKit\SIP\StreamParser;
 
 $parser = new StreamParser;
 
-$fp = fopen(__DIR__ . '/../tests/fixtures/stream.txt', 'r');
+$fp = fopen(__DIR__ . '/../tests/fixtures/stream/generic.txt', 'r');
 
 while (!feof($fp)) {
     $bytes = fread($fp, 256);

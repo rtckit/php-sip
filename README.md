@@ -185,6 +185,7 @@ MIT, see [LICENSE file](LICENSE).
 
 * [SIP Protocol Contributors/IETF Trust](https://www.ietf.org/standards/rfcs/)
 * [PROTOS SIP Test Material](https://www.ee.oulu.fi/research/ouspg/PROTOS_Test-Suite_c07-sip) - Oulu University Secure Programming Group, Finland
+* [lioneagle/sipparser Test Material](https://github.com/lioneagle/sipparser/blob/master/src/testdata/sip_msg.txt) (MIT license)
 
 ### Contributing
 
