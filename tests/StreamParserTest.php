@@ -14,11 +14,20 @@ use PHPUnit\Framework\TestCase;
  */
 class StreamParserTest extends TestCase
 {
-    /** @var string Path to a well constructed SIP stream file */
-    public const STREAM_FILE = __DIR__ . '/fixtures/stream.txt';
-
-    /** @var int Number of SIP messages in the stream file */
-    public const STREAM_MESSAGES = 227;
+    /** @var array Paths to well constructed SIP stream files and their known message counts */
+    public const STREAMS = [
+        [
+            'path' => __DIR__ . '/fixtures/stream/generic.txt',
+            'messages' => 227,
+        ],
+        /* lioneagle/sipparser test material:
+         * https://github.com/lioneagle/sipparser/blob/master/src/testdata/sip_msg.txt
+         */
+        [
+            'path' => __DIR__ . '/fixtures/stream/lioneagle-sipparser.txt',
+            'messages' => 26,
+        ],
+    ];
 
     public StreamParser $parser;
 
@@ -29,35 +38,40 @@ class StreamParserTest extends TestCase
 
     public function testShouldParseVariousChunkSizes()
     {
-        $fp = fopen(self::STREAM_FILE, 'r');
+        foreach (self::STREAMS as $stream) {
+            $fp = fopen($stream['path'], 'r');
 
-        $this->assertNotNull($fp);
-        $this->assertNotNull($this->parser);
+            $this->assertNotNull($fp);
+            $this->assertNotNull($this->parser);
 
-        for($i = 0; $i <= 17; $i++) {
-            fseek($fp, 0);
+            for($i = 0; $i <= 17; $i++) {
+                fseek($fp, 0);
 
-            $chunkSize = pow(2, $i);
-            $count = 0;
+                $chunkSize = pow(2, $i);
+                $count = 0;
 
-            while (!feof($fp)) {
-                $bytes = fread($fp, $chunkSize);
-                $ret = $this->parser->process($bytes, $messages);
+                while (!feof($fp)) {
+                    $bytes = fread($fp, $chunkSize);
+                    $ret = $this->parser->process($bytes, $messages);
 
-                if ($ret === StreamParser::SUCCESS) {
-                    foreach ($messages as $message) {
-                        $this->assertInstanceOf(Message::class, $message);
+                    if ($ret === StreamParser::SUCCESS) {
+                        foreach ($messages as $message) {
+                            /* Messages could be parsed, no exceptions to be thrown */
+                            $this->assertInstanceOf(Message::class, $message);
 
-                        $count++;
+                            /* Resulting message can be rendered, no exceptions to be thrown */
+                            $this->assertIsString($message->render());
+
+                            $count++;
+                        }
                     }
                 }
+
+                $this->assertEquals($stream['messages'], $count);
             }
 
-            $this->assertEquals(self::STREAM_MESSAGES, $count);
+            fclose($fp);
         }
-
-
-        fclose($fp);
     }
 
     public function testShouldParseStreamedMessagesNoDifferentThanPDU()

@@ -109,7 +109,7 @@ $chunkExp = 17;
 $runs = 0;
 $stats = [];
 $elapsed = 0;
-$fp = fopen(__DIR__ . '/../tests/fixtures/stream.txt', 'r');
+$fp = fopen(__DIR__ . '/../tests/fixtures/stream/generic.txt', 'r');
 
 for ($i = 6; $i < $chunkExp; $i++) {
     $chunkSize = pow(2, $i);
