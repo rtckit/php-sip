@@ -1,7 +1,7 @@
 {
   "name": "rtckit/sip",
   "description": "Parser/Renderer for SIP protocol written in PHP",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "type": "library",
   "keywords": [
     "sip",
