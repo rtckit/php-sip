@@ -44,9 +44,11 @@ class Message
         'k' => 'supported',
         'l' => 'content-length',
         'm' => 'contact',
+        'o' => 'event',
         'r' => 'refer-to',
         's' => 'subject',
         't' => 'to',
+        'u' => 'allow-events',
         'v' => 'via',
     ];
 
@@ -79,6 +81,8 @@ class Message
 
     /* Single value with parameters header fields */
     public SingleValueWithParamsHeader $contentType;
+    public SingleValueWithParamsHeader $event;
+    public SingleValueWithParamsHeader $subscriptionState;
 
     /* Multiple value header fields */
     public MultiValueHeader $acceptEncoding;
@@ -279,6 +283,18 @@ class Message
                 /* https://tools.ietf.org/html/rfc3261#section-20.15 */
                 case 'content-type':
                     $msg->contentType = SingleValueWithParamsHeader::parse($hbody);
+
+                    continue 2;
+
+                /* https://datatracker.ietf.org/doc/html/rfc6665#section-8.2.1 */
+                case 'event':
+                    $msg->event = SingleValueWithParamsHeader::parse($hbody);
+
+                    continue 2;
+
+                /* https://datatracker.ietf.org/doc/html/rfc6665#section-8.2.3 */
+                case 'subscription-state':
+                    $msg->subscriptionState = SingleValueWithParamsHeader::parse($hbody);
 
                     continue 2;
 
@@ -574,6 +590,14 @@ class Message
             $ret .= $this->contentType->render($compact ? 'c' : 'Content-Type');
         }
 
+        if (isset($this->event)) {
+            $ret .= $this->event->render($compact ? 'o' : 'Event');
+        }
+
+        if (isset($this->subscriptionState)) {
+            $ret .= $this->subscriptionState->render('Subscription-State');
+        }
+
         if (isset($this->acceptEncoding)) {
             $ret .= $this->acceptEncoding->render('Accept-Encoding');
         }
@@ -583,7 +607,7 @@ class Message
         }
 
         if (isset($this->allowEvents)) {
-            $ret .= $this->allowEvents->render('Allow-Events');
+            $ret .= $this->allowEvents->render($compact ? 'u' : 'Allow-Events');
         }
 
         if (isset($this->contentEncoding)) {
