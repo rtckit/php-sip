@@ -26,6 +26,12 @@ class ViaValue
     /** @var string Via branch parameters */
     public string $branch;
 
+    /** @var string Source IP address, different than the Via host */
+    public string $received;
+
+    /** @var int Response port */
+    public int $rport;
+
     /** @var array<string, string> Additional parameters */
     public array $params = [];
 }

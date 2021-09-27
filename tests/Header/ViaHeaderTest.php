@@ -68,6 +68,30 @@ class ViaHeaderTest extends TestCase
         ViaHeader::parse(['SIP/2.0/TCP']);
     }
 
+    public function testShouldNotParseEmptyReceivedParameter()
+    {
+        $this->expectException(InvalidHeaderParameter::class);
+        ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;received']);
+    }
+
+    public function testShouldNotParseNonIPReceivedParameter()
+    {
+        $this->expectException(InvalidHeaderParameter::class);
+        ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;received=some.fqdn.com']);
+    }
+
+    public function testShouldNotParseNonNumericRPortParameter()
+    {
+        $this->expectException(InvalidHeaderParameter::class);
+        ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;rport=onethousandtwentyfour']);
+    }
+
+    public function testShouldNotParseLargeRPortParameter()
+    {
+        $this->expectException(InvalidHeaderParameter::class);
+        ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;rport=318272']);
+    }
+
     public function testShouldNotParseEmptyParameterNames()
     {
         $this->expectException(InvalidHeaderParameter::class);
@@ -83,6 +107,8 @@ class ViaHeaderTest extends TestCase
         $via->values[0]->transport = 'UDP';
         $via->values[0]->host = '192.0.2.4:5060';
         $via->values[0]->branch = 'z9hG4bKnashds7';
+        $via->values[0]->received = '64.52.36.12';
+        $via->values[0]->rport = 1025;
         $via->values[0]->params['custom'] = 'something';
 
         $rendered = $via->render('Via');
@@ -90,7 +116,29 @@ class ViaHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7;custom=something' . "\r\n",
+            'Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7;received=64.52.36.12;rport=1025;custom=something' . "\r\n",
+            $rendered
+        );
+    }
+
+    public function testShouldRenderEmptyRPort()
+    {
+        $via = new ViaHeader;
+        $via->values[0] = new ViaValue;
+        $via->values[0]->protocol = 'SIP';
+        $via->values[0]->version = '2.0';
+        $via->values[0]->transport = 'UDP';
+        $via->values[0]->host = '192.0.2.4:5060';
+        $via->values[0]->branch = 'z9hG4bKnashds7';
+        $via->values[0]->rport = 0;
+        $via->values[0]->params['custom'] = 'something';
+
+        $rendered = $via->render('Via');
+
+        $this->assertNotNull($rendered);
+        $this->assertIsString($rendered);
+        $this->assertEquals(
+            'Via: SIP/2.0/UDP 192.0.2.4:5060;branch=z9hG4bKnashds7;rport;custom=something' . "\r\n",
             $rendered
         );
     }
