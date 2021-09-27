@@ -80,10 +80,38 @@ class ViaHeader
 
                     $pv = isset($p[1]) ? trim($p[1]) : '';
 
-                    if ($p[0] === 'branch') {
-                        $val->branch = $pv;
-                    } else {
-                        $val->params[$p[0]] = $pv;
+                    switch ($p[0]) {
+                        case 'branch':
+                            $val->branch = $pv;
+                            break;
+
+                        case 'received':
+                            if (!filter_var($pv, FILTER_VALIDATE_IP)) {
+                                throw new InvalidHeaderParameter('Invalid Via header received parameter', Response::BAD_REQUEST);
+                            }
+
+                            $val->received = $pv;
+                            break;
+
+                        case 'rport':
+                            if (!strlen($pv)) {
+                                $val->rport = 0;
+                            } else if (!ctype_digit($pv)) {
+                                throw new InvalidHeaderParameter('Invalid Via header rport parameter', Response::BAD_REQUEST);
+                            }
+
+                            $rport = (int)$pv;
+
+                            if ($rport > 65535) {
+                                throw new InvalidHeaderParameter('Invalid Via header rport parameter', Response::BAD_REQUEST);
+                            }
+
+                            $val->rport = $rport;
+                            break;
+
+                        default:
+                            $val->params[$p[0]] = $pv;
+                            break;
                     }
                 }
 
@@ -115,6 +143,18 @@ class ViaHeader
 
             if (isset($value->branch)) {
                 $ret .= ";branch={$value->branch}";
+            }
+
+            if (isset($value->received)) {
+                $ret .= ";received={$value->received}";
+            }
+
+            if (isset($value->rport)) {
+                if (!$value->rport) {
+                    $ret .= ";rport";
+                } else {
+                    $ret .= ";rport={$value->rport}";
+                }
             }
 
             foreach ($value->params as $pk => $pv) {
