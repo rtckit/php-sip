@@ -9,6 +9,8 @@ use RTCKit\SIP\Exception\InvalidCSeqValue;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
 use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Header\AuthValue;
+use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\CallIdHeader;
 use RTCKit\SIP\Header\ContactHeader;
 use RTCKit\SIP\Header\ContactValue;
@@ -339,8 +341,15 @@ class MessageTest extends TestCase
         $request->authenticationInfo = new Header;
         $request->authenticationInfo->values[] = 'nextnonce="47364c23432d2e131a5fb210812c"';
 
-        $request->authorization = new Header;
-        $request->authorization->values[] = 'Digest username="bob", realm="atlanta.example.com", nonce="ea9c8e88df84f1cec4341ae6cbe5a359", opaque="", uri="sips:ss2.biloxi.example.com", response="dfe56131d1958046689d83306477ecc"';
+        $request->authorization = new AuthHeader;
+        $request->authorization->values[0] = new AuthValue;
+        $request->authorization->values[0]->scheme = 'Digest';
+        $request->authorization->values[0]->username = 'bob';
+        $request->authorization->values[0]->realm = 'atlanta.example.com';
+        $request->authorization->values[0]->nonce = 'ea9c8e88df84f1cec4341ae6cbe5a359';
+        $request->authorization->values[0]->opaque = '';
+        $request->authorization->values[0]->uri = 'sips:ss2.biloxi.example.com';
+        $request->authorization->values[0]->response = 'dfe56131d1958046689d83306477ecc';
 
         $request->date = new Header;
         $request->date->values[] = 'Thu, 21 Feb 2002 13:02:03 GMT';
@@ -348,11 +357,25 @@ class MessageTest extends TestCase
         $request->errorInfo = new Header;
         $request->errorInfo->values[] = '<sip:screen-failure-term-ann@annoucement.example.com>';
 
-        $request->proxyAuthenticate = new Header;
-        $request->proxyAuthenticate->values[] = 'Digest realm="atlanta.example.com", qop="auth", nonce="f84f1cec41e6cbe5aea9c8e88d359", opaque="", stale=FALSE, algorithm=MD5';
+        $request->proxyAuthenticate = new AuthHeader;
+        $request->proxyAuthenticate->values[0] = new AuthValue;
+        $request->proxyAuthenticate->values[0]->scheme = 'Digest';
+        $request->proxyAuthenticate->values[0]->realm = 'atlanta.example.com';
+        $request->proxyAuthenticate->values[0]->qop = 'auth';
+        $request->proxyAuthenticate->values[0]->nonce = 'f84f1cec41e6cbe5aea9c8e88d359';
+        $request->proxyAuthenticate->values[0]->opaque = '';
+        $request->proxyAuthenticate->values[0]->stale = false;
+        $request->proxyAuthenticate->values[0]->algorithm = 'MD5';
 
-        $request->proxyAuthorization = new Header;
-        $request->proxyAuthorization->values[] = 'Digest username="alice", realm="atlanta.example.com", nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359", opaque="", uri="sip:bob@biloxi.example.com", response="42ce3cef44b22f50c6a6071bc8"';
+        $request->proxyAuthorization = new AuthHeader;
+        $request->proxyAuthorization->values[0] = new AuthValue;
+        $request->proxyAuthorization->values[0]->scheme = 'Digest';
+        $request->proxyAuthorization->values[0]->username = 'alice';
+        $request->proxyAuthorization->values[0]->realm = 'atlanta.example.com';
+        $request->proxyAuthorization->values[0]->nonce = 'wf84f1ceczx41ae6cbe5aea9c8e88d359';
+        $request->proxyAuthorization->values[0]->opaque = '';
+        $request->proxyAuthorization->values[0]->uri = 'sip:bob@biloxi.example.com';
+        $request->proxyAuthorization->values[0]->response = '42ce3cef44b22f50c6a6071bc8';
 
         $request->recordRoute = new Header;
         $request->recordRoute->values[] = '<sip:ss2.biloxi.example.com;lr>';
@@ -378,8 +401,15 @@ class MessageTest extends TestCase
         $request->warning = new Header;
         $request->warning->values[] = '301 isi.edu "Incompatible network address type \'E.164\'"';
 
-        $request->wwwAuthenticate = new Header;
-        $request->wwwAuthenticate->values[] = 'Digest realm="atlanta.example.com", qop="auth", nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",opaque="", stale=FALSE, algorithm=MD5';
+        $request->wwwAuthenticate = new AuthHeader;
+        $request->wwwAuthenticate->values[0] = new AuthValue;
+        $request->wwwAuthenticate->values[0]->scheme = 'Digest';
+        $request->wwwAuthenticate->values[0]->realm = 'atlanta.example.com';
+        $request->wwwAuthenticate->values[0]->qop = 'auth';
+        $request->wwwAuthenticate->values[0]->nonce = '84f1c1ae6cbe5ua9c8e88dfa3ecm3459';
+        $request->wwwAuthenticate->values[0]->opaque = '';
+        $request->wwwAuthenticate->values[0]->stale = false;
+        $request->wwwAuthenticate->values[0]->algorithm = 'MD5';
 
         $request->extraHeaders['X-Custom-Header'] = new Header;
         $request->extraHeaders['X-Custom-Header']->values[0] = 'Something truly important';
@@ -418,11 +448,11 @@ class MessageTest extends TestCase
             'Reply-To: "Bob" <sip:bob@biloxi.com>' . "\r\n" .
             'Alert-Info: <file://external.ring.pcm>' . "\r\n" .
             'Authentication-Info: nextnonce="47364c23432d2e131a5fb210812c"' . "\r\n" .
-            'Authorization: Digest username="bob", realm="atlanta.example.com", nonce="ea9c8e88df84f1cec4341ae6cbe5a359", opaque="", uri="sips:ss2.biloxi.example.com", response="dfe56131d1958046689d83306477ecc"' . "\r\n" .
+            'Authorization: Digest username="bob",realm="atlanta.example.com",nonce="ea9c8e88df84f1cec4341ae6cbe5a359",uri="sips:ss2.biloxi.example.com",response="dfe56131d1958046689d83306477ecc",opaque=""' . "\r\n" .
             'Date: Thu, 21 Feb 2002 13:02:03 GMT' . "\r\n" .
             'Error-Info: <sip:screen-failure-term-ann@annoucement.example.com>' . "\r\n" .
-            'Proxy-Authenticate: Digest realm="atlanta.example.com", qop="auth", nonce="f84f1cec41e6cbe5aea9c8e88d359", opaque="", stale=FALSE, algorithm=MD5' . "\r\n" .
-            'Proxy-Authorization: Digest username="alice", realm="atlanta.example.com", nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359", opaque="", uri="sip:bob@biloxi.example.com", response="42ce3cef44b22f50c6a6071bc8"' . "\r\n" .
+            'Proxy-Authenticate: Digest realm="atlanta.example.com",nonce="f84f1cec41e6cbe5aea9c8e88d359",stale=FALSE,algorithm="MD5",qop="auth",opaque=""' . "\r\n" .
+            'Proxy-Authorization: Digest username="alice",realm="atlanta.example.com",nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359",uri="sip:bob@biloxi.example.com",response="42ce3cef44b22f50c6a6071bc8",opaque=""' . "\r\n" .
             'Record-Route: <sip:ss2.biloxi.example.com;lr>' . "\r\n" .
             'MIME-Version: 1.0' . "\r\n" .
             'Organization: RTCKit' . "\r\n" .
@@ -431,7 +461,7 @@ class MessageTest extends TestCase
             'Subject: Hello' . "\r\n" .
             'User-Agent: RTCKit\\SIP' . "\r\n" .
             'Warning: 301 isi.edu "Incompatible network address type \'E.164\'"' . "\r\n" .
-            'WWW-Authenticate: Digest realm="atlanta.example.com", qop="auth", nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",opaque="", stale=FALSE, algorithm=MD5' . "\r\n" .
+            'WWW-Authenticate: Digest realm="atlanta.example.com",nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",stale=FALSE,algorithm="MD5",qop="auth",opaque=""' . "\r\n" .
             'X-Custom-Header: Something truly important' . "\r\n\r\n",
             $rendered
         );

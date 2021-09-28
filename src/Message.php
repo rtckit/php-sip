@@ -10,6 +10,7 @@ use RTCKit\SIP\Exception\InvalidBodyLengthException;
 use RTCKit\SIP\Exception\InvalidCSeqValue;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
+use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\CallIdHeader;
 use RTCKit\SIP\Header\ContactHeader;
 use RTCKit\SIP\Header\CSeqHeader;
@@ -104,14 +105,17 @@ class Message
     /* Reply-To header field */
     public NameAddrHeader $replyTo;
 
+    /* Authentication/Authorization header fields */
+    public AuthHeader $authorization;
+    public AuthHeader $proxyAuthenticate;
+    public AuthHeader $proxyAuthorization;
+    public AuthHeader $wwwAuthenticate;
+
     /* Generic common header fields */
     public Header $alertInfo;
     public Header $authenticationInfo;
-    public Header $authorization;
     public Header $date;
     public Header $errorInfo;
-    public Header $proxyAuthenticate;
-    public Header $proxyAuthorization;
     public Header $recordRoute;
     public Header $mimeVersion;
     public Header $organization;
@@ -120,7 +124,6 @@ class Message
     public Header $subject;
     public Header $userAgent;
     public Header $warning;
-    public Header $wwwAuthenticate;
 
     /* REFER header fields */
     public Header $referTo;
@@ -396,7 +399,7 @@ class Message
 
                 /* https://tools.ietf.org/html/rfc3261#section-20.7 */
                 case 'authorization':
-                    $msg->authorization = Header::parse($hbody);
+                    $msg->authorization = AuthHeader::parse($hbody);
 
                     continue 2;
 
@@ -414,13 +417,13 @@ class Message
 
                 /* https://tools.ietf.org/html/rfc3261#section-20.27 */
                 case 'proxy-authenticate':
-                    $msg->proxyAuthenticate = Header::parse($hbody);
+                    $msg->proxyAuthenticate = AuthHeader::parse($hbody);
 
                     continue 2;
 
                 /* https://tools.ietf.org/html/rfc3261#section-20.28 */
                 case 'proxy-authorization':
-                    $msg->proxyAuthorization = Header::parse($hbody);
+                    $msg->proxyAuthorization = AuthHeader::parse($hbody);
 
                     continue 2;
 
@@ -474,7 +477,7 @@ class Message
 
                 /* https://tools.ietf.org/html/rfc3261#section-20.44 */
                 case 'www-authenticate':
-                    $msg->wwwAuthenticate = Header::parse($hbody);
+                    $msg->wwwAuthenticate = AuthHeader::parse($hbody);
 
                     continue 2;
 
