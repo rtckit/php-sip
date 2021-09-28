@@ -24,7 +24,7 @@ class ViaHeader
     final public function __construct() {}
 
     /**
-     * Single value header field parser, with parameters
+     * Via header field value parser
      *
      * @param list<string> $hbody Header body
      * @throws InvalidHeaderLineException
