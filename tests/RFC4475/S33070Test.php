@@ -23,6 +23,7 @@ class S33070Test extends RFC4475Case
         $this->assertInstanceOf(Request::class, $msg);
 
         /* Make sure the application has enough visibility read the authorization */
-        $this->assertEquals('NoOneKnowsThisScheme opaque-data=here', $msg->authorization->values[0]);
+        $this->assertEquals('NoOneKnowsThisScheme', $msg->authorization->values[0]->scheme);
+        $this->assertEquals('opaque-data=here', $msg->authorization->values[0]->credentials);
     }
 }
