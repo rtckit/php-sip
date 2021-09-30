@@ -159,11 +159,11 @@ class AuthHeader
                             break;
 
                         case 'nc':
-                            if (!ctype_digit($pv)) {
-                                throw new InvalidHeaderParameter('Invalid Auth header, non-integer nc parameter', Response::BAD_REQUEST);
+                            if (!ctype_xdigit($pv)) {
+                                throw new InvalidHeaderParameter('Invalid Auth header, non-hexadecimal nc parameter', Response::BAD_REQUEST);
                             }
 
-                            $val->nc = (int)$pv;
+                            $val->nc = $pv;
                             break;
 
                         case 'opaque':
@@ -245,7 +245,7 @@ class AuthHeader
                 }
 
                 if (isset($value->nc)) {
-                    $params[] = sprintf('ns=%08d', $value->nc);
+                    $params[] = sprintf('nc=%08s', $value->nc);
                 }
 
                 if (isset($value->opaque)) {

@@ -100,7 +100,7 @@ class AuthHeaderTest extends TestCase
 
     public function testShouldParseVariousNcValueFormatting()
     {
-        $nc = 42;
+        $nc = hexdec('00000042');
 
         $auth = AuthHeader::parse([
             'Digest realm="sip.domain.net",qop="auth",nonce="7900f98e-3d80-4504-adbc-a61e5e040207",stale=FALSE,algorithm=MD5,nc=42',
@@ -114,7 +114,7 @@ class AuthHeaderTest extends TestCase
         $count = count($auth->values);
 
         for ($i = 0; $i < $count; $i++) {
-            $this->assertEquals($nc, $auth->values[$i]->nc);
+            $this->assertEquals($nc, hexdec($auth->values[$i]->nc));
         }
     }
 
@@ -170,7 +170,7 @@ class AuthHeaderTest extends TestCase
         $digest->values[0]->algorithm = 'MD5';
         $digest->values[0]->cnonce = '7900f98e';
         $digest->values[0]->qop = 'auth-int';
-        $digest->values[0]->nc = 42;
+        $digest->values[0]->nc = '42';
         $digest->values[0]->opaque = 'misc';
 
         $rendered = $digest->render('Authorization');
@@ -178,7 +178,7 @@ class AuthHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm="MD5",cnonce="7900f98e",qop="auth-int",ns=00000042,opaque="misc"' . "\r\n",
+            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm="MD5",cnonce="7900f98e",qop="auth-int",nc=00000042,opaque="misc"' . "\r\n",
             $rendered
         );
 
@@ -204,7 +204,7 @@ class AuthHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm="MD5",cnonce="7900f98e",qop="auth-int",ns=00000042,opaque="misc"' . "\r\n" .
+            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm="MD5",cnonce="7900f98e",qop="auth-int",nc=00000042,opaque="misc"' . "\r\n" .
             'Authorization: Basic MiScCreds' . "\r\n",
             $rendered
         );
