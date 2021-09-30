@@ -44,8 +44,8 @@ class AuthValue
     /** @var string Quality of protection */
     public string $qop;
 
-    /** @var int Number once count */
-    public int $nc;
+    /** @var string Number once count */
+    public string $nc;
 
     /** @var string Server's opaque data blob */
     public string $opaque;
