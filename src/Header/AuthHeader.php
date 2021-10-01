@@ -233,7 +233,7 @@ class AuthHeader
                 }
 
                 if (isset($value->algorithm)) {
-                    $params[] = "algorithm=\"{$value->algorithm}\"";
+                    $params[] = "algorithm={$value->algorithm}";
                 }
 
                 if (isset($value->cnonce)) {
@@ -245,7 +245,7 @@ class AuthHeader
                 }
 
                 if (isset($value->nc)) {
-                    $params[] = sprintf('nc=%08s', $value->nc);
+                    $params[] = "nc={$value->nc}";
                 }
 
                 if (isset($value->opaque)) {

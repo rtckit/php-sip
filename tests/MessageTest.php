@@ -451,7 +451,7 @@ class MessageTest extends TestCase
             'Authorization: Digest username="bob",realm="atlanta.example.com",nonce="ea9c8e88df84f1cec4341ae6cbe5a359",uri="sips:ss2.biloxi.example.com",response="dfe56131d1958046689d83306477ecc",opaque=""' . "\r\n" .
             'Date: Thu, 21 Feb 2002 13:02:03 GMT' . "\r\n" .
             'Error-Info: <sip:screen-failure-term-ann@annoucement.example.com>' . "\r\n" .
-            'Proxy-Authenticate: Digest realm="atlanta.example.com",nonce="f84f1cec41e6cbe5aea9c8e88d359",stale=FALSE,algorithm="MD5",qop="auth",opaque=""' . "\r\n" .
+            'Proxy-Authenticate: Digest realm="atlanta.example.com",nonce="f84f1cec41e6cbe5aea9c8e88d359",stale=FALSE,algorithm=MD5,qop="auth",opaque=""' . "\r\n" .
             'Proxy-Authorization: Digest username="alice",realm="atlanta.example.com",nonce="wf84f1ceczx41ae6cbe5aea9c8e88d359",uri="sip:bob@biloxi.example.com",response="42ce3cef44b22f50c6a6071bc8",opaque=""' . "\r\n" .
             'Record-Route: <sip:ss2.biloxi.example.com;lr>' . "\r\n" .
             'MIME-Version: 1.0' . "\r\n" .
@@ -461,7 +461,7 @@ class MessageTest extends TestCase
             'Subject: Hello' . "\r\n" .
             'User-Agent: RTCKit\\SIP' . "\r\n" .
             'Warning: 301 isi.edu "Incompatible network address type \'E.164\'"' . "\r\n" .
-            'WWW-Authenticate: Digest realm="atlanta.example.com",nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",stale=FALSE,algorithm="MD5",qop="auth",opaque=""' . "\r\n" .
+            'WWW-Authenticate: Digest realm="atlanta.example.com",nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",stale=FALSE,algorithm=MD5,qop="auth",opaque=""' . "\r\n" .
             'X-Custom-Header: Something truly important' . "\r\n\r\n",
             $rendered
         );

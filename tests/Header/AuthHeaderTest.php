@@ -178,7 +178,7 @@ class AuthHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm="MD5",cnonce="7900f98e",qop="auth-int",nc=00000042,opaque="misc"' . "\r\n",
+            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm=MD5,cnonce="7900f98e",qop="auth-int",nc=42,opaque="misc"' . "\r\n",
             $rendered
         );
 
@@ -204,7 +204,7 @@ class AuthHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm="MD5",cnonce="7900f98e",qop="auth-int",nc=00000042,opaque="misc"' . "\r\n" .
+            'Authorization: Digest username="bob",realm="sip.domain.net",domain="sip:sip.domain.net",nonce="a61e5e040207",uri="sip:sip.domain.net",response="KJHAFgHFIUAG",stale=TRUE,algorithm=MD5,cnonce="7900f98e",qop="auth-int",nc=42,opaque="misc"' . "\r\n" .
             'Authorization: Basic MiScCreds' . "\r\n",
             $rendered
         );
