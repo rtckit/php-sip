@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
-use RTCKit\SIP\Exception\InvalidScalarValue;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\ScalarHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ class ScalarHeaderTest extends TestCase
 
     public function testShouldNotParseMultiValue()
     {
-        $this->expectException(InvalidDuplicateHeader::class);
+        $this->expectException(InvalidDuplicateHeaderException::class);
         ScalarHeader::parse([
             '78',
             '99',
@@ -33,13 +33,13 @@ class ScalarHeaderTest extends TestCase
 
     public function testShouldNotParseNegativeValue()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         ScalarHeader::parse(['-1969']);
     }
 
     public function testShouldNotParseOutOfBoundsValue()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         ScalarHeader::parse(['42949672950']);
     }
 
@@ -59,7 +59,7 @@ class ScalarHeaderTest extends TestCase
     {
         $scalar = new ScalarHeader;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $scalar->render('Max-Forwards');
     }
 }

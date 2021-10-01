@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Exception\InvalidProtocolVersionException;
 use RTCKit\SIP\Header\ViaHeader;
 use RTCKit\SIP\Header\ViaValue;
@@ -70,31 +70,31 @@ class ViaHeaderTest extends TestCase
 
     public function testShouldNotParseEmptyReceivedParameter()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;received']);
     }
 
     public function testShouldNotParseNonIPReceivedParameter()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;received=some.fqdn.com']);
     }
 
     public function testShouldNotParseNonNumericRPortParameter()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;rport=onethousandtwentyfour']);
     }
 
     public function testShouldNotParseLargeRPortParameter()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;rport=318272']);
     }
 
     public function testShouldNotParseEmptyParameterNames()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ViaHeader::parse(['SIP/2.0/TCP 178.73.76.230:5060;branch=z9hG4bKiokioukju908;=something']);
     }
 
@@ -152,7 +152,7 @@ class ViaHeaderTest extends TestCase
         $via->values[0]->host = '192.0.2.4:5060';
         $via->values[0]->branch = 'z9hG4bKnashds7';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $via->render('Via');
     }
 
@@ -165,7 +165,7 @@ class ViaHeaderTest extends TestCase
         $via->values[0]->host = '192.0.2.4:5060';
         $via->values[0]->branch = 'z9hG4bKnashds7';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $via->render('Via');
     }
 
@@ -178,7 +178,7 @@ class ViaHeaderTest extends TestCase
         $via->values[0]->host = '192.0.2.4:5060';
         $via->values[0]->branch = 'z9hG4bKnashds7';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $via->render('Via');
     }
 
@@ -191,7 +191,7 @@ class ViaHeaderTest extends TestCase
         $via->values[0]->transport = 'UDP';
         $via->values[0]->branch = 'z9hG4bKnashds7';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $via->render('Via');
     }
 }

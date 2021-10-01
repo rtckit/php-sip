@@ -6,8 +6,8 @@ namespace RTCKit\SIP;
 
 use RTCKit\SIP\Exception\InvalidMessageStartLineException;
 use RTCKit\SIP\Exception\InvalidProtocolVersionException;
-use RTCKit\SIP\Exception\InvalidRequestMethod;
-use RTCKit\SIP\Exception\InvalidRequestURI;
+use RTCKit\SIP\Exception\InvalidRequestMethodException;
+use RTCKit\SIP\Exception\InvalidRequestURIException;
 use RTCKit\SIP\Header\NameAddrHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -49,8 +49,8 @@ class RequestTest extends TestCase
 
     public function testShouldFailWithBadURI()
     {
-        // Throws InvalidRequestURI
-        $this->expectException(InvalidRequestURI::class);
+        // Throws InvalidRequestURIException
+        $this->expectException(InvalidRequestURIException::class);
         $request = new Request('INVITE <sip:something.com> SIP/2.0');
     }
 
@@ -83,8 +83,8 @@ class RequestTest extends TestCase
         $request = new Request();
         $request->uri = 'sip:user@domain.com';
 
-        // Throws InvalidRequestMethod
-        $this->expectException(InvalidRequestMethod::class);
+        // Throws InvalidRequestMethodException
+        $this->expectException(InvalidRequestMethodException::class);
         $request->render();
     }
 
@@ -93,8 +93,8 @@ class RequestTest extends TestCase
         $request = new Request();
         $request->method = 'REGISTER';
 
-        // Throws InvalidRequestURI
-        $this->expectException(InvalidRequestURI::class);
+        // Throws InvalidRequestURIException
+        $this->expectException(InvalidRequestURIException::class);
         $request->render();
     }
 }

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\ContactHeader;
 use RTCKit\SIP\Header\ContactValue;
 
@@ -84,31 +84,31 @@ class ContactHeaderTest extends TestCase
 
     public function testShouldNotParseEmptyParameterNames()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ContactHeader::parse(['sips:bob@offshore.biloxi.example.com;q=0.7;;expires=1800']);
     }
 
     public function testShouldNotParseEmptyParameterNames2()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ContactHeader::parse(['sips:bob@offshore.biloxi.example.com; =1800']);
     }
 
     public function testShouldNotParseMultipleQParameters()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ContactHeader::parse(['sips:bob@offshore.biloxi.example.com;q=0.1;q=0.2']);
     }
 
     public function testShouldNotParseMultipleExpiresParameters()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ContactHeader::parse(['sips:bob@offshore.biloxi.example.com;expires=1800;expires=3600']);
     }
 
     public function testShouldNotParseMultipleCustomParameters()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         ContactHeader::parse(['sips:bob@offshore.biloxi.example.com;custom=value;custom=again']);
     }
 
@@ -156,7 +156,7 @@ class ContactHeaderTest extends TestCase
     {
         $contact = new ContactHeader;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $contact->render('Contact');
     }
 }

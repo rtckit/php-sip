@@ -8,8 +8,8 @@ namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * MultiValueWithParamsHeader Class
@@ -26,7 +26,7 @@ class MultiValueWithParamsHeader
      *
      * @param list<string> $hbody Header body
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @return MultiValueWithParamsHeader
      */
     public static function parse(array $hbody): MultiValueWithParamsHeader
@@ -51,7 +51,7 @@ class MultiValueWithParamsHeader
                     $p[0] = trim($p[0]);
 
                     if (!isset($p[0][0])) {
-                        throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                        throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                     }
 
                     $val->params[$p[0]] = isset($p[1]) ? trim($p[1]) : '';
@@ -68,7 +68,7 @@ class MultiValueWithParamsHeader
      * Multiple value header renderer, with optional parameters
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
@@ -77,7 +77,7 @@ class MultiValueWithParamsHeader
 
         foreach ($this->values as $key => $value) {
             if (!isset($value->value)) {
-                throw new InvalidHeaderValue('Malformed header, missing value');
+                throw new InvalidHeaderValueException('Malformed header, missing value');
             }
 
             if ($key) {
@@ -88,7 +88,7 @@ class MultiValueWithParamsHeader
 
             foreach ($value->params as $pk => $pv) {
                 if (!isset($pk[0])) {
-                    throw new InvalidHeaderValue('Malformed header, invalid parameter key for header ' . $hname);
+                    throw new InvalidHeaderValueException('Malformed header, invalid parameter key for header ' . $hname);
                 }
 
                 $ret .= ';' . $pk . (!isset($pv[0]) ? '' : "={$pv}");

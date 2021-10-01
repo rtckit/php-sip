@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\NameAddrHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -46,7 +46,7 @@ class NameAddrHeaderTest extends TestCase
 
     public function testShouldNotParseMultipleValues()
     {
-        $this->expectException(InvalidDuplicateHeader::class);
+        $this->expectException(InvalidDuplicateHeaderException::class);
         NameAddrHeader::parse([
             '<sips:bob@offshore.biloxi.example.com',
             '<sip:alice@biloxi.example.com',
@@ -79,25 +79,25 @@ class NameAddrHeaderTest extends TestCase
 
     public function testShouldNotParseEmptyParameterNames()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         NameAddrHeader::parse(['sips:bob@offshore.biloxi.example.com;tag=sa42d23;;custom=param']);
     }
 
     public function testShouldNotParseEmptyParameterNames2()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         NameAddrHeader::parse(['sips:bob@offshore.biloxi.example.com; =param']);
     }
 
     public function testShouldNotParseMultipleTagParameters()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         NameAddrHeader::parse(['sips:bob@offshore.biloxi.example.com;tag=sa42d23;tag=87db6v5']);
     }
 
     public function testShouldNotParseMultipleCustomParameters()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         NameAddrHeader::parse(['sips:bob@offshore.biloxi.example.com;custom=value;custom=again']);
     }
 
@@ -147,7 +147,7 @@ class NameAddrHeaderTest extends TestCase
         $header = new NameAddrHeader;
         $header->name = 'Bob';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $header->render('To');
     }
 }

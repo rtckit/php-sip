@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\RFC4475;
 
 use RTCKit\SIP\Message;
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.3.9
@@ -17,8 +17,8 @@ class S33090Test extends RFC4475Case
     {
         $pdu = $this->loadFixture('mcl01');
 
-        // Throws InvalidDuplicateHeader for duplicate header fields
-        $this->expectException(InvalidDuplicateHeader::class);
+        // Throws InvalidDuplicateHeaderException for duplicate header fields
+        $this->expectException(InvalidDuplicateHeaderException::class);
         Message::parse($pdu);
     }
 }

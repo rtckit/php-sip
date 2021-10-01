@@ -9,8 +9,8 @@ namespace RTCKit\SIP\Header;
 use RTCKit\SIP\Message;
 use RTCKit\SIP\Response;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Exception\InvalidProtocolVersionException;
 
 /**
@@ -28,7 +28,7 @@ class ViaHeader
      *
      * @param list<string> $hbody Header body
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @throws InvalidProtocolVersionException
      * @return ViaHeader
      */
@@ -75,7 +75,7 @@ class ViaHeader
                     $p[0] = trim($p[0]);
 
                     if (!isset($p[0][0])) {
-                        throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                        throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                     }
 
                     $pv = isset($p[1]) ? trim($p[1]) : '';
@@ -87,7 +87,7 @@ class ViaHeader
 
                         case 'received':
                             if (!filter_var($pv, FILTER_VALIDATE_IP)) {
-                                throw new InvalidHeaderParameter('Invalid Via header received parameter', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Invalid Via header received parameter', Response::BAD_REQUEST);
                             }
 
                             $val->received = $pv;
@@ -97,13 +97,13 @@ class ViaHeader
                             if (!strlen($pv)) {
                                 $val->rport = 0;
                             } else if (!ctype_digit($pv)) {
-                                throw new InvalidHeaderParameter('Invalid Via header rport parameter', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Invalid Via header rport parameter', Response::BAD_REQUEST);
                             }
 
                             $rport = (int)$pv;
 
                             if ($rport > 65535) {
-                                throw new InvalidHeaderParameter('Invalid Via header rport parameter', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Invalid Via header rport parameter', Response::BAD_REQUEST);
                             }
 
                             $val->rport = $rport;
@@ -126,7 +126,7 @@ class ViaHeader
      * Via header field value renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
@@ -136,7 +136,7 @@ class ViaHeader
 
         foreach ($this->values as $key => $value) {
             if (!isset($value->protocol, $value->version, $value->transport, $value->host)) {
-                throw new InvalidHeaderValue('Malformed Via header');
+                throw new InvalidHeaderValueException('Malformed Via header');
             }
 
             $ret .= "{$delim}{$value->protocol}/{$value->version}/{$value->transport} {$value->host}";

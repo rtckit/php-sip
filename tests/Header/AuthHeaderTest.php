@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\AuthValue;
 
@@ -248,25 +248,25 @@ class AuthHeaderTest extends TestCase
 
     public function testShouldNotParseAlphaNcValues()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         AuthHeader::parse(['Digest nc=fortytwo']);
     }
 
     public function testShouldNotParseMixedNcValues()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         AuthHeader::parse(['Digest nc=O042']);
     }
 
     public function testShouldNotParseNonBoolStaleValues()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         AuthHeader::parse(['Digest stale=yes']);
     }
 
     public function testShouldNotRenderWithoutScheme()
     {
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $auth = new AuthHeader;
         $auth->values[0] = new AuthValue;
         $auth->render('Authorize');
@@ -274,7 +274,7 @@ class AuthHeaderTest extends TestCase
 
     public function testShouldNotRenderNonDigestWithoutCredentials()
     {
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $auth = new AuthHeader;
         $auth->values[0] = new AuthValue;
         $auth->values[0]->scheme = 'Basic';

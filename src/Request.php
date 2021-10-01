@@ -8,8 +8,8 @@ namespace RTCKit\SIP;
 
 use RTCKit\SIP\Exception\InvalidMessageStartLineException;
 use RTCKit\SIP\Exception\InvalidProtocolVersionException;
-use RTCKit\SIP\Exception\InvalidRequestMethod;
-use RTCKit\SIP\Exception\InvalidRequestURI;
+use RTCKit\SIP\Exception\InvalidRequestMethodException;
+use RTCKit\SIP\Exception\InvalidRequestURIException;
 
 /**
 * SIP Request class
@@ -28,7 +28,7 @@ class Request extends Message
      * @param ?string $startLine Raw message start line
      * @throws InvalidMessageStartLineException
      * @throws InvalidProtocolVersionException
-     * @throws InvalidRequestURI
+     * @throws InvalidRequestURIException
      */
     public function __construct(?string $startLine = null)
     {
@@ -43,7 +43,7 @@ class Request extends Message
         }
 
         if ($rqstLine[1][0] === '<') {
-            throw new InvalidRequestURI('Cannot enclose <> request URIs', Response::BAD_REQUEST);
+            throw new InvalidRequestURIException('Cannot enclose <> request URIs', Response::BAD_REQUEST);
         }
 
         if ($rqstLine[2] !== Message::SIP_VERSION) {
@@ -59,18 +59,18 @@ class Request extends Message
      * SIP Response Renderer
      *
      * @param bool $compact Whether to output compact headers or not
-     * @throws InvalidRequestMethod
-     * @throws InvalidRequestURI
+     * @throws InvalidRequestMethodException
+     * @throws InvalidRequestURIException
      * @return string SIP response as text
      */
     public function render(bool $compact = false): string
     {
         if (!isset($this->method[0])) {
-            throw new InvalidRequestMethod('Missing request method');
+            throw new InvalidRequestMethodException('Missing request method');
         }
 
         if (!isset($this->uri[0])) {
-            throw new InvalidRequestURI('Missing request URI');
+            throw new InvalidRequestURIException('Missing request URI');
         }
 
         $this->version ??= Message::SIP_VERSION;

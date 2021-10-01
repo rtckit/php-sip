@@ -8,8 +8,8 @@ namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Contact Header Class
@@ -29,7 +29,7 @@ class ContactHeader
      *
      * @param list<string> $hbody Header body
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @return ContactHeader
      */
     public static function parse(array $hbody): ContactHeader
@@ -131,7 +131,7 @@ class ContactHeader
 
                                 if (!isset($param[0])) {
                                     if ($ord) {
-                                        throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                                     } else {
                                         continue;
                                     }
@@ -141,7 +141,7 @@ class ContactHeader
                                 $p[0] = rtrim($p[0]);
 
                                 if (!isset($p[0][0])) {
-                                    throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                                 }
 
                                 if ($p[0][0] === '>') {
@@ -152,19 +152,19 @@ class ContactHeader
 
                                 if ($p[0] === 'q') {
                                     if (isset($val->q)) {
-                                        throw new InvalidHeaderParameter('Duplicate q Contact header value parameter', Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Duplicate q Contact header value parameter', Response::BAD_REQUEST);
                                     }
 
                                     $val->q = (float) $pv;
                                 } else if ($p[0] === 'expires') {
                                     if (isset($val->expires)) {
-                                        throw new InvalidHeaderParameter('Duplicate expires Contact header value parameter', Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Duplicate expires Contact header value parameter', Response::BAD_REQUEST);
                                     }
 
                                     $val->expires = (int) $pv;
                                 } else {
                                     if (isset($val->params[$p[0]])) {
-                                        throw new InvalidHeaderParameter('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
                                     }
 
                                     $val->params[$p[0]] = $pv;
@@ -206,7 +206,7 @@ class ContactHeader
      * Contact header values renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
@@ -216,7 +216,7 @@ class ContactHeader
         }
 
         if (!isset($this->values[0])) {
-            throw new InvalidHeaderValue('Missing Contact header values');
+            throw new InvalidHeaderValueException('Missing Contact header values');
         }
 
         $ret = "{$hname}: ";

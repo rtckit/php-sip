@@ -7,10 +7,10 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 
 /**
 * CSeq Header Class
@@ -29,15 +29,15 @@ class CSeqHeader
      * Sequence header value parser
      *
      * @param list<string> $hbody Header body
-     * @throws InvalidDuplicateHeader
+     * @throws InvalidDuplicateHeaderException
      * @throws InvalidHeaderLineException
-     * @throws InvalidScalarValue
+     * @throws InvalidScalarValueException
      * @return CSeqHeader
      */
     public static function parse(array $hbody): CSeqHeader
     {
         if (isset($hbody[1])) {
-            throw new InvalidDuplicateHeader('Cannot have more than one CSeq header', Response::BAD_REQUEST);
+            throw new InvalidDuplicateHeaderException('Cannot have more than one CSeq header', Response::BAD_REQUEST);
         }
 
         $cseq = trim($hbody[0]);
@@ -51,7 +51,7 @@ class CSeqHeader
         $ret->sequence = (int) substr($cseq, 0, $delimPos);
 
         if (($ret->sequence < 0) || ($ret->sequence > ScalarHeader::MAX_VALUE)) {
-            throw new InvalidScalarValue('CSeq sequence number out of bounds', Response::BAD_REQUEST);
+            throw new InvalidScalarValueException('CSeq sequence number out of bounds', Response::BAD_REQUEST);
         }
 
         $ret->method = ltrim(substr($cseq, $delimPos));
@@ -63,13 +63,13 @@ class CSeqHeader
      * CSeq header value renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
     {
         if (!isset($this->sequence, $this->method[0])) {
-            throw new InvalidHeaderValue('Missing Sequence/Method for CSeq header field value');
+            throw new InvalidHeaderValueException('Missing Sequence/Method for CSeq header field value');
         }
 
         return "{$hname}: {$this->sequence} {$this->method}\r\n";

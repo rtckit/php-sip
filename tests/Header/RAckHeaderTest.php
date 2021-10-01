@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 use RTCKit\SIP\Header\RAckHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -27,7 +27,7 @@ class RAckHeaderTest extends TestCase
 
     public function testShouldNotParseMultiValue()
     {
-        $this->expectException(InvalidDuplicateHeader::class);
+        $this->expectException(InvalidDuplicateHeaderException::class);
         RAckHeader::parse([
             '63 7 METHOD',
             '41 9 INVITE',
@@ -48,25 +48,25 @@ class RAckHeaderTest extends TestCase
 
     public function testShouldNotParseNegativeProvisionalSequence()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         RAckHeader::parse(['-7 1 METHOD']);
     }
 
     public function testShouldNotParseNegativeSequence()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         RAckHeader::parse(['7 -1 METHOD']);
     }
 
     public function testShouldNotParseOutOfBoundsProvisionalSequence()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         RAckHeader::parse(['42949672950 1 METHOD']);
     }
 
     public function testShouldNotParseOutOfBoundsSequence()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         RAckHeader::parse(['1 42949672950 METHOD']);
     }
 
@@ -101,7 +101,7 @@ class RAckHeaderTest extends TestCase
         $rack = new RAckHeader;
         $rack->method = 'METHOD';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $rack->render('RAck');
     }
 
@@ -111,7 +111,7 @@ class RAckHeaderTest extends TestCase
         $rack->cSequence = 7;
         $rack->method = 'METHOD';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $rack->render('RAck');
     }
 
@@ -120,7 +120,7 @@ class RAckHeaderTest extends TestCase
         $rack = new RAckHeader;
         $rack->method = 'METHOD';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $rack->render('RAck');
     }
 
@@ -130,7 +130,7 @@ class RAckHeaderTest extends TestCase
         $rack->rSequence = 42;
         $rack->method = 'METHOD';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $rack->render('RAck');
     }
 
@@ -140,7 +140,7 @@ class RAckHeaderTest extends TestCase
         $rack->rSequence = 42;
         $rack->cSequence = 7;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $rack->render('RAck');
     }
 }

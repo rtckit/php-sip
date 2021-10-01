@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace RTCKit\SIP;
 
 use RTCKit\SIP\Exception\InvalidBodyLengthException;
-use RTCKit\SIP\Exception\InvalidCSeqValue;
+use RTCKit\SIP\Exception\InvalidCSeqValueException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 use RTCKit\SIP\Header\AuthValue;
 use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\CallIdHeader;
@@ -177,8 +177,8 @@ class MessageTest extends TestCase
 
     public function testShouldNotParseMismatchingCSeqMethods()
     {
-        // Throws InvalidCSeqValue
-        $this->expectException(InvalidCSeqValue::class);
+        // Throws InvalidCSeqValueException
+        $this->expectException(InvalidCSeqValueException::class);
         Message::parse(
             'METHOD sip:user@nowhere.com SIP/2.0' . "\r\n" .
             'From: Alice <sip:alice@atlanta.com>;tag=9fxced76sl' . "\r\n" .
@@ -189,8 +189,8 @@ class MessageTest extends TestCase
 
     public function testShouldNotParseNegativeContentLength()
     {
-        // Throws InvalidScalarValue
-        $this->expectException(InvalidScalarValue::class);
+        // Throws InvalidScalarValueException
+        $this->expectException(InvalidScalarValueException::class);
         Message::parse(
             'METHOD sip:user@nowhere.com SIP/2.0' . "\r\n" .
             'From: Alice <sip:alice@atlanta.com>;tag=9fxced76sl' . "\r\n" .

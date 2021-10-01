@@ -7,10 +7,10 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Name-Addr Header Class
@@ -35,9 +35,9 @@ class NameAddrHeader
      * Name-addr header fields parser
      *
      * @param list<string> $hbody Header body
-     * @throws InvalidDuplicateHeader
+     * @throws InvalidDuplicateHeaderException
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @return NameAddrHeader
      */
     public static function parse(array $hbody): NameAddrHeader
@@ -45,7 +45,7 @@ class NameAddrHeader
         $ret = new static;
 
         if (isset($hbody[1])) {
-            throw new InvalidDuplicateHeader('Cannot have more than one name-addr header', Response::BAD_REQUEST);
+            throw new InvalidDuplicateHeaderException('Cannot have more than one name-addr header', Response::BAD_REQUEST);
         }
 
         $len = strlen($hbody[0]);
@@ -124,7 +124,7 @@ class NameAddrHeader
 
                             if (!isset($param[0])) {
                                 if ($ord) {
-                                    throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                                 } else {
                                     continue;
                                 }
@@ -134,7 +134,7 @@ class NameAddrHeader
                             $p[0] = rtrim($p[0]);
 
                             if (!isset($p[0][0])) {
-                                throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                             }
 
                             if ($p[0][0] === '>') {
@@ -145,13 +145,13 @@ class NameAddrHeader
 
                             if ($p[0] === 'tag') {
                                 if (isset($ret->tag)) {
-                                    throw new InvalidHeaderParameter('Duplicate tag parameter', Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Duplicate tag parameter', Response::BAD_REQUEST);
                                 }
 
                                 $ret->tag = $pv;
                             } else {
                                 if (isset($ret->params[$p[0]])) {
-                                    throw new InvalidHeaderParameter('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
                                 }
 
                                 $ret->params[$p[0]] = $pv;
@@ -180,13 +180,13 @@ class NameAddrHeader
      * Name-addr header values renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
     {
         if (!isset($this->addr[0])) {
-            throw new InvalidHeaderValue('Missing address part for name-addr header field');
+            throw new InvalidHeaderValueException('Missing address part for name-addr header field');
         }
 
         $ret = "{$hname}: ";

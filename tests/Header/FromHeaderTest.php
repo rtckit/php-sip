@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Header\FromHeader;
 use RTCKit\SIP\Header\NameAddrHeader;
 
@@ -28,7 +28,7 @@ class FromHeaderTest extends TestCase
 
     public function testShouldNotParseMissingTagParameter()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         FromHeader::parse(['Bob <sips:bob@biloxi.example.com>']);
     }
 }

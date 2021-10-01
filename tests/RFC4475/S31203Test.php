@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\RFC4475;
 
 use RTCKit\SIP\Message;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.1.2.3
@@ -17,8 +17,8 @@ class S31203Test extends RFC4475Case
     {
         $pdu = $this->loadFixture('ncl');
 
-        // Throws InvalidScalarValue for length mismatch
-        $this->expectException(InvalidScalarValue::class);
+        // Throws InvalidScalarValueException for length mismatch
+        $this->expectException(InvalidScalarValueException::class);
         Message::parse($pdu);
     }
 }

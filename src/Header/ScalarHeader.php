@@ -7,9 +7,9 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
-use RTCKit\SIP\Exception\InvalidScalarValue;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Scalar Header Class
@@ -28,24 +28,24 @@ class ScalarHeader
      * Scalar header value parser
      *
      * @param list<string> $hbody Header body
-     * @throws InvalidDuplicateHeader
-     * @throws InvalidScalarValue
+     * @throws InvalidDuplicateHeaderException
+     * @throws InvalidScalarValueException
      * @return ScalarHeader
      */
     public static function parse(array $hbody): ScalarHeader
     {
         if (isset($hbody[1])) {
-            throw new InvalidDuplicateHeader('Scalar header fields can only have one value', Response::BAD_REQUEST);
+            throw new InvalidDuplicateHeaderException('Scalar header fields can only have one value', Response::BAD_REQUEST);
         }
 
         $val = (int) $hbody[0];
 
         if ($val > static::MAX_VALUE) {
-            throw new InvalidScalarValue('Scalar header field value out of bounds, > ' . static::MAX_VALUE, Response::BAD_REQUEST);
+            throw new InvalidScalarValueException('Scalar header field value out of bounds, > ' . static::MAX_VALUE, Response::BAD_REQUEST);
         }
 
         if ($val < 0) {
-            throw new InvalidScalarValue('Scalar header field value out of bounds (negative)', Response::BAD_REQUEST);
+            throw new InvalidScalarValueException('Scalar header field value out of bounds (negative)', Response::BAD_REQUEST);
         }
 
         $ret = new static;
@@ -58,13 +58,13 @@ class ScalarHeader
      * Scalar header value renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
     {
         if (!isset($this->value)) {
-            throw new InvalidHeaderValue('Missing scalar header value');
+            throw new InvalidHeaderValueException('Missing scalar header value');
         }
 
         return "{$hname}: {$this->value}\r\n";
