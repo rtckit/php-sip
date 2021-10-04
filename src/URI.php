@@ -28,6 +28,9 @@ class URI
     /** @var string URI host name (i.e. IP or FQDN) */
     public string $host;
 
+    /** @var bool Whether or not the host name is an IPv6 address */
+    public bool $ipv6 = false;
+
     /** @var int URI port number */
     public int $port;
 
@@ -160,7 +163,20 @@ class URI
             }
         }
 
-        $pos = strpos($text, ':');
+        $pos = 0;
+
+        if ($text[0] === '[') {
+            $pos = strpos($text, ']');
+
+            if ($pos === false) {
+                throw new InvalidURIException('Improperly escaped IPv6 host: ' . $text, Response::BAD_REQUEST);
+            }
+
+            $uri->ipv6 = true;
+            $pos++;
+        }
+
+        $pos = strpos($text, ':', $pos);
 
         if ($pos !== false) {
             $port = substr($text, $pos + 1);
@@ -177,11 +193,21 @@ class URI
             }
         }
 
-        if (!filter_var($text, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) && !filter_var($text, FILTER_VALIDATE_IP)) {
-            throw new InvalidURIException('Invalid host: ' . $text, Response::BAD_REQUEST);
+        $text = strtolower($text);
+
+        if ($uri->ipv6) {
+            $text = trim($text, '[]');
         }
 
-        $uri->host = strtolower($text);
+        if (($uri->scheme == 'sip') || ($uri->scheme == 'sips')) {
+            if (!filter_var($text, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) && !filter_var($text, FILTER_VALIDATE_IP)) {
+                throw new InvalidURIException('Invalid host: ' . $text, Response::BAD_REQUEST);
+            }
+        } else {
+            $text = ltrim($text, '/');
+        }
+
+        $uri->host = $text;
 
         return $uri;
     }
@@ -214,7 +240,11 @@ class URI
             $ret .= '@';
         }
 
-        $ret .= $this->host;
+        if ($this->ipv6) {
+            $ret .= "[{$this->host}]";
+        } else {
+            $ret .= $this->host;
+        }
 
         if (isset($this->port)) {
             $ret .= ':' . $this->port;

@@ -188,6 +188,21 @@ class URITest extends TestCase
         $this->assertEquals('+123', URI::escape('+123'));
     }
 
+    public function testShouldParseIPv6Hosts()
+    {
+        $uri0 = URI::parse('sip:123012345678901@[2409:8805:84e3:3603::1]:1388');
+        $this->assertTrue($uri0->ipv6);
+        $this->assertEquals('2409:8805:84e3:3603::1', $uri0->host);
+        $this->assertEquals(1388, $uri0->port);
+        $this->assertEquals('sip:123012345678901@[2409:8805:84e3:3603::1]:1388', $uri0->render());
+
+        $uri1 = URI::parse('sip:123012345678901@[2409:8805:84e3:3603::1]');
+        $this->assertTrue($uri1->ipv6);
+        $this->assertEquals('2409:8805:84e3:3603::1', $uri1->host);
+        $this->assertTrue(!isset($uri1->port));
+        $this->assertEquals('sip:123012345678901@[2409:8805:84e3:3603::1]', $uri1->render());
+    }
+
     public function testShouldNotParseInvalidURI()
     {
         $this->expectException(InvalidURIException::class);
@@ -258,5 +273,17 @@ class URITest extends TestCase
         $uri0 = new URI;
         $uri1 = new URI;
         $uri0->isEquivalent($uri1);
+    }
+
+    public function testShouldNotParseOpenEndedIPv6()
+    {
+        $this->expectException(InvalidURIException::class);
+        URI::parse('sip:123012345678901@[2409:8805:84e3:3603::1');
+    }
+
+    public function testShouldNotParseUnescapedIPv6()
+    {
+        $this->expectException(InvalidURIException::class);
+        URI::parse('sip:123012345678901@2409:8805:84e3:3603::1');
     }
 }
