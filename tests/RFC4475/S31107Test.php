@@ -28,7 +28,7 @@ class S31107Test extends RFC4475Case
         $this->assertEquals(6000, $msg->to->uri->port);
         $this->assertEquals('very' . str_repeat('long', 20) . 'value', $msg->to->uri->params['unknownparam1']);
         $this->assertEquals('shortvalue', $msg->to->uri->params['longparam' . str_repeat('name', 25)]);
-        $this->assertEquals('', $msg->to->uri->params['very' . str_repeat('long', 25) . 'ParameterNameWithNoValue']);
+        $this->assertEquals('', $msg->to->uri->params['very' . str_repeat('long', 25) . 'parameternamewithnovalue']);
         $this->assertEquals('I have a user name of ' . str_repeat('extreme', 10) . ' proportion', $msg->to->name);
 
         /* The From header field has long header parameter names and values, in particular, a very long tag. */
