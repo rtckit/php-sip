@@ -174,10 +174,12 @@ class ContactHeader
                             }
                         }
 
-                        $val->uri = URI::parse($addr);
-                        $ret->values[] = $val;
-                        $addr = null;
-                        $val = new ContactValue;
+                        if (!is_null($addr)) {
+                            $val->uri = URI::parse($addr);
+                            $ret->values[] = $val;
+                            $addr = null;
+                            $val = new ContactValue;
+                        }
 
                         if (($commaPos === false) || ($remainder <= 0)) {
                             break;
@@ -192,7 +194,7 @@ class ContactHeader
                     $i++;
                 } else if($hline[$i] === '"') {
                     $quoted = false;
-                    /** @psalm-suppress PossiblyNullOperand qfrom is always set if quoted === true */
+                    /** @psalm-suppress PossiblyNullOperand qfrom is always set if fetchParams === true */
                     $val->name = str_replace('\\\\', '\\', substr($hline, $qfrom + 1, $i - $qfrom - 1));
                     $qfrom = null;
                 }
