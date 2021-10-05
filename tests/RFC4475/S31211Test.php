@@ -10,7 +10,9 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.1.2.11
  * 3.1.2.11.  Escaped Headers in SIP Request-URI
- * 2D! Liberal for now as we don't further parse the request URI (yet)
+ *
+ * As an UAS, this implementation will take the liberal route and silently drop
+ * any headers found in the Request-URI.
  */
 class S31211Test extends RFC4475Case
 {
@@ -21,7 +23,6 @@ class S31211Test extends RFC4475Case
         $msg = Message::parse($pdu);
 
         $this->assertInstanceOf(Request::class, $msg);
-
-        $this->assertEquals('sip:user@example.com?Route=%3Csip:example.com%3E', $msg->uri);
+        $this->assertEquals([], $msg->uri->headers);
     }
 }

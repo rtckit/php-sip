@@ -7,6 +7,7 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
+use RTCKit\SIP\URI;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
@@ -46,6 +47,7 @@ class ContactHeader
             $qfrom = null;
             $afrom = null;
             $base = 0;
+            $addr = null;
 
             for ($i = 0; $i <= $len; $i++) {
                 if (!$quoted) {
@@ -55,16 +57,16 @@ class ContactHeader
 
                             continue;
                         } else {
-                            $val->addr = substr($hline, $afrom, $i - $afrom);
-                            $semiPos = strpos($val->addr, ';');
+                            $addr = substr($hline, $afrom, $i - $afrom);
+                            $semiPos = strpos($addr, ';');
 
                             if ($semiPos !== false) {
-                                $val->addr = substr($val->addr, 0, $semiPos);
+                                $addr = substr($addr, 0, $semiPos);
                                 $i = $semiPos + 1;
                                 $fetchParams = true;
                             }
 
-                            if (strpos($val->addr, '>') !== false) {
+                            if (strpos($addr, '>') !== false) {
                                 throw new InvalidHeaderLineException('Invalid contact line, unmatched <> enclosure ending', Response::BAD_REQUEST);
                             }
 
@@ -95,9 +97,9 @@ class ContactHeader
                             throw new InvalidHeaderLineException('Invalid contact line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                         }
 
-                        $val->addr = trim(substr($hline, $next, $end - $next));
+                        $addr = trim(substr($hline, $next, $end - $next));
 
-                        if (strpos($val->addr, '<') !== false) {
+                        if (strpos($addr, '<') !== false) {
                             throw new InvalidHeaderLineException('Invalid contact line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                         }
 
@@ -172,7 +174,9 @@ class ContactHeader
                             }
                         }
 
+                        $val->uri = URI::parse($addr);
                         $ret->values[] = $val;
+                        $addr = null;
                         $val = new ContactValue;
 
                         if (($commaPos === false) || ($remainder <= 0)) {
@@ -194,7 +198,8 @@ class ContactHeader
                 }
             }
 
-            if (isset($val->addr)) {
+            if (!is_null($addr)) {
+                $val->uri = URI::parse($addr);
                 $ret->values[] = $val;
             }
         }
@@ -223,10 +228,16 @@ class ContactHeader
         $delim = '';
 
         foreach ($this->values as $value) {
+            if (!isset($value->uri)) {
+                throw new InvalidHeaderValueException('Missing address part for contact header field value');
+            }
+
+            $addr = $value->uri->render();
+
             if (isset($value->name[0])) {
-                $ret .= $delim . '"' . addcslashes($value->name, "\x5c") . '" ' . "<{$value->addr}>";
+                $ret .= $delim . '"' . addcslashes($value->name, "\x5c") . '" ' . "<{$addr}>";
             } else {
-                $ret .= "{$delim}<{$value->addr}>";
+                $ret .= "{$delim}<{$addr}>";
             }
 
             if (isset($value->q)) {

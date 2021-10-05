@@ -22,6 +22,6 @@ class S31109Test extends RFC4475Case
         $this->assertInstanceOf(Request::class, $msg);
 
         /* The Request-URI will parse so that the user part is "user;par=u@example.net" */
-        $this->assertEquals('sip:user;par=u%40example.net@example.com', $msg->uri);
+        $this->assertEquals('user;par=u@example.net', $msg->uri->user);
     }
 }

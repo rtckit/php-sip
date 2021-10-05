@@ -31,67 +31,99 @@ class ProtosTest extends TestCase
             'first' => 0,
             'cases' => 1,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-method' => [
             'first' => 1,
             'cases' => 193,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-request-uri' => [
             'first' => 194,
             'cases' => 61,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing request URI contents */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [
+                /* Excessive `:` leading to improper URI host/port */
+                218,
+                219,
+                220,
+                221,
+                222,
+                223,
+                224,
+                225,
+                226,
+                227,
+                228,
+                230,
+                /* Excessive `@` leading to improper URI host/port */
+                237,
+                238,
+                239,
+                240,
+                /* Not a valid hostname as it exceeds 253 ASCII characters */
+                243,
+                244,
+                245,
+                246,
+                247,
+                /* Incorrect TLD, exceeds 63 characters */
+                249,
+                250,
+                251,
+                252,
+                253,
+                254,
+            ],
         ],
         'sip-version' => [
             'first' => 255,
             'cases' => 75,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-via-host' => [
             'first' => 330,
             'cases' => 106,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Via host contents */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-via-hostcolon' => [
             'first' => 436,
             'cases' => 16,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Via host contents */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-via-hostport' => [
             'first' => 452,
             'cases' => 46,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Via host contents */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-via-version' => [
             'first' => 498,
             'cases' => 75,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-via-tag' => [
             'first' => 573,
             'cases' => 57,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-from-displayname' => [
             'first' => 630,
             'cases' => 193,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing display names */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-from-tag' => [
             'first' => 823,
             'cases' => 57,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [
+            'exceptions' => [
                 /* These were likely meant to fail due to excessive length,
                    but we don't want to enforce this */
                 864,
@@ -117,20 +149,54 @@ class ProtosTest extends TestCase
         'sip-from-colon' => [
             'first' => 880,
             'cases' => 16,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing From header field values */
-            'ignore' => [],
+            'criteria' => self::MUST_FAIL,
+            'exceptions' => [
+                /* No overflow in the first example */
+                880,
+            ],
         ],
         'sip-from-uri' => [
             'first' => 896,
             'cases' => 61,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing From header URIs */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [
+                /* `:` overflow */
+                920,
+                921,
+                922,
+                923,
+                924,
+                925,
+                926,
+                927,
+                928,
+                929,
+                930,
+                932,
+                /* `@` overflow */
+                939,
+                940,
+                941,
+                942,
+                /* Invalid host URI component */
+                945,
+                946,
+                947,
+                948,
+                949,
+                951,
+                952,
+                953,
+                954,
+                955,
+                956,
+            ],
         ],
         'sip-contact-displayname' => [
             'first' => 957,
             'cases' => 193,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Contact display names */
-            'ignore' => [
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [
                 /* Unescaped/Unenclosed wildcard * in display name */
                 1061,
                 1062,
@@ -146,26 +212,57 @@ class ProtosTest extends TestCase
         'sip-contact-uri' => [
             'first' => 1150,
             'cases' => 61,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Contact header URIs */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [
+                /* `:` overflow */
+                1174,
+                1175,
+                1176,
+                1177,
+                1178,
+                1179,
+                1180,
+                1181,
+                1182,
+                1183,
+                1184,
+                1186,
+                /* `@` overflow */
+                1193,
+                1194,
+                1195,
+                1196,
+                /* Invalid host URI component */
+                1199,
+                1200,
+                1201,
+                1202,
+                1203,
+                1205,
+                1206,
+                1207,
+                1208,
+                1209,
+                1210,
+            ],
         ],
         'sip-contact-left-paranthesis' => [
             'first' => 1211,
             'cases' => 16,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-contact-right-paranthesis' => [
             'first' => 1227,
             'cases' => 16,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-to' => [
             'first' => 1243,
             'cases' => 193,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing To header field values */
-            'ignore' => [
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [
                 /* General parsing errors, due to malformed header lines */
                 1243,
                 1271,
@@ -176,39 +273,39 @@ class ProtosTest extends TestCase
             'first' => 1436,
             'cases' => 16,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-to-right-paranthesis' => [
             'first' => 1452,
             'cases' => 16,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-call-id-value' => [
             'first' => 1468,
             'cases' => 193,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Call-ID header field values */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-call-id-at' => [
             'first' => 1661,
             'cases' => 16,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Call-ID header field values */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-call-id-ip' => [
             'first' => 1677,
             'cases' => 106,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing Call-ID header field values */
-            'ignore' => [],
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [],
         ],
         'sip-expires' => [
             'first' => 1783,
             'cases' => 46,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [
-                /* These go beyond the numeric/bound validation we are employing and don't
-                   appear to make sense outside of the application implementing this library */
+            'exceptions' => [
+                /* These go beyond the numeric/bound validation currently employed;
+                   the application implementing this library should however recognize these exceptions */
                 1783,
                 1784,
                 1786,
@@ -239,9 +336,9 @@ class ProtosTest extends TestCase
             'first' => 1829,
             'cases' => 46,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [
-                /* These go beyond the numeric/bound validation we are employing and don't
-                   appear to make sense outside of the application implementing this library */
+            'exceptions' => [
+                /* These go beyond the numeric/bound validation currently employed;
+                   the application implementing this library should however recognize these exceptions */
                 1829,
                 1830,
                 1832,
@@ -257,9 +354,9 @@ class ProtosTest extends TestCase
             'first' => 1875,
             'cases' => 46,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [
-                /* These go beyond the numeric/bound validation we are employing and don't
-                   appear to make sense outside of the application implementing this library */
+            'exceptions' => [
+                /* These go beyond the numeric/bound validation currently employed;
+                   the application implementing this library should however recognize these exceptions */
                 1875,
                 1876,
                 1878,
@@ -290,13 +387,13 @@ class ProtosTest extends TestCase
             'first' => 1921,
             'cases' => 193,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sip-content-type' => [
             'first' => 2114,
             'cases' => 247,
-            'criteria' => self::MUST_PASS, /* We are not (currently) processing content type header field values */
-            'ignore' => [
+            'criteria' => self::MUST_PASS,
+            'exceptions' => [
                 /* Outright malformed header */
                 2114,
                 2142,
@@ -323,8 +420,8 @@ class ProtosTest extends TestCase
             'first' => 2361,
             'cases' => 46,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [
-                /* We choose to discard the excess body (considering it as spurious noise) */
+            'exceptions' => [
+                /* This implementation discards the excess body (considering it as spurious noise) */
                 2361,
                 2362,
                 2364,
@@ -339,151 +436,151 @@ class ProtosTest extends TestCase
             'first' => 2407,
             'cases' => 10,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'crlf-request' => [
             'first' => 2417,
             'cases' => 10,
             'criteria' => self::MUST_FAIL,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-crlf' => [
             'first' => 2427,
             'cases' => 10,
             'criteria' => self::MUST_PASS, /* SDP parsing is out of scope */
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-proto-v-identifier' => [
             'first' => 2437,
             'cases' => 193,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-proto-v-equal' => [
             'first' => 2630,
             'cases' => 16,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-proto-v-integer' => [
             'first' => 2646,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-origin-username' => [
             'first' => 2692,
             'cases' => 193,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-origin-sessionid' => [
             'first' => 2885,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-origin-networktype' => [
             'first' => 2931,
             'cases' => 193,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-origin-ip' => [
             'first' => 3124,
             'cases' => 106,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-session' => [
             'first' => 3230,
             'cases' => 193,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-connection-networktype' => [
             'first' => 3423,
             'cases' => 188,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-connection-ip' => [
             'first' => 3611,
             'cases' => 106,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-time-start' => [
             'first' => 3717,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-time-stop' => [
             'first' => 3763,
             'cases' => 1,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-media-media' => [
             'first' => 3764,
             'cases' => 193,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-media-port' => [
             'first' => 3957,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-media-transport' => [
             'first' => 4003,
             'cases' => 118,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-media-type' => [
             'first' => 4121,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-rtpmap' => [
             'first' => 4167,
             'cases' => 118,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-colon' => [
             'first' => 4285,
             'cases' => 16,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-payloadtype' => [
             'first' => 4301,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-encodingname' => [
             'first' => 4347,
             'cases' => 118,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-slash' => [
             'first' => 4465,
             'cases' => 16,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
         'sdp-attribute-clockrate' => [
             'first' => 4481,
             'cases' => 46,
             'criteria' => self::MUST_PASS,
-            'ignore' => [],
+            'exceptions' => [],
         ],
     ];
 
@@ -606,13 +703,7 @@ class ProtosTest extends TestCase
                 $this->assertEquals($teardown, Message::parse($teardown->render()));
             }
 
-            if (!in_array($num, $params['ignore'])) {
-                if ($params['criteria'] === self::MUST_PASS) {
-                    $this->assertTrue($pass, 'Test case ' . $num);
-                } else if ($params['criteria'] === self::MUST_FAIL) {
-                    $this->assertFalse($pass, 'Test case ' . $num);
-                }
-
+            if (!in_array($num, $params['exceptions'])) {
                 /* This is solely for debugging purposes */
                 if (($params['criteria'] === self::MUST_PASS) && !$pass) {
                     $results[$name]['success'] = false;
@@ -622,6 +713,12 @@ class ProtosTest extends TestCase
                     $results[$name]['success'] = false;
 
                     printf("Test %d should have failed\n", $num);
+                }
+
+                if ($params['criteria'] === self::MUST_PASS) {
+                    $this->assertTrue($pass, 'Test case ' . $num);
+                } else if ($params['criteria'] === self::MUST_FAIL) {
+                    $this->assertFalse($pass, 'Test case ' . $num);
                 }
             }
         }

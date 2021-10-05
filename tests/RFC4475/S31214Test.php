@@ -10,7 +10,9 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.1.2.14
  * 3.1.2.14.  Spaces within addr-spec
- * 2D! Liberal for now
+ *
+ * This implementation takes the liberal route and ignores
+ * spaces around the SIP URI enclosure
  */
 class S31214Test extends RFC4475Case
 {
@@ -22,9 +24,8 @@ class S31214Test extends RFC4475Case
 
         $this->assertInstanceOf(Request::class, $msg);
 
-        $this->assertEquals(
-            'sip:t.watson@example.org',
-            $msg->to->addr
-        );
+        $this->assertEquals('sip', $msg->to->uri->scheme);
+        $this->assertEquals('t.watson', $msg->to->uri->user);
+        $this->assertEquals('example.org', $msg->to->uri->host);
     }
 }

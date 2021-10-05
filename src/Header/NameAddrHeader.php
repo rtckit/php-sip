@@ -7,6 +7,7 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
+use RTCKit\SIP\URI;
 use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderParameterException;
@@ -17,8 +18,8 @@ use RTCKit\SIP\Exception\InvalidHeaderValueException;
 */
 class NameAddrHeader
 {
-    /** @var string Address portion of the field value */
-    public string $addr;
+    /** @var URI Parsed address portion of the field value */
+    public URI $uri;
 
     /** @var string Display name portion of the field value */
     public string $name;
@@ -54,6 +55,7 @@ class NameAddrHeader
         $quoted = false;
         $qfrom = null;
         $afrom = null;
+        $addr = null;
 
         for ($i = 0; $i <= $len; $i++) {
             if (!$quoted) {
@@ -63,15 +65,15 @@ class NameAddrHeader
 
                         continue;
                     } else {
-                        $ret->addr = substr($hbody[0], $afrom, $i - $afrom);
-                        $semiPos = strpos($ret->addr, ';');
+                        $addr = substr($hbody[0], $afrom, $i - $afrom);
+                        $semiPos = strpos($addr, ';');
 
                         if ($semiPos !== false) {
-                            $ret->addr = substr($ret->addr, 0, $semiPos);
+                            $addr = substr($addr, 0, $semiPos);
                             $i = $semiPos + 1;
                         }
 
-                        if (strpos($ret->addr, '>') !== false) {
+                        if (strpos($addr, '>') !== false) {
                             throw new InvalidHeaderLineException('Invalid name-addr line, unmatched <> enclosure ending', Response::BAD_REQUEST);
                         }
 
@@ -95,9 +97,9 @@ class NameAddrHeader
                         throw new InvalidHeaderLineException('Invalid name-addr line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                     }
 
-                    $ret->addr = trim(substr($hbody[0], $next, $end - $next));
+                    $addr = trim(substr($hbody[0], $next, $end - $next));
 
-                    if (strpos($ret->addr, '<') !== false) {
+                    if (strpos($addr, '<') !== false) {
                         throw new InvalidHeaderLineException('Invalid name-addr line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                     }
 
@@ -173,6 +175,12 @@ class NameAddrHeader
             }
         }
 
+        if (is_null($addr)) {
+            throw new InvalidHeaderLineException('Invalid name-addr line, missing addr-spec', Response::BAD_REQUEST);
+        }
+
+        $ret->uri = URI::parse($addr);
+
         return $ret;
     }
 
@@ -185,16 +193,17 @@ class NameAddrHeader
      */
     public function render(string $hname): string
     {
-        if (!isset($this->addr[0])) {
+        if (!isset($this->uri)) {
             throw new InvalidHeaderValueException('Missing address part for name-addr header field');
         }
 
         $ret = "{$hname}: ";
+        $addr = $this->uri->render();
 
         if (isset($this->name[0])) {
-            $ret = "{$hname}: " . '"' . addcslashes($this->name, '\\') . '" ' . "<{$this->addr}>";
+            $ret = "{$hname}: " . '"' . addcslashes($this->name, '\\') . '" ' . "<{$addr}>";
         } else {
-            $ret = "{$hname}: <{$this->addr}>";
+            $ret = "{$hname}: <{$addr}>";
         }
 
         if (isset($this->tag)) {

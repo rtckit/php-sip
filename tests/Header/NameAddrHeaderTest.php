@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
+use RTCKit\SIP\URI;
 use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderParameterException;
@@ -21,7 +22,7 @@ class NameAddrHeaderTest extends TestCase
         $this->assertNotNull($header);
         $this->assertInstanceOf(NameAddrHeader::class, $header);
         $this->assertEquals('Bob \" Quote', $header->name);
-        $this->assertEquals('sips:bob@biloxi.example.com', $header->addr);
+        $this->assertEquals('sips:bob@biloxi.example.com', $header->uri->render());
         $this->assertEquals('parameter', $header->params['custom']);
     }
 
@@ -32,7 +33,7 @@ class NameAddrHeaderTest extends TestCase
         $this->assertNotNull($header);
         $this->assertInstanceOf(NameAddrHeader::class, $header);
         $this->assertEquals('Bob', $header->name);
-        $this->assertEquals('sips:bob@biloxi.example.com', $header->addr);
+        $this->assertEquals('sips:bob@biloxi.example.com', $header->uri->render());
     }
 
     public function testShouldParseWithoutEscapedURIValue()
@@ -41,7 +42,13 @@ class NameAddrHeaderTest extends TestCase
 
         $this->assertNotNull($header);
         $this->assertInstanceOf(NameAddrHeader::class, $header);
-        $this->assertEquals('sips:bob@biloxi.example.com', $header->addr);
+        $this->assertEquals('sips:bob@biloxi.example.com', $header->uri->render());
+    }
+
+    public function testShouldNotParseEmptyValues()
+    {
+        $this->expectException(InvalidHeaderLineException::class);
+        NameAddrHeader::parse(['']);
     }
 
     public function testShouldNotParseMultipleValues()
@@ -111,7 +118,7 @@ class NameAddrHeaderTest extends TestCase
     {
         $header = new NameAddrHeader;
         $header->name = 'Bob';
-        $header->addr = 'bob@offshore.biloxi.example.com';
+        $header->uri = URI::parse('sip:bob@offshore.biloxi.example.com');
         $header->tag = 'sdf89vnc3';
         $header->params['unknown'] = 'parameter';
 
@@ -120,7 +127,7 @@ class NameAddrHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'To: "Bob" <bob@offshore.biloxi.example.com>;tag=sdf89vnc3;unknown=parameter' . "\r\n",
+            'To: "Bob" <sip:bob@offshore.biloxi.example.com>;tag=sdf89vnc3;unknown=parameter' . "\r\n",
             $rendered
         );
     }
@@ -128,7 +135,7 @@ class NameAddrHeaderTest extends TestCase
     public function testShouldRenderWithoutName()
     {
         $header = new NameAddrHeader;
-        $header->addr = 'bob@offshore.biloxi.example.com';
+        $header->uri = URI::parse('sip:bob@offshore.biloxi.example.com');
         $header->tag = 'sdf89vnc3';
         $header->params['unknown'] = 'parameter';
 
@@ -137,12 +144,12 @@ class NameAddrHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'To: <bob@offshore.biloxi.example.com>;tag=sdf89vnc3;unknown=parameter' . "\r\n",
+            'To: <sip:bob@offshore.biloxi.example.com>;tag=sdf89vnc3;unknown=parameter' . "\r\n",
             $rendered
         );
     }
 
-    public function testShouldNotRenderWithoutAddress()
+    public function testShouldNotRenderWithoutURI()
     {
         $header = new NameAddrHeader;
         $header->name = 'Bob';

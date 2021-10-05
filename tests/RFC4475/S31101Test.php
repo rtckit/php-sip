@@ -21,6 +21,9 @@ class S31101Test extends RFC4475Case
 
         $this->assertInstanceOf(Request::class, $msg);
 
+        /* unknown Request-URI parameter */
+        $this->assertNotNull($msg->uri->params['unknownparam']);
+
         /* tag From/To header value parameters */
         $this->assertEquals("1918181833n", $msg->to->tag);
         $this->assertEquals("98asjd8", $msg->from->tag);
@@ -40,8 +43,6 @@ class S31101Test extends RFC4475Case
         $this->assertEquals('z9hG4bK9ikj8', $msg->via->values['1']->branch);
         $this->assertEquals('z9hG4bK30239', $msg->via->values['2']->branch);
 
-        // 2D! unknown Request-URI parameter
-
         /* unknown header fields */
         $this->assertNotNull($msg->extraHeaders['newfangledheader']->values[0]);
         $this->assertNotNull($msg->extraHeaders['unknownheaderwithunusualvalue']->values[0]);
@@ -54,8 +55,6 @@ class S31101Test extends RFC4475Case
 
         /* a header parameter with no value */
         $this->assertEquals('', $msg->contact->values[0]->params['secondparam']);
-
-        // 2D! a uri parameter with no value
 
         /* integer fields (Max-Forwards and CSeq) with leading zeros */
         $this->assertIsNumeric($msg->maxForwards->value);

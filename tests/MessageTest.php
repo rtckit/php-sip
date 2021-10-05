@@ -235,7 +235,10 @@ class MessageTest extends TestCase
         $request = new Request;
 
         $request->method = 'METHOD';
-        $request->uri = 'sip:user@nowhere.com';
+        $request->uri = new URI;
+        $request->uri->scheme = 'sip';
+        $request->uri->user = 'user';
+        $request->uri->host = 'nowhere.com';
         $request->version = 'SIP/2.0';
 
         $request->via = new ViaHeader;
@@ -247,17 +250,17 @@ class MessageTest extends TestCase
         $request->via->values[0]->branch = 'z9hG4bKnashds7';
 
         $request->from = new NameAddrHeader;
-        $request->from->addr = 'sip:alice@atlanta.example.com';
+        $request->from->uri = URI::parse('sip:alice@atlanta.example.com');
         $request->from->name = 'Alice';
         $request->from->tag = '9fxced76sl';
 
         $request->to = new NameAddrHeader;
-        $request->to->addr = 'sip:bob@biloxi.com';
+        $request->to->uri = URI::parse('sip:bob@biloxi.com');
         $request->to->name = 'Bob';
 
         $request->contact = new ContactHeader;
         $request->contact->values[0] = new ContactValue;
-        $request->contact->values[0]->addr = 'sip:user@domain.com';
+        $request->contact->values[0]->uri = URI::parse('sip:user@domain.com');
 
         $request->callId = new CallIdHeader;
         $request->callId->value = '715';
@@ -332,7 +335,7 @@ class MessageTest extends TestCase
         $request->contentLanguage->values[0]->value = 'es';
 
         $request->replyTo = new NameAddrHeader;
-        $request->replyTo->addr = 'sip:bob@biloxi.com';
+        $request->replyTo->uri = URI::parse('sip:bob@biloxi.com');
         $request->replyTo->name = 'Bob';
 
         $request->alertInfo = new Header;

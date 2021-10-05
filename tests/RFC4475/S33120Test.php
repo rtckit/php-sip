@@ -10,7 +10,6 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.3.12
  * 3.3.12.  REGISTER with a Contact Header Parameter
- * Not in direct scope
  */
 class S33120Test extends RFC4475Case
 {
@@ -26,7 +25,10 @@ class S33120Test extends RFC4475Case
            determine this is a REGISTER request with a contact
            header parameter (not URI parameter!) */
         $this->assertEquals('REGISTER', $msg->method);
-        $this->assertEquals('sip:+19725552222@gw1.example.net', $msg->contact->values[0]->addr);
+        $this->assertEquals('sip', $msg->contact->values[0]->uri->scheme);
+        $this->assertEquals('+19725552222', $msg->contact->values[0]->uri->user);
+        $this->assertEquals('gw1.example.net', $msg->contact->values[0]->uri->host);
         $this->assertEquals('', $msg->contact->values[0]->params['unknownparam']);
+        $this->assertTrue(!isset($msg->contact->values[0]->uri->params['unknownparam']));
     }
 }

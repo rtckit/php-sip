@@ -22,26 +22,19 @@ class S31107Test extends RFC4475Case
         $this->assertInstanceOf(Request::class, $msg);
 
         /* The To header field has a long display name, and long uri parameter names and values. */
-        $this->assertEquals(
-            'sip:user@example.com:6000;unknownparam1=very' .
-            str_repeat('long', 20) .
-            'value;longparam' .
-            str_repeat('name', 25) .
-            '=shortvalue;very' .
-            str_repeat('long', 25) .
-            'ParameterNameWithNoValue',
-            $msg->to->addr
-        );
-        $this->assertEquals(
-            'I have a user name of ' . str_repeat('extreme', 10) . ' proportion',
-            $msg->to->name
-        );
+        $this->assertEquals('sip', $msg->to->uri->scheme);
+        $this->assertEquals('user', $msg->to->uri->user);
+        $this->assertEquals('example.com', $msg->to->uri->host);
+        $this->assertEquals(6000, $msg->to->uri->port);
+        $this->assertEquals('very' . str_repeat('long', 20) . 'value', $msg->to->uri->params['unknownparam1']);
+        $this->assertEquals('shortvalue', $msg->to->uri->params['longparam' . str_repeat('name', 25)]);
+        $this->assertEquals('', $msg->to->uri->params['very' . str_repeat('long', 25) . 'ParameterNameWithNoValue']);
+        $this->assertEquals('I have a user name of ' . str_repeat('extreme', 10) . ' proportion', $msg->to->name);
 
         /* The From header field has long header parameter names and values, in particular, a very long tag. */
-        $this->assertEquals(
-            'sip:' . str_repeat('amazinglylongcallername', 5) . '@example.net',
-            $msg->from->addr
-        );
+        $this->assertEquals('sip', $msg->from->uri->scheme);
+        $this->assertEquals(str_repeat('amazinglylongcallername', 5), $msg->from->uri->user);
+        $this->assertEquals('example.net', $msg->from->uri->host);
         $this->assertEquals('12' . str_repeat('982', 50) . '424', $msg->from->tag);
         $this->assertEquals(
             'unknowheaderparam' . str_repeat('value', 15),
@@ -68,9 +61,6 @@ class S31107Test extends RFC4475Case
             'very' . str_repeat('long', 50) . 'branchvalue',
             $msg->via->values[33]->branch
         );
-        $this->assertEquals(
-            'sip:' . str_repeat('amazinglylongcallername', 5) . '@host5.example.net',
-            $msg->contact->values[0]->addr
-        );
+        $this->assertEquals(str_repeat('amazinglylongcallername', 5), $msg->contact->values[0]->uri->user);
     }
 }

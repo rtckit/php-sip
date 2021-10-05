@@ -89,7 +89,7 @@ Contact: <sip:UA1@192.0.2.4>
 Supported: path
 Path: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
 
-INVITE UA1@EXAMPLEHOME.COM SIP/2.0
+INVITE sip:UA1@EXAMPLEHOME.COM SIP/2.0
 Via: SIP/2.0/UDP 71.91.180.10:5060;branch=z9hG4bKe2i95c5st3R
 To: UA1 <sip:UA1@EXAMPLEHOME.COM>
 From: UA2 <sip:UA2@FOREIGN.ELSEWHERE.ORG>;tag=224497
@@ -97,7 +97,7 @@ Call-ID: 48273181116@71.91.180.10
 CSeq: 29 INVITE
 Contact: <sip:UA2@71.91.180.10>
 
-INVITE UA1@192.0.2.4 SIP/2.0
+INVITE sip:UA1@192.0.2.4 SIP/2.0
 Via: SIP/2.0/UDP 143.70.6.83:5060;branch=z9hG4bKlj25C107a7b176
 Via: SIP/2.0/UDP 71.91.180.10:5060;branch=z9hG4bKe2i95c5st3R
 To: UA1 <sip:UA1@EXAMPLEHOME.COM>
@@ -107,7 +107,7 @@ CSeq: 29 INVITE
 Contact: <sip:UA2@71.91.180.10>
 Route: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
 
-INVITE UA1@192.0.2.4 SIP/2.0
+INVITE sip:UA1@192.0.2.4 SIP/2.0
 Via: SIP/2.0/UDP 19.31.97.3:5060;branch=z9hG4bKjasg7li7nc9e
 Via: SIP/2.0/UDP 143.70.6.83:5060;branch=z9hG4bKlj25C107a7b176
 Via: SIP/2.0/UDP 71.91.180.10:5060;branch=z9hG4bKe2i95c5st3R
@@ -119,7 +119,7 @@ Contact: <sip:UA2@71.91.180.10>
 Record-Route: <sip:P3.EXAMPLEHOME.COM;lr>
 Route: <sip:P1.EXAMPLEVISITED.COM;lr>
 
-INVITE UA1@192.0.2.4 SIP/2.0
+INVITE sip:UA1@192.0.2.4 SIP/2.0
 Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bKk5l1833o43p
 Via: SIP/2.0/UDP 19.31.97.3:5060;branch=z9hG4bKjasg7li7nc9e
 Via: SIP/2.0/UDP 143.70.6.83:5060;branch=z9hG4bKlj25C107a7b176
@@ -3094,7 +3094,7 @@ Content-Length: 0
 SUBSCRIBE sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com SIP/2.0
 Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnlsdkdj2
 Max-Forwards: 70
-From: <anonymous@example.com>;tag=23324
+From: <sip:anonymous@example.com>;tag=23324
 To: <sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com>
 Call-ID: nSz1TWN54x7My0GvpEBj
 CSeq: 1 SUBSCRIBE
@@ -3110,7 +3110,7 @@ Content-Length: 0
 NOTIFY sip:192.0.2.2;transport=tcp;ob SIP/2.0
 Via: SIP/2.0/TCP 192.0.2.5;branch=z9hG4bKn81dd2
 Max-Forwards: 70
-To: <anonymous@example.com>;tag=23324
+To: <sip:anonymous@example.com>;tag=23324
 From: <sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com>;tag=0983
 Call-ID: nSz1TWN54x7My0GvpEBj
 CSeq: 1 NOTIFY

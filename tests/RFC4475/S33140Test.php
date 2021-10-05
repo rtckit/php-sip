@@ -10,7 +10,6 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.3.14
  * 3.3.14.  REGISTER with a URL Escaped Header
- * Not in direct scope
  */
 class S33140Test extends RFC4475Case
 {
@@ -26,7 +25,7 @@ class S33140Test extends RFC4475Case
            determine this is a REGISTER request with a URI
            parameter (escaped header, not a contact parameter!) */
         $this->assertEquals('REGISTER', $msg->method);
-        $this->assertEquals('sip:user@example.com?Route=%3Csip:sip.example.com%3E', $msg->contact->values[0]->addr);
+        $this->assertEquals('<sip:sip.example.com>', $msg->contact->values[0]->uri->headers['Route']);
         $this->assertTrue(!isset($msg->contact->values[0]->params['Route']));
     }
 }

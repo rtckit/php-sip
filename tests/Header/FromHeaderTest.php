@@ -21,7 +21,7 @@ class FromHeaderTest extends TestCase
         $this->assertNotNull($from);
         $this->assertInstanceOf(NameAddrHeader::class, $from);
         $this->assertEquals('Bob', $from->name);
-        $this->assertEquals('sips:bob@biloxi.example.com', $from->addr);
+        $this->assertEquals('sips:bob@biloxi.example.com', $from->uri->render());
         $this->assertEquals('4294967295', $from->tag);
         $this->assertEquals('parameter', $from->params['custom']);
     }

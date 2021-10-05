@@ -6,13 +6,15 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
+use RTCKit\SIP\URI;
+
 /**
 * Contact Header Field Value Class
 */
 class ContactValue
 {
-    /** @var string Address portion of the Contact value */
-    public string $addr;
+    /** @var URI Parsed address portion of the Contact value */
+    public URI $uri;
 
     /** @var string Display name portion of the Contact value */
     public string $name;

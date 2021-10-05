@@ -17,7 +17,7 @@
   SUBSCRIBE sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com SIP/2.0
   Via: SIP/2.0/TCP 192.0.2.2;branch=z9hG4bKnlsdkdj2
   Max-Forwards: 70
-  From: <anonymous@example.com>;tag=23324
+  From: <sip:anonymous@example.com>;tag=23324
   To: <sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com>
   Call-ID: nSz1TWN54x7My0GvpEBj
   CSeq: 1 SUBSCRIBE
@@ -34,7 +34,7 @@
   NOTIFY sip:192.0.2.2;transport=tcp;ob SIP/2.0
   Via: SIP/2.0/TCP 192.0.2.5;branch=z9hG4bKn81dd2
   Max-Forwards: 70
-  To: <anonymous@example.com>;tag=23324
+  To: <sip:anonymous@example.com>;tag=23324
   From: <sip:00000000-0000-1000-8000-AABBCCDDEEFF@example.com>;tag=0983
   Call-ID: nSz1TWN54x7My0GvpEBj
   CSeq: 1 NOTIFY

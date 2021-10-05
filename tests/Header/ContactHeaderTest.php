@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
+use RTCKit\SIP\URI;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
@@ -26,17 +27,17 @@ class ContactHeaderTest extends TestCase
         $this->assertNotNull($contact);
         $this->assertInstanceOf(ContactHeader::class, $contact);
         $this->assertCount(5, $contact->values);
-        $this->assertEquals('sips:bob@client.biloxi.example.com', $contact->values[0]->addr);
+        $this->assertEquals('sips:bob@client.biloxi.example.com', $contact->values[0]->uri->render());
         $this->assertEquals('Bob \" Quote', $contact->values[0]->name);
         $this->assertEquals(3600, $contact->values[0]->expires);
-        $this->assertEquals('sips:bob@atlanta.example.com', $contact->values[1]->addr);
-        $this->assertEquals('sips:bob@office.biloxi.example.com', $contact->values[2]->addr);
+        $this->assertEquals('sips:bob@atlanta.example.com', $contact->values[1]->uri->render());
+        $this->assertEquals('sips:bob@office.biloxi.example.com', $contact->values[2]->uri->render());
         $this->assertEquals(0.1, $contact->values[2]->q);
-        $this->assertEquals('sips:bob@biloxi.example.com', $contact->values[3]->addr);
+        $this->assertEquals('sips:bob@biloxi.example.com', $contact->values[3]->uri->render());
         $this->assertEquals('Bob', $contact->values[3]->name);
         $this->assertEquals(4294967295, $contact->values[3]->expires);
         $this->assertEquals('parameter', $contact->values[3]->params['custom']);
-        $this->assertEquals('sips:bob@offshore.biloxi.example.com', $contact->values[4]->addr);
+        $this->assertEquals('sips:bob@offshore.biloxi.example.com', $contact->values[4]->uri->render());
         $this->assertFalse($contact->wildcard);
     }
 
@@ -135,11 +136,11 @@ class ContactHeaderTest extends TestCase
         $contact = new ContactHeader;
         $contact->values[0] = new ContactValue;
         $contact->values[0]->name = 'Bob';
-        $contact->values[0]->addr = 'bob@offshore.biloxi.example.com';
+        $contact->values[0]->uri = URI::parse('sip:bob@offshore.biloxi.example.com');
         $contact->values[0]->q = 0.7;
         $contact->values[0]->expires = 600;
         $contact->values[1] = new ContactValue;
-        $contact->values[1]->addr = 'bob@office.biloxi.example.com';
+        $contact->values[1]->uri = URI::parse('sip:bob@office.biloxi.example.com');
         $contact->values[1]->params['unknown'] = 'parameter';
 
         $rendered = $contact->render('Contact');
@@ -147,7 +148,7 @@ class ContactHeaderTest extends TestCase
         $this->assertNotNull($rendered);
         $this->assertIsString($rendered);
         $this->assertEquals(
-            'Contact: "Bob" <bob@offshore.biloxi.example.com>;q=0.7;expires=600, <bob@office.biloxi.example.com>;unknown=parameter' . "\r\n",
+            'Contact: "Bob" <sip:bob@offshore.biloxi.example.com>;q=0.7;expires=600, <sip:bob@office.biloxi.example.com>;unknown=parameter' . "\r\n",
             $rendered
         );
     }
@@ -155,6 +156,18 @@ class ContactHeaderTest extends TestCase
     public function testShouldNotRenderMissingValues()
     {
         $contact = new ContactHeader;
+
+        $this->expectException(InvalidHeaderValueException::class);
+        $contact->render('Contact');
+    }
+
+    public function testShouldNotRenderMissingNameAddr()
+    {
+        $contact = new ContactHeader;
+        $contact->values[0] = new ContactValue;
+        $contact->values[0]->name = 'Bob';
+        $contact->values[0]->q = 0.7;
+        $contact->values[0]->expires = 600;
 
         $this->expectException(InvalidHeaderValueException::class);
         $contact->render('Contact');
