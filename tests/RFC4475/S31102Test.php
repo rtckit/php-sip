@@ -25,10 +25,10 @@ class S31102Test extends RFC4475Case
         $this->assertEquals('!interesting-Method0123456789_*+`.%indeed\'~', $msg->method);
 
         /* The Request-URI contains unusual, but legal, characters */
-        $this->assertEquals(
-            'sip:1_unusual.URI~(to-be!sure)&isn\'t+it$/crazy?,/;;*:&it+has=1,weird!*pas$wo~d_too.(doesn\'t-it)@example.com',
-            $msg->uri
-        );
+        $this->assertEquals('sip', $msg->uri->scheme);
+        $this->assertEquals("1_unusual.URI~(to-be!sure)&isn't+it$/crazy?,/;;*", $msg->uri->user);
+        $this->assertEquals("&it+has=1,weird!*pas\$wo~d_too.(doesn't-it)", $msg->uri->password);
+        $this->assertEquals('example.com', $msg->uri->host);
 
         /* A branch parameter contains all non-alphanum characters from token */
         $this->assertEquals('z9hG4bK-.!%66*_+`\'~', $msg->via->values[0]->branch);

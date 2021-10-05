@@ -73,10 +73,10 @@ class ResponseTest extends TestCase
         $response->code = 200;
         $response->reason = 'Cool';
         $response->from = new NameAddrHeader;
-        $response->from->addr = 'sip:user@domain.com';
+        $response->from->uri = URI::parse('sip:user@domain.com');
         $response->from->tag = 'rand0m';
         $response->to = new NameAddrHeader;
-        $response->to->addr = 'sip:user@domain.com';
+        $response->to->uri = URI::parse('sip:user@domain.com');
         $response->to->tag = 'T4g';
 
         $text = $response->render();
@@ -97,10 +97,10 @@ class ResponseTest extends TestCase
         $response = new Response();
         $response->code = 200;
         $response->from = new NameAddrHeader;
-        $response->from->addr = 'sip:user@domain.com';
+        $response->from->uri = URI::parse('sip:user@domain.com');
         $response->from->tag = 'rand0m';
         $response->to = new NameAddrHeader;
-        $response->to->addr = 'sip:user@domain.com';
+        $response->to->uri = URI::parse('sip:user@domain.com');
         $response->to->tag = 'T4g';
 
         $text = $response->render();

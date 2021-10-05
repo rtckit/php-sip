@@ -28,7 +28,9 @@ class S31106Test extends RFC4475Case
            From header field value.  This has been identified as a specification
            bug that will be removed when RFC 3261 is revised.  Elements should
            accept this request as well formed. */
-        $this->assertEquals('sip:caller@example.com', $msg->from->addr);
+        $this->assertEquals('sip', $msg->from->uri->scheme);
+        $this->assertEquals('caller', $msg->from->uri->user);
+        $this->assertEquals('example.com', $msg->from->uri->host);
         $this->assertEquals('caller', $msg->from->name);
         $this->assertEquals('323', $msg->from->tag);
     }

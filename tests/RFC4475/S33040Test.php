@@ -10,7 +10,6 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.3.4
  * 3.3.4.  Unknown URI Schemes in Header Fields
- * Not in direct scope
  */
 class S33040Test extends RFC4475Case
 {
@@ -24,6 +23,7 @@ class S33040Test extends RFC4475Case
 
         /* Make sure the application has enough visibility to work
            with the To header field value scheme as it wishes */
-        $this->assertEquals('isbn:2983792873', $msg->to->addr);
+        $this->assertEquals('isbn', $msg->to->uri->scheme);
+        $this->assertEquals('2983792873', $msg->to->uri->host);
     }
 }

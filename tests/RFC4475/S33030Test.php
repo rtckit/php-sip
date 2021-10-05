@@ -10,7 +10,6 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.3.3
  * 3.3.3.  Request-URI with Known but Atypical Scheme
- * Not in direct scope
  */
 class S33030Test extends RFC4475Case
 {
@@ -24,6 +23,8 @@ class S33030Test extends RFC4475Case
 
         /* Make sure the application has enough visibility to work
            with the request URI scheme as it wishes */
-        $this->assertEquals('soap.beep://192.0.2.103:3002', $msg->uri);
+        $this->assertEquals('soap.beep', $msg->uri->scheme);
+        $this->assertEquals('192.0.2.103', $msg->uri->host);
+        $this->assertEquals(3002, $msg->uri->port);
     }
 }

@@ -10,7 +10,6 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.3.2
  * 3.3.2.  Request-URI with Unknown Scheme
- * Not in direct scope
  */
 class S33020Test extends RFC4475Case
 {
@@ -24,6 +23,7 @@ class S33020Test extends RFC4475Case
 
         /* Make sure the application has enough visibility to work
            with the request URI scheme as it wishes */
-        $this->assertEquals('nobodyKnowsThisScheme:totallyopaquecontent', $msg->uri);
+        $this->assertEquals('nobodyknowsthisscheme', $msg->uri->scheme);
+        $this->assertEquals('totallyopaquecontent', $msg->uri->host);
     }
 }

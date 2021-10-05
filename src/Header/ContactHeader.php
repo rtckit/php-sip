@@ -7,9 +7,10 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
+use RTCKit\SIP\URI;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Contact Header Class
@@ -29,7 +30,7 @@ class ContactHeader
      *
      * @param list<string> $hbody Header body
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @return ContactHeader
      */
     public static function parse(array $hbody): ContactHeader
@@ -46,6 +47,7 @@ class ContactHeader
             $qfrom = null;
             $afrom = null;
             $base = 0;
+            $addr = null;
 
             for ($i = 0; $i <= $len; $i++) {
                 if (!$quoted) {
@@ -55,16 +57,16 @@ class ContactHeader
 
                             continue;
                         } else {
-                            $val->addr = substr($hline, $afrom, $i - $afrom);
-                            $semiPos = strpos($val->addr, ';');
+                            $addr = substr($hline, $afrom, $i - $afrom);
+                            $semiPos = strpos($addr, ';');
 
                             if ($semiPos !== false) {
-                                $val->addr = substr($val->addr, 0, $semiPos);
+                                $addr = substr($addr, 0, $semiPos);
                                 $i = $semiPos + 1;
                                 $fetchParams = true;
                             }
 
-                            if (strpos($val->addr, '>') !== false) {
+                            if (strpos($addr, '>') !== false) {
                                 throw new InvalidHeaderLineException('Invalid contact line, unmatched <> enclosure ending', Response::BAD_REQUEST);
                             }
 
@@ -95,9 +97,9 @@ class ContactHeader
                             throw new InvalidHeaderLineException('Invalid contact line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                         }
 
-                        $val->addr = trim(substr($hline, $next, $end - $next));
+                        $addr = trim(substr($hline, $next, $end - $next));
 
-                        if (strpos($val->addr, '<') !== false) {
+                        if (strpos($addr, '<') !== false) {
                             throw new InvalidHeaderLineException('Invalid contact line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                         }
 
@@ -131,7 +133,7 @@ class ContactHeader
 
                                 if (!isset($param[0])) {
                                     if ($ord) {
-                                        throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                                     } else {
                                         continue;
                                     }
@@ -141,7 +143,7 @@ class ContactHeader
                                 $p[0] = rtrim($p[0]);
 
                                 if (!isset($p[0][0])) {
-                                    throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                                 }
 
                                 if ($p[0][0] === '>') {
@@ -152,19 +154,19 @@ class ContactHeader
 
                                 if ($p[0] === 'q') {
                                     if (isset($val->q)) {
-                                        throw new InvalidHeaderParameter('Duplicate q Contact header value parameter', Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Duplicate q Contact header value parameter', Response::BAD_REQUEST);
                                     }
 
                                     $val->q = (float) $pv;
                                 } else if ($p[0] === 'expires') {
                                     if (isset($val->expires)) {
-                                        throw new InvalidHeaderParameter('Duplicate expires Contact header value parameter', Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Duplicate expires Contact header value parameter', Response::BAD_REQUEST);
                                     }
 
                                     $val->expires = (int) $pv;
                                 } else {
                                     if (isset($val->params[$p[0]])) {
-                                        throw new InvalidHeaderParameter('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
+                                        throw new InvalidHeaderParameterException('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
                                     }
 
                                     $val->params[$p[0]] = $pv;
@@ -172,8 +174,12 @@ class ContactHeader
                             }
                         }
 
-                        $ret->values[] = $val;
-                        $val = new ContactValue;
+                        if (!is_null($addr)) {
+                            $val->uri = URI::parse($addr);
+                            $ret->values[] = $val;
+                            $addr = null;
+                            $val = new ContactValue;
+                        }
 
                         if (($commaPos === false) || ($remainder <= 0)) {
                             break;
@@ -188,13 +194,14 @@ class ContactHeader
                     $i++;
                 } else if($hline[$i] === '"') {
                     $quoted = false;
-                    /** @psalm-suppress PossiblyNullOperand qfrom is always set if quoted === true */
+                    /** @psalm-suppress PossiblyNullOperand qfrom is always set if fetchParams === true */
                     $val->name = str_replace('\\\\', '\\', substr($hline, $qfrom + 1, $i - $qfrom - 1));
                     $qfrom = null;
                 }
             }
 
-            if (isset($val->addr)) {
+            if (!is_null($addr)) {
+                $val->uri = URI::parse($addr);
                 $ret->values[] = $val;
             }
         }
@@ -206,7 +213,7 @@ class ContactHeader
      * Contact header values renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
@@ -216,17 +223,23 @@ class ContactHeader
         }
 
         if (!isset($this->values[0])) {
-            throw new InvalidHeaderValue('Missing Contact header values');
+            throw new InvalidHeaderValueException('Missing Contact header values');
         }
 
         $ret = "{$hname}: ";
         $delim = '';
 
         foreach ($this->values as $value) {
+            if (!isset($value->uri)) {
+                throw new InvalidHeaderValueException('Missing address part for contact header field value');
+            }
+
+            $addr = $value->uri->render();
+
             if (isset($value->name[0])) {
-                $ret .= $delim . '"' . addcslashes($value->name, "\x5c") . '" ' . "<{$value->addr}>";
+                $ret .= $delim . '"' . addcslashes($value->name, "\x5c") . '" ' . "<{$addr}>";
             } else {
-                $ret .= "{$delim}<{$value->addr}>";
+                $ret .= "{$delim}<{$addr}>";
             }
 
             if (isset($value->q)) {

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace RTCKit\SIP;
 
 use RTCKit\SIP\Exception\InvalidMessageStartLineException;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 
 use PHPUnit\Framework\TestCase;
 
@@ -168,8 +168,8 @@ class StreamParserTest extends TestCase
             'a=rtpmap:0 PCMU/8000' . "\r\n" .
             "\r\n";
 
-        // Throws InvalidScalarValue
-        $this->expectException(InvalidScalarValue::class);
+        // Throws InvalidScalarValueException
+        $this->expectException(InvalidScalarValueException::class);
         $this->parser->process($bytes, $messages);
     }
 }

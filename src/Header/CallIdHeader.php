@@ -7,8 +7,8 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Call-ID Header Class
@@ -24,13 +24,13 @@ class CallIdHeader
      * Call-ID header value parser
      *
      * @param list<string> $hbody Header body
-     * @throws InvalidDuplicateHeader
+     * @throws InvalidDuplicateHeaderException
      * @return CallIdHeader
      */
     public static function parse(array $hbody): CallIdHeader
     {
         if (isset($hbody[1])) {
-            throw new InvalidDuplicateHeader('Cannot have more than one Call-ID header', Response::BAD_REQUEST);
+            throw new InvalidDuplicateHeaderException('Cannot have more than one Call-ID header', Response::BAD_REQUEST);
         }
 
         $ret = new static;
@@ -43,13 +43,13 @@ class CallIdHeader
      * Call-ID header value renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
     {
         if (!isset($this->value[0])) {
-            throw new InvalidHeaderValue('Missing Call-ID header value');
+            throw new InvalidHeaderValueException('Missing Call-ID header value');
         }
 
         return "{$hname}: {$this->value}\r\n";

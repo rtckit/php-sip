@@ -7,18 +7,19 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\URI;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Name-Addr Header Class
 */
 class NameAddrHeader
 {
-    /** @var string Address portion of the field value */
-    public string $addr;
+    /** @var URI Parsed address portion of the field value */
+    public URI $uri;
 
     /** @var string Display name portion of the field value */
     public string $name;
@@ -35,9 +36,9 @@ class NameAddrHeader
      * Name-addr header fields parser
      *
      * @param list<string> $hbody Header body
-     * @throws InvalidDuplicateHeader
+     * @throws InvalidDuplicateHeaderException
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @return NameAddrHeader
      */
     public static function parse(array $hbody): NameAddrHeader
@@ -45,7 +46,7 @@ class NameAddrHeader
         $ret = new static;
 
         if (isset($hbody[1])) {
-            throw new InvalidDuplicateHeader('Cannot have more than one name-addr header', Response::BAD_REQUEST);
+            throw new InvalidDuplicateHeaderException('Cannot have more than one name-addr header', Response::BAD_REQUEST);
         }
 
         $len = strlen($hbody[0]);
@@ -54,6 +55,7 @@ class NameAddrHeader
         $quoted = false;
         $qfrom = null;
         $afrom = null;
+        $addr = null;
 
         for ($i = 0; $i <= $len; $i++) {
             if (!$quoted) {
@@ -63,15 +65,15 @@ class NameAddrHeader
 
                         continue;
                     } else {
-                        $ret->addr = substr($hbody[0], $afrom, $i - $afrom);
-                        $semiPos = strpos($ret->addr, ';');
+                        $addr = substr($hbody[0], $afrom, $i - $afrom);
+                        $semiPos = strpos($addr, ';');
 
                         if ($semiPos !== false) {
-                            $ret->addr = substr($ret->addr, 0, $semiPos);
+                            $addr = substr($addr, 0, $semiPos);
                             $i = $semiPos + 1;
                         }
 
-                        if (strpos($ret->addr, '>') !== false) {
+                        if (strpos($addr, '>') !== false) {
                             throw new InvalidHeaderLineException('Invalid name-addr line, unmatched <> enclosure ending', Response::BAD_REQUEST);
                         }
 
@@ -95,9 +97,9 @@ class NameAddrHeader
                         throw new InvalidHeaderLineException('Invalid name-addr line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                     }
 
-                    $ret->addr = trim(substr($hbody[0], $next, $end - $next));
+                    $addr = trim(substr($hbody[0], $next, $end - $next));
 
-                    if (strpos($ret->addr, '<') !== false) {
+                    if (strpos($addr, '<') !== false) {
                         throw new InvalidHeaderLineException('Invalid name-addr line, unmatched <> enclosure opening', Response::BAD_REQUEST);
                     }
 
@@ -124,7 +126,7 @@ class NameAddrHeader
 
                             if (!isset($param[0])) {
                                 if ($ord) {
-                                    throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                                 } else {
                                     continue;
                                 }
@@ -134,7 +136,7 @@ class NameAddrHeader
                             $p[0] = rtrim($p[0]);
 
                             if (!isset($p[0][0])) {
-                                throw new InvalidHeaderParameter('Empty header parameters', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Empty header parameters', Response::BAD_REQUEST);
                             }
 
                             if ($p[0][0] === '>') {
@@ -145,13 +147,13 @@ class NameAddrHeader
 
                             if ($p[0] === 'tag') {
                                 if (isset($ret->tag)) {
-                                    throw new InvalidHeaderParameter('Duplicate tag parameter', Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Duplicate tag parameter', Response::BAD_REQUEST);
                                 }
 
                                 $ret->tag = $pv;
                             } else {
                                 if (isset($ret->params[$p[0]])) {
-                                    throw new InvalidHeaderParameter('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
+                                    throw new InvalidHeaderParameterException('Duplicate header value parameter: ' . $p[0], Response::BAD_REQUEST);
                                 }
 
                                 $ret->params[$p[0]] = $pv;
@@ -173,6 +175,12 @@ class NameAddrHeader
             }
         }
 
+        if (is_null($addr)) {
+            throw new InvalidHeaderLineException('Invalid name-addr line, missing addr-spec', Response::BAD_REQUEST);
+        }
+
+        $ret->uri = URI::parse($addr);
+
         return $ret;
     }
 
@@ -180,21 +188,22 @@ class NameAddrHeader
      * Name-addr header values renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
     {
-        if (!isset($this->addr[0])) {
-            throw new InvalidHeaderValue('Missing address part for name-addr header field');
+        if (!isset($this->uri)) {
+            throw new InvalidHeaderValueException('Missing address part for name-addr header field');
         }
 
         $ret = "{$hname}: ";
+        $addr = $this->uri->render();
 
         if (isset($this->name[0])) {
-            $ret = "{$hname}: " . '"' . addcslashes($this->name, '\\') . '" ' . "<{$this->addr}>";
+            $ret = "{$hname}: " . '"' . addcslashes($this->name, '\\') . '" ' . "<{$addr}>";
         } else {
-            $ret = "{$hname}: <{$this->addr}>";
+            $ret = "{$hname}: <{$addr}>";
         }
 
         if (isset($this->tag)) {

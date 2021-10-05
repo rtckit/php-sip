@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\MultiValueWithParamsHeader;
 use RTCKit\SIP\Header\ValueWithParams;
 
@@ -35,7 +35,7 @@ class MultiValueWithParamsHeaderTest extends TestCase
 
     public function testShouldNotParseMissingHeaderParameterName()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         MultiValueWithParamsHeader::parse(['text/plain;=utf-8, application/sdp;custom=something']);
     }
 
@@ -61,7 +61,7 @@ class MultiValueWithParamsHeaderTest extends TestCase
         $header = new MultiValueWithParamsHeader;
         $header->values[0] = new ValueWithParams;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $header->render('Accept');
     }
 
@@ -72,7 +72,7 @@ class MultiValueWithParamsHeaderTest extends TestCase
         $header->values[0]->value = 'text/plain';
         $header->values[0]->params[''] = 'utf-8';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $header->render('Accept');
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\CallIdHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -23,7 +23,7 @@ class CallIdHeaderTest extends TestCase
 
     public function testShouldNotParseMultiValue()
     {
-        $this->expectException(InvalidDuplicateHeader::class);
+        $this->expectException(InvalidDuplicateHeaderException::class);
         CallIdHeader::parse([
             '78',
             '99',
@@ -46,7 +46,7 @@ class CallIdHeaderTest extends TestCase
     {
         $callId = new CallIdHeader;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $callId->render('Call-ID');
     }
 }

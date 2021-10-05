@@ -7,7 +7,7 @@
 #                                     |
 #         UA2--------------------------
 - |+
-  INVITE UA1@EXAMPLEHOME.COM SIP/2.0
+  INVITE sip:UA1@EXAMPLEHOME.COM SIP/2.0
   Via: SIP/2.0/UDP 71.91.180.10:5060;branch=z9hG4bKe2i95c5st3R
   To: UA1 <sip:UA1@EXAMPLEHOME.COM>
   From: UA2 <sip:UA2@FOREIGN.ELSEWHERE.ORG>;tag=224497
@@ -16,7 +16,7 @@
   Contact: <sip:UA2@71.91.180.10>
 
 - |+
-  INVITE UA1@192.0.2.4 SIP/2.0
+  INVITE sip:UA1@192.0.2.4 SIP/2.0
   Via: SIP/2.0/UDP 143.70.6.83:5060;branch=z9hG4bKlj25C107a7b176
   Via: SIP/2.0/UDP 71.91.180.10:5060;branch=z9hG4bKe2i95c5st3R
   To: UA1 <sip:UA1@EXAMPLEHOME.COM>
@@ -27,7 +27,7 @@
   Route: <sip:P3.EXAMPLEHOME.COM;lr>,<sip:P1.EXAMPLEVISITED.COM;lr>
 
 - |+
-  INVITE UA1@192.0.2.4 SIP/2.0
+  INVITE sip:UA1@192.0.2.4 SIP/2.0
   Via: SIP/2.0/UDP 19.31.97.3:5060;branch=z9hG4bKjasg7li7nc9e
   Via: SIP/2.0/UDP 143.70.6.83:5060;branch=z9hG4bKlj25C107a7b176
   Via: SIP/2.0/UDP 71.91.180.10:5060;branch=z9hG4bKe2i95c5st3R
@@ -40,7 +40,7 @@
   Route: <sip:P1.EXAMPLEVISITED.COM;lr>
 
 - |+
-  INVITE UA1@192.0.2.4 SIP/2.0
+  INVITE sip:UA1@192.0.2.4 SIP/2.0
   Via: SIP/2.0/UDP 112.68.155.4:5060;branch=z9hG4bKk5l1833o43p
   Via: SIP/2.0/UDP 19.31.97.3:5060;branch=z9hG4bKjasg7li7nc9e
   Via: SIP/2.0/UDP 143.70.6.83:5060;branch=z9hG4bKlj25C107a7b176

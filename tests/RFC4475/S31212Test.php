@@ -10,7 +10,6 @@ use RTCKit\SIP\Request;
 /**
  * https://tools.ietf.org/html/rfc4475#section-3.1.2.12
  * 3.1.2.12.  Invalid Time Zone in Date Header Field
- * 2D! Liberal for now
  */
 class S31212Test extends RFC4475Case
 {

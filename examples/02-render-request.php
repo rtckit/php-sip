@@ -18,11 +18,14 @@ use RTCKit\SIP\Header\ScalarHeader;
 use RTCKit\SIP\Header\ViaHeader;
 use RTCKit\SIP\Header\ViaValue;
 use RTCKit\SIP\Request;
+use RTCKit\SIP\URI;
 
 $request = new Request;
 $request->version = 'SIP/2.0';
 $request->method = 'REGISTER';
-$request->uri = 'sip:192.168.0.1';
+$request->uri = new URI;
+$request->uri->scheme = 'sip';
+$request->uri->host = '192.168.0.1';
 
 $request->via = new ViaHeader;
 $request->via->values[0] = new ViaValue;
@@ -33,11 +36,17 @@ $request->via->values[0]->host = '192.168.0.2:5050';
 $request->via->values[0]->branch = 'z9hG4bK.eAV4o0nXr';
 
 $request->from = new NameAddrHeader;
-$request->from->addr = 'sip:buzz@192.168.0.1';
+$request->from->uri = new URI;
+$request->from->uri->scheme = 'sip';
+$request->from->uri->user = 'buzz';
+$request->from->uri->host = '192.168.0.1';
 $request->from->tag = 'SFJbQ2oWh';
 
 $request->to = new NameAddrHeader;
-$request->to->addr = 'sip:buzz@192.168.0.1';
+$request->to->uri = new URI;
+$request->to->uri->scheme = 'sip';
+$request->to->uri->user = 'buzz';
+$request->to->uri->host = '192.168.0.1';
 
 $request->cSeq = new CSeqHeader;
 $request->cSeq->sequence = 20;
@@ -51,7 +60,12 @@ $request->maxForwards->value = 70;
 
 $request->contact = new ContactHeader;
 $request->contact->values[0] = new ContactValue;
-$request->contact->values[0]->addr = 'sip:buzz@192.168.0.2:5050;transport=udp';
+$request->contact->values[0]->uri = new URI;
+$request->contact->values[0]->uri->scheme = 'sip';
+$request->contact->values[0]->uri->user = 'buzz';
+$request->contact->values[0]->uri->host = '192.168.0.2';
+$request->contact->values[0]->uri->port = 5050;
+$request->contact->values[0]->uri->transport = 'udp';
 $request->contact->values[0]->q = 0.7;
 $request->contact->values[0]->expires = 3600;
 $request->contact->values[0]->params['+sip.instance'] = '"<urn:uuid:5cc54b96-ab90-4652-b4e5-de74c8e56fb7>"';

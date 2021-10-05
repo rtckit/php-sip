@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 use RTCKit\SIP\Header\CSeqHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ class CSeqHeaderTest extends TestCase
 
     public function testShouldNotParseMultiValue()
     {
-        $this->expectException(InvalidDuplicateHeader::class);
+        $this->expectException(InvalidDuplicateHeaderException::class);
         CSeqHeader::parse([
             '7 METHOD',
             '9 INVITE',
@@ -41,13 +41,13 @@ class CSeqHeaderTest extends TestCase
 
     public function testShouldNotParseNegativeSequence()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         CSeqHeader::parse(['-7 METHOD']);
     }
 
     public function testShouldNotParseOutOfBoundsSequence()
     {
-        $this->expectException(InvalidScalarValue::class);
+        $this->expectException(InvalidScalarValueException::class);
         CSeqHeader::parse(['42949672950 METHOD']);
     }
 
@@ -75,7 +75,7 @@ class CSeqHeaderTest extends TestCase
         $cseq = new CSeqHeader;
         $cseq->method = 'METHOD';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $cseq->render('CSeq');
     }
 
@@ -84,7 +84,7 @@ class CSeqHeaderTest extends TestCase
         $cseq = new CSeqHeader;
         $cseq->sequence = 7;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $cseq->render('CSeq');
     }
 }

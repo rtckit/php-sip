@@ -7,7 +7,7 @@ declare(strict_types = 1);
 namespace RTCKit\SIP;
 
 use RTCKit\SIP\Exception\InvalidBodyLengthException;
-use RTCKit\SIP\Exception\InvalidCSeqValue;
+use RTCKit\SIP\Exception\InvalidCSeqValueException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
 use RTCKit\SIP\Header\AuthHeader;
@@ -144,7 +144,7 @@ class Message
      * @param string $text Raw SIP message
      * @param bool $ignoreBody Whether or not to ignore the Message body
      * @throws InvalidBodyLengthException
-     * @throws InvalidCSeqValue
+     * @throws InvalidCSeqValueException
      * @throws InvalidHeaderLineException
      * @throws InvalidHeaderSectionException
      * @return Message
@@ -242,7 +242,7 @@ class Message
                     $msg->cSeq = CSeqHeader::parse($hbody);
 
                     if (isset($msg->method) && ($msg->method !== $msg->cSeq->method)) {
-                        throw new InvalidCSeqValue('Mismatched request method in CSeq header', Response::BAD_REQUEST);
+                        throw new InvalidCSeqValueException('Mismatched request method in CSeq header', Response::BAD_REQUEST);
                     }
 
                     continue 2;

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Header\FromHeader;
 use RTCKit\SIP\Header\NameAddrHeader;
 
@@ -21,14 +21,14 @@ class FromHeaderTest extends TestCase
         $this->assertNotNull($from);
         $this->assertInstanceOf(NameAddrHeader::class, $from);
         $this->assertEquals('Bob', $from->name);
-        $this->assertEquals('sips:bob@biloxi.example.com', $from->addr);
+        $this->assertEquals('sips:bob@biloxi.example.com', $from->uri->render());
         $this->assertEquals('4294967295', $from->tag);
         $this->assertEquals('parameter', $from->params['custom']);
     }
 
     public function testShouldNotParseMissingTagParameter()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         FromHeader::parse(['Bob <sips:bob@biloxi.example.com>']);
     }
 }

@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
-use RTCKit\SIP\Exception\InvalidDuplicateHeader;
+use RTCKit\SIP\Exception\InvalidDuplicateHeaderException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Header\SingleValueWithParamsHeader;
 
 use PHPUnit\Framework\TestCase;
@@ -33,13 +33,13 @@ class SingleValueWithParamsHeaderTest extends TestCase
 
     public function testShouldNotParseMultiValue()
     {
-        $this->expectException(InvalidDuplicateHeader::class);
+        $this->expectException(InvalidDuplicateHeaderException::class);
         SingleValueWithParamsHeader::parse(['text/plain;charset=utf-8;custom=something', 'application/sdp']);
     }
 
     public function testShouldNotParseMissingHeaderParameterName()
     {
-        $this->expectException(InvalidHeaderParameter::class);
+        $this->expectException(InvalidHeaderParameterException::class);
         SingleValueWithParamsHeader::parse(['text/plain;charset=utf-8;=something']);
     }
 
@@ -61,7 +61,7 @@ class SingleValueWithParamsHeaderTest extends TestCase
     {
         $header = new SingleValueWithParamsHeader;
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $header->render('Accept');
     }
 
@@ -71,7 +71,7 @@ class SingleValueWithParamsHeaderTest extends TestCase
         $header->value = 'text/plain';
         $header->params[''] = 'utf-8';
 
-        $this->expectException(InvalidHeaderValue::class);
+        $this->expectException(InvalidHeaderValueException::class);
         $header->render('Accept');
     }
 }

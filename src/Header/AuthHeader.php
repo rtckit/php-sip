@@ -8,8 +8,8 @@ namespace RTCKit\SIP\Header;
 
 use RTCKit\SIP\Response;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
-use RTCKit\SIP\Exception\InvalidHeaderParameter;
-use RTCKit\SIP\Exception\InvalidHeaderValue;
+use RTCKit\SIP\Exception\InvalidHeaderParameterException;
+use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
 * Authentication/Authorization Header Class
@@ -28,7 +28,7 @@ class AuthHeader
      *
      * @param list<string> $hbody Header body
      * @throws InvalidHeaderLineException
-     * @throws InvalidHeaderParameter
+     * @throws InvalidHeaderParameterException
      * @return AuthHeader
      */
     public static function parse(array $hbody): AuthHeader
@@ -142,7 +142,7 @@ class AuthHeader
                             } else if ($pv === 'false') {
                                 $val->stale = false;
                             } else {
-                                throw new InvalidHeaderParameter('Invalid Auth header, non-boolean stale parameter', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Invalid Auth header, non-boolean stale parameter', Response::BAD_REQUEST);
                             }
                             break;
 
@@ -160,7 +160,7 @@ class AuthHeader
 
                         case 'nc':
                             if (!ctype_xdigit($pv)) {
-                                throw new InvalidHeaderParameter('Invalid Auth header, non-hexadecimal nc parameter', Response::BAD_REQUEST);
+                                throw new InvalidHeaderParameterException('Invalid Auth header, non-hexadecimal nc parameter', Response::BAD_REQUEST);
                             }
 
                             $val->nc = $pv;
@@ -189,7 +189,7 @@ class AuthHeader
      * Authentication/Authorization header field value renderer
      *
      * @param string $hname Header field name
-     * @throws InvalidHeaderValue
+     * @throws InvalidHeaderValueException
      * @return string
      */
     public function render(string $hname): string
@@ -198,7 +198,7 @@ class AuthHeader
 
         foreach ($this->values as $key => $value) {
             if (!isset($value->scheme)) {
-                throw new InvalidHeaderValue('Malformed auth header, missing scheme');
+                throw new InvalidHeaderValueException('Malformed auth header, missing scheme');
             }
 
             $params = [];
@@ -253,7 +253,7 @@ class AuthHeader
                 }
             } else {
                 if (!isset($value->credentials)) {
-                    throw new InvalidHeaderValue('Malformed auth header, missing credentials');
+                    throw new InvalidHeaderValueException('Malformed auth header, missing credentials');
                 }
 
                 $params[] = $value->credentials;

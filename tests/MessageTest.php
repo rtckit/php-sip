@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace RTCKit\SIP;
 
 use RTCKit\SIP\Exception\InvalidBodyLengthException;
-use RTCKit\SIP\Exception\InvalidCSeqValue;
+use RTCKit\SIP\Exception\InvalidCSeqValueException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
-use RTCKit\SIP\Exception\InvalidScalarValue;
+use RTCKit\SIP\Exception\InvalidScalarValueException;
 use RTCKit\SIP\Header\AuthValue;
 use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\CallIdHeader;
@@ -177,8 +177,8 @@ class MessageTest extends TestCase
 
     public function testShouldNotParseMismatchingCSeqMethods()
     {
-        // Throws InvalidCSeqValue
-        $this->expectException(InvalidCSeqValue::class);
+        // Throws InvalidCSeqValueException
+        $this->expectException(InvalidCSeqValueException::class);
         Message::parse(
             'METHOD sip:user@nowhere.com SIP/2.0' . "\r\n" .
             'From: Alice <sip:alice@atlanta.com>;tag=9fxced76sl' . "\r\n" .
@@ -189,8 +189,8 @@ class MessageTest extends TestCase
 
     public function testShouldNotParseNegativeContentLength()
     {
-        // Throws InvalidScalarValue
-        $this->expectException(InvalidScalarValue::class);
+        // Throws InvalidScalarValueException
+        $this->expectException(InvalidScalarValueException::class);
         Message::parse(
             'METHOD sip:user@nowhere.com SIP/2.0' . "\r\n" .
             'From: Alice <sip:alice@atlanta.com>;tag=9fxced76sl' . "\r\n" .
@@ -235,7 +235,10 @@ class MessageTest extends TestCase
         $request = new Request;
 
         $request->method = 'METHOD';
-        $request->uri = 'sip:user@nowhere.com';
+        $request->uri = new URI;
+        $request->uri->scheme = 'sip';
+        $request->uri->user = 'user';
+        $request->uri->host = 'nowhere.com';
         $request->version = 'SIP/2.0';
 
         $request->via = new ViaHeader;
@@ -247,17 +250,17 @@ class MessageTest extends TestCase
         $request->via->values[0]->branch = 'z9hG4bKnashds7';
 
         $request->from = new NameAddrHeader;
-        $request->from->addr = 'sip:alice@atlanta.example.com';
+        $request->from->uri = URI::parse('sip:alice@atlanta.example.com');
         $request->from->name = 'Alice';
         $request->from->tag = '9fxced76sl';
 
         $request->to = new NameAddrHeader;
-        $request->to->addr = 'sip:bob@biloxi.com';
+        $request->to->uri = URI::parse('sip:bob@biloxi.com');
         $request->to->name = 'Bob';
 
         $request->contact = new ContactHeader;
         $request->contact->values[0] = new ContactValue;
-        $request->contact->values[0]->addr = 'sip:user@domain.com';
+        $request->contact->values[0]->uri = URI::parse('sip:user@domain.com');
 
         $request->callId = new CallIdHeader;
         $request->callId->value = '715';
@@ -332,7 +335,7 @@ class MessageTest extends TestCase
         $request->contentLanguage->values[0]->value = 'es';
 
         $request->replyTo = new NameAddrHeader;
-        $request->replyTo->addr = 'sip:bob@biloxi.com';
+        $request->replyTo->uri = URI::parse('sip:bob@biloxi.com');
         $request->replyTo->name = 'Bob';
 
         $request->alertInfo = new Header;

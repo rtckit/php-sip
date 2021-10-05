@@ -38,14 +38,21 @@ printf("Response code:     %s" . PHP_EOL, $response->code);
 printf("Response reason:   %s" . PHP_EOL, $response->reason);
 printf("Via:               %s" . PHP_EOL, $response->via->values[0]->host);
 printf("Via branch:        %s" . PHP_EOL, $response->via->values[0]->branch);
-printf("From:              %s" . PHP_EOL, $response->from->addr);
+printf("From scheme:       %s" . PHP_EOL, $response->from->uri->scheme);
+printf("From user:         %s" . PHP_EOL, $response->from->uri->user);
+printf("From host:         %s" . PHP_EOL, $response->from->uri->host);
 printf("From tag:          %s" . PHP_EOL, $response->from->tag);
-printf("To:                %s" . PHP_EOL, $response->to->addr);
+printf("To scheme:         %s" . PHP_EOL, $response->to->uri->scheme);
+printf("To host:           %s" . PHP_EOL, $response->to->uri->host);
 printf("To tag:            %s" . PHP_EOL, $response->to->tag);
 printf("Call ID:           %s" . PHP_EOL, $response->callId->value);
 printf("User agent:        %s" . PHP_EOL, $response->userAgent->values[0]);
 printf("CSeq:              %s" . PHP_EOL, $response->cSeq->sequence);
-printf("Contact:           %s" . PHP_EOL, $response->contact->values[0]->addr);
+printf("Contact scheme:    %s" . PHP_EOL, $response->contact->values[0]->uri->scheme);
+printf("Contact user:      %s" . PHP_EOL, $response->contact->values[0]->uri->user);
+printf("Contact host:      %s" . PHP_EOL, $response->contact->values[0]->uri->host);
+printf("Contact port:      %s" . PHP_EOL, $response->contact->values[0]->uri->port);
+printf("Contact transport: %s" . PHP_EOL, $response->contact->values[0]->uri->transport);
 
 printf("Accept:            ");
 

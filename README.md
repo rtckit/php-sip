@@ -29,27 +29,35 @@ $message = \RTCKit\SIP\Message::parse($text);
 echo get_class($message) . PHP_EOL;
 
 /* Outputs something similar to:
- * Protocol version:  SIP/2.0
- * Request method:    REGISTER
- * Request URI:       sip:192.168.0.1
- * Via:               192.168.0.2:5050
- * Via branch:        z9hG4bK.eAV4o0nXr
- * From:              sip:buzz@192.168.0.1
- * From tag:          SFJbQ2oWh
- * To:                sip:buzz@192.168.0.1
- * Sequence number:   20
- * Call ID:           ob0EYyuyC0
+ * Protocol version:   SIP/2.0
+ * Request method:     REGISTER
+ * Request URI:        sip:192.168.0.1
+ * Via:                192.168.0.2:5050
+ * Via branch:         z9hG4bK.eAV4o0nXr
+ * From scheme:        sip
+ * From user:          buzz
+ * From host:          192.168.0.1
+ * From tag:           SFJbQ2oWh
+ * To scheme:          sip
+ * To user:            buzz
+ * To host:            192.168.0.1
+ * Sequence number:    20
+ * Call ID:            ob0EYyuyC0
  */
-printf("Protocol version:  %s" . PHP_EOL, $message->version);
-printf("Request method:    %s" . PHP_EOL, $message->method);
-printf("Request URI:       %s" . PHP_EOL, $message->uri);
-printf("Via:               %s" . PHP_EOL, $message->via->values[0]->host);
-printf("Via branch:        %s" . PHP_EOL, $message->via->values[0]->branch);
-printf("From:              %s" . PHP_EOL, $message->from->addr);
-printf("From tag:          %s" . PHP_EOL, $message->from->tag);
-printf("To:                %s" . PHP_EOL, $message->to->addr);
-printf("Sequence number:   %s" . PHP_EOL, $message->cSeq->sequence);
-printf("Call ID:           %s" . PHP_EOL, $message->callId->value);
+printf("Protocol version:   %s" . PHP_EOL, $message->version);
+printf("Request method:     %s" . PHP_EOL, $message->method);
+printf("Request URI:        %s" . PHP_EOL, $message->uri);
+printf("Via:                %s" . PHP_EOL, $message->via->values[0]->host);
+printf("Via branch:         %s" . PHP_EOL, $message->via->values[0]->branch);
+printf("From scheme:        %s" . PHP_EOL, $request->from->uri->scheme);
+printf("From user:          %s" . PHP_EOL, $request->from->uri->user);
+printf("From host:          %s" . PHP_EOL, $request->from->uri->host);
+printf("From tag:           %s" . PHP_EOL, $request->from->tag);
+printf("To scheme:          %s" . PHP_EOL, $request->to->uri->scheme);
+printf("To user:            %s" . PHP_EOL, $request->to->uri->user);
+printf("To host:            %s" . PHP_EOL, $request->to->uri->host);
+printf("Sequence number:    %s" . PHP_EOL, $message->cSeq->sequence);
+printf("Call ID:            %s" . PHP_EOL, $message->callId->value);
 ```
 
 #### SIP Message Rendering
@@ -70,11 +78,17 @@ $response->via->values[0]->host = '192.168.0.2:5050';
 $response->via->values[0]->branch = 'z9hG4bK.eAV4o0nXr';
 
 $response->from = new \RTCKit\SIP\Header\NameAddrHeader;
-$response->from->addr = 'sip:buzz@192.168.0.1';
+$response->from->uri = new \RTCKit\SIP\URI;
+$response->from->uri->scheme = 'sip';
+$response->from->uri->user = 'buzz';
+$response->from->uri->host = '192.168.0.1';
 $response->from->tag = 'SFJbQ2oWh';
 
 $response->to = new \RTCKit\SIP\Header\NameAddrHeader;
-$response->to->addr = 'sip:buzz@192.168.0.1';
+$response->to->uri = new \RTCKit\SIP\URI;
+$response->to->uri->scheme = 'sip';
+$response->to->uri->user = 'buzz';
+$response->to->uri->host = '192.168.0.1';
 $response->to->tag = '8cQtUyH6N5N9K';
 
 $response->cSeq = new \RTCKit\SIP\Header\CSeqHeader;
@@ -89,7 +103,12 @@ $response->maxForwards->value = 70;
 
 $response->contact = new \RTCKit\SIP\Header\ContactHeader;
 $response->contact->values[0] = new \RTCKit\SIP\Header\ContactValue;
-$response->contact->values[0]->addr = 'sip:buzz@192.168.0.2:5050;transport=udp';
+$response->contact->values[0]->uri = new \RTCKit\SIP\URI;
+$response->contact->values[0]->uri->scheme = 'sip';
+$response->contact->values[0]->uri->user = 'buzz';
+$response->contact->values[0]->uri->host = '192.168.0.2';
+$response->contact->values[0]->uri->port = 5050;
+$response->contact->values[0]->uri->transport = 'udp';
 $response->contact->values[0]->expires = 3600;
 
 $response->userAgent = new \RTCKit\SIP\Header\Header;

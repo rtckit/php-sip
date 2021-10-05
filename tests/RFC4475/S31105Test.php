@@ -32,8 +32,8 @@ class S31105Test extends RFC4475Case
         /* This message has two Contact header field values, not three.
            <sip:alias2@host2.example.com> is a C%6Fntact header field value. */
         $this->assertCount(2, $msg->contact->values);
-        $this->assertEquals('sip:alias1@host1.example.com', $msg->contact->values[0]->addr);
-        $this->assertEquals('sip:alias3@host3.example.com', $msg->contact->values[1]->addr);
+        $this->assertEquals('sip:alias1@host1.example.com', $msg->contact->values[0]->uri->render());
+        $this->assertEquals('sip:alias3@host3.example.com', $msg->contact->values[1]->uri->render());
         $this->assertEquals('<sip:alias2@host2.example.com>', $msg->extraHeaders['c%6fntact']->values[0]);
     }
 }

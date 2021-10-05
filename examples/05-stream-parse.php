@@ -26,16 +26,16 @@ while (!feof($fp)) {
                 printf(
                     "Request  %10s %30s %30s %40s" . PHP_EOL,
                     $message->method,
-                    substr($message->from->addr, 0, 30),
-                    substr($message->to->addr, 0, 30),
+                    substr($message->from->uri->user, 0, 30),
+                    substr($message->to->uri->user, 0, 30),
                     substr($message->callId->value, 0, 40)
                 );
             } else {
                 printf(
                     "Response %10s %30s %30s %40s %03d %s" . PHP_EOL,
                     $message->cSeq->method,
-                    substr($message->from->addr, 0, 30),
-                    substr($message->to->addr, 0, 30),
+                    substr($message->from->uri->user, 0, 30),
+                    substr($message->to->uri->user, 0, 30),
                     substr($message->callId->value, 0, 40),
                     $message->code,
                     $message->reason
