@@ -10,6 +10,7 @@ use RTCKit\SIP\Exception\InvalidBodyLengthException;
 use RTCKit\SIP\Exception\InvalidCSeqValueException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
+use RTCKit\SIP\Exception\SIPException;
 use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\CallIdHeader;
 use RTCKit\SIP\Header\ContactHeader;
@@ -206,303 +207,309 @@ class Message
         }
 
         foreach ($headers as $hname => $hbody) {
-            switch ($hname) {
-                /* https://tools.ietf.org/html/rfc3261#section-20.42 */
-                case 'via':
-                    $msg->via = ViaHeader::parse($hbody);
+            try {
+                switch ($hname) {
+                    /* https://tools.ietf.org/html/rfc3261#section-20.42 */
+                    case 'via':
+                        $msg->via = ViaHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.20 */
-                case 'from':
-                    $msg->from = FromHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.20 */
+                    case 'from':
+                        $msg->from = FromHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.39 */
-                case 'to':
-                    $msg->to = NameAddrHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.39 */
+                    case 'to':
+                        $msg->to = NameAddrHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.10 */
-                case 'contact':
-                    $msg->contact = ContactHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.10 */
+                    case 'contact':
+                        $msg->contact = ContactHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.8 */
-                case 'call-id':
-                    $msg->callId = CallIdHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.8 */
+                    case 'call-id':
+                        $msg->callId = CallIdHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.16 */
-                case 'cseq':
-                    $msg->cSeq = CSeqHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.16 */
+                    case 'cseq':
+                        $msg->cSeq = CSeqHeader::parse($hbody);
 
-                    if (isset($msg->method) && ($msg->method !== $msg->cSeq->method)) {
-                        throw new InvalidCSeqValueException('Mismatched request method in CSeq header', Response::BAD_REQUEST);
-                    }
+                        if (isset($msg->method) && ($msg->method !== $msg->cSeq->method)) {
+                            throw new InvalidCSeqValueException('Mismatched request method in CSeq header', Response::BAD_REQUEST);
+                        }
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.22 */
-                case 'max-forwards':
-                    $msg->maxForwards = MaxForwardsHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.22 */
+                    case 'max-forwards':
+                        $msg->maxForwards = MaxForwardsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.14 */
-                case 'content-length':
-                    $msg->contentLength = ScalarHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.14 */
+                    case 'content-length':
+                        $msg->contentLength = ScalarHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.19 */
-                case 'expires':
-                    $msg->expires = ScalarHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.19 */
+                    case 'expires':
+                        $msg->expires = ScalarHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.23 */
-                case 'min-expires':
-                    $msg->minExpires = ScalarHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.23 */
+                    case 'min-expires':
+                        $msg->minExpires = ScalarHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.33 */
-                case 'retry-after':
-                    $msg->retryAfter = ScalarHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.33 */
+                    case 'retry-after':
+                        $msg->retryAfter = ScalarHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.38 */
-                case 'timestamp':
-                    $msg->timestamp = ScalarHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.38 */
+                    case 'timestamp':
+                        $msg->timestamp = ScalarHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.15 */
-                case 'content-type':
-                    $msg->contentType = SingleValueWithParamsHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.15 */
+                    case 'content-type':
+                        $msg->contentType = SingleValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://datatracker.ietf.org/doc/html/rfc6665#section-8.2.1 */
-                case 'event':
-                    $msg->event = SingleValueWithParamsHeader::parse($hbody);
+                    /* https://datatracker.ietf.org/doc/html/rfc6665#section-8.2.1 */
+                    case 'event':
+                        $msg->event = SingleValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://datatracker.ietf.org/doc/html/rfc6665#section-8.2.3 */
-                case 'subscription-state':
-                    $msg->subscriptionState = SingleValueWithParamsHeader::parse($hbody);
+                    /* https://datatracker.ietf.org/doc/html/rfc6665#section-8.2.3 */
+                    case 'subscription-state':
+                        $msg->subscriptionState = SingleValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.2 */
-                case 'accept-encoding':
-                    $msg->acceptEncoding = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.2 */
+                    case 'accept-encoding':
+                        $msg->acceptEncoding = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.5 */
-                case 'allow':
-                    $msg->allow = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.5 */
+                    case 'allow':
+                        $msg->allow = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3265#section-7.2.2 */
-                case 'allow-events':
-                    $msg->allowEvents = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3265#section-7.2.2 */
+                    case 'allow-events':
+                        $msg->allowEvents = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.12 */
-                case 'content-encoding':
-                    $msg->contentEncoding = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.12 */
+                    case 'content-encoding':
+                        $msg->contentEncoding = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.21 */
-                case 'in-reply-to':
-                    $msg->inReplyTo = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.21 */
+                    case 'in-reply-to':
+                        $msg->inReplyTo = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.32 */
-                case 'require':
-                    $msg->require = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.32 */
+                    case 'require':
+                        $msg->require = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.37 */
-                case 'supported':
-                    $msg->supported = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.37 */
+                    case 'supported':
+                        $msg->supported = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.40 */
-                case 'unsupported':
-                    $msg->unsupported = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.40 */
+                    case 'unsupported':
+                        $msg->unsupported = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-8.1.1.9 */
-                case 'proxy-require':
-                    $msg->proxyRequire = MultiValueHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-8.1.1.9 */
+                    case 'proxy-require':
+                        $msg->proxyRequire = MultiValueHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.1 */
-                case 'accept':
-                    $msg->accept = MultiValueWithParamsHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.1 */
+                    case 'accept':
+                        $msg->accept = MultiValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.3 */
-                case 'accept-language':
-                    $msg->acceptLanguage = MultiValueWithParamsHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.3 */
+                    case 'accept-language':
+                        $msg->acceptLanguage = MultiValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.9 */
-                case 'call-info':
-                    $msg->callInfo = MultiValueWithParamsHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.9 */
+                    case 'call-info':
+                        $msg->callInfo = MultiValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.13 */
-                case 'content-language':
-                    $msg->contentLanguage = MultiValueWithParamsHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.13 */
+                    case 'content-language':
+                        $msg->contentLanguage = MultiValueWithParamsHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.31 */
-                case 'reply-to':
-                    $msg->replyTo = NameAddrHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.31 */
+                    case 'reply-to':
+                        $msg->replyTo = NameAddrHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.4 */
-                case 'alert-info':
-                    $msg->alertInfo = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.4 */
+                    case 'alert-info':
+                        $msg->alertInfo = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.6 */
-                case 'authentication-info':
-                    $msg->authenticationInfo = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.6 */
+                    case 'authentication-info':
+                        $msg->authenticationInfo = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.7 */
-                case 'authorization':
-                    $msg->authorization = AuthHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.7 */
+                    case 'authorization':
+                        $msg->authorization = AuthHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.17 */
-                case 'date':
-                    $msg->date = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.17 */
+                    case 'date':
+                        $msg->date = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.18 */
-                case 'error-info':
-                    $msg->errorInfo = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.18 */
+                    case 'error-info':
+                        $msg->errorInfo = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.27 */
-                case 'proxy-authenticate':
-                    $msg->proxyAuthenticate = AuthHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.27 */
+                    case 'proxy-authenticate':
+                        $msg->proxyAuthenticate = AuthHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.28 */
-                case 'proxy-authorization':
-                    $msg->proxyAuthorization = AuthHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.28 */
+                    case 'proxy-authorization':
+                        $msg->proxyAuthorization = AuthHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.30 */
-                case 'record-route':
-                    $msg->recordRoute = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.30 */
+                    case 'record-route':
+                        $msg->recordRoute = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.24 */
-                case 'mime-version':
-                    $msg->mimeVersion = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.24 */
+                    case 'mime-version':
+                        $msg->mimeVersion = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.25 */
-                case 'organization':
-                    $msg->organization = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.25 */
+                    case 'organization':
+                        $msg->organization = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.26 */
-                case 'priority':
-                    $msg->priority = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.26 */
+                    case 'priority':
+                        $msg->priority = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.35 */
-                case 'route':
-                    $msg->route = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.35 */
+                    case 'route':
+                        $msg->route = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.36 */
-                case 'subject':
-                    $msg->subject = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.36 */
+                    case 'subject':
+                        $msg->subject = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.41 */
-                case 'user-agent':
-                    $msg->userAgent = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.41 */
+                    case 'user-agent':
+                        $msg->userAgent = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.43 */
-                case 'warning':
-                    $msg->warning = Header::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.43 */
+                    case 'warning':
+                        $msg->warning = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://tools.ietf.org/html/rfc3261#section-20.44 */
-                case 'www-authenticate':
-                    $msg->wwwAuthenticate = AuthHeader::parse($hbody);
+                    /* https://tools.ietf.org/html/rfc3261#section-20.44 */
+                    case 'www-authenticate':
+                        $msg->wwwAuthenticate = AuthHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://datatracker.ietf.org/doc/html/rfc3515#section-2.1 */
-                case 'refer-to':
-                    $msg->referTo = Header::parse($hbody);
+                    /* https://datatracker.ietf.org/doc/html/rfc3515#section-2.1 */
+                    case 'refer-to':
+                        $msg->referTo = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://datatracker.ietf.org/doc/html/rfc3262#section-7.2 */
-                case 'rack':
-                    $msg->rAck = RAckHeader::parse($hbody);
+                    /* https://datatracker.ietf.org/doc/html/rfc3262#section-7.2 */
+                    case 'rack':
+                        $msg->rAck = RAckHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                /* https://datatracker.ietf.org/doc/html/rfc3262#section-7.1 */
-                case 'rseq':
-                    $msg->rSeq = ScalarHeader::parse($hbody);
+                    /* https://datatracker.ietf.org/doc/html/rfc3262#section-7.1 */
+                    case 'rseq':
+                        $msg->rSeq = ScalarHeader::parse($hbody);
 
-                    continue 2;
+                        continue 2;
 
-                default:
-                    $msg->extraHeaders[$hname] = Header::parse($hbody);
+                    default:
+                        $msg->extraHeaders[$hname] = Header::parse($hbody);
 
-                    continue 2;
+                        continue 2;
+                }
+            } catch (SIPException $e) {
+                $e->setStub($msg);
+
+                throw $e;
             }
         }
 
@@ -515,15 +522,18 @@ class Message
 
         if (isset($msg->contentLength)) {
             if ($bodyLength < $msg->contentLength->value) {
-                throw new InvalidBodyLengthException(
+                $e = new InvalidBodyLengthException(
                     'Malformed message, content-length mismatch expected = ' .
                     $msg->contentLength->value .
                     ', actual = ' .
                     $bodyLength,
                     Response::BAD_REQUEST
                 );
+                $e->setStub($msg);
+
+                throw $e;
             } else if ($bodyLength > $msg->contentLength->value) {
-                /* Discard suprious noise per https://tools.ietf.org/html/rfc3261#section-18.3 */
+                /* Discard spurious noise per https://tools.ietf.org/html/rfc3261#section-18.3 */
                 $msg->body = substr($msg->body, 0, $msg->contentLength->value);
             }
         }

@@ -9,6 +9,7 @@ use RTCKit\SIP\Exception\InvalidCSeqValueException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
 use RTCKit\SIP\Exception\InvalidScalarValueException;
+use RTCKit\SIP\Exception\SIPException;
 use RTCKit\SIP\Header\AuthValue;
 use RTCKit\SIP\Header\AuthHeader;
 use RTCKit\SIP\Header\CallIdHeader;
@@ -212,6 +213,26 @@ class MessageTest extends TestCase
             "\r\n" .
             "Not enough"
         );
+    }
+
+    public function testShouldAssignStubsToThrownExceptions()
+    {
+        try {
+            Message::parse(
+                'METHOD sip:user@nowhere.com SIP/2.0' . "\r\n" .
+                'From: Alice <sip:alice@atlanta.com>;tag=9fxced76sl' . "\r\n" .
+                'CSeq: 7 OTHER' . "\r\n" .
+                "\r\n"
+            );
+        } catch (SIPException $e) {
+            $stub = $e->getStub();
+
+            $this->assertNotNull($stub);
+            $this->assertInstanceOf(Message::class, $stub);
+
+            /* Furthermore, if it looks like a request, it should be instantiated as such */
+            $this->assertInstanceOf(Request::class, $stub);
+        }
     }
 
     public function testShouldParseMessageWithNoiseAfterBody()
