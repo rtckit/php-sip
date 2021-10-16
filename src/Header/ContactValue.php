@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\ContactValue Class
-*/
+ * RTCKit\SIP\Header\ContactValue Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -9,8 +9,8 @@ namespace RTCKit\SIP\Header;
 use RTCKit\SIP\URI;
 
 /**
-* Contact Header Field Value Class
-*/
+ * Contact header field value class
+ */
 class ContactValue
 {
     /** @var URI Parsed address portion of the Contact value */
@@ -25,6 +25,6 @@ class ContactValue
     /** @var int Expires parameter, if provided */
     public int $expires;
 
-    /** @var array<string, string> Additional/extension parameters */
+    /** @var array<string,string> Additional/extension parameters */
     public array $params = [];
 }

@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Header\ContactHeader Class
-*/
+ * RTCKit\SIP\Header\ContactHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -13,8 +13,8 @@ use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
-* Contact Header Class
-*/
+ * Contact header class
+ */
 class ContactHeader
 {
     /** @var list<ContactValue> Contact value(s) */

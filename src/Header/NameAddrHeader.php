@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Header\NameAddrHeader Class
-*/
+ * RTCKit\SIP\Header\NameAddrHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -14,8 +14,8 @@ use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
-* Name-Addr Header Class
-*/
+ * Name-Addr header class
+ */
 class NameAddrHeader
 {
     /** @var URI Parsed address portion of the field value */
@@ -27,7 +27,7 @@ class NameAddrHeader
     /** @var string Tag parameyer */
     public string $tag;
 
-    /** @var array<string, string> Additional/extension parameters */
+    /** @var array<string,string> Additional/extension parameters */
     public array $params = [];
 
     final public function __construct() {}

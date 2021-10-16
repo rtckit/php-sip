@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Header\SingleValueWithParamsHeader Class
-*/
+ * RTCKit\SIP\Header\SingleValueWithParamsHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -13,14 +13,14 @@ use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
-* SingleValueWithParamsHeader Class
-*/
+ * Single Value with Params header class
+ */
 class SingleValueWithParamsHeader
 {
     /** @var string Header field value */
     public string $value;
 
-    /** @var array<string, string> Parameters */
+    /** @var array<string,string> Parameters */
     public array $params = [];
 
     final public function __construct() {}

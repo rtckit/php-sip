@@ -1,14 +1,14 @@
 <?php
 /**
-* RTCKit\SIP\ViaValue Class
-*/
+ * RTCKit\SIP\Header\ViaValue Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
 /**
-* Via Header Field Value Class
-*/
+ * Via header field Value class
+ */
 class ViaValue
 {
     /** @var string Via protocol name (i.e. SIP) */
@@ -32,6 +32,6 @@ class ViaValue
     /** @var int Response port */
     public int $rport;
 
-    /** @var array<string, string> Additional parameters */
+    /** @var array<string,string> Additional parameters */
     public array $params = [];
 }

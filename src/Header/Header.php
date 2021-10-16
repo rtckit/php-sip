@@ -1,14 +1,14 @@
 <?php
 /**
-* RTCKit\SIP\Header\Header Class
-*/
+ * RTCKit\SIP\Header\Header Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
 /**
-* Header Class
-*/
+ * Generic Header class
+ */
 class Header
 {
     /** @var list<string> Generic header field values */

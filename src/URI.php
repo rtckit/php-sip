@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\URI Class
-*/
+ * RTCKit\SIP\URI Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP;
@@ -9,8 +9,8 @@ namespace RTCKit\SIP;
 use RTCKit\SIP\Exception\InvalidURIException;
 
 /**
-* SIP URI class
-*/
+ * SIP URI class
+ */
 class URI
 {
     /** @var int Maximum allowed value for port URI component */

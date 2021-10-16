@@ -13,7 +13,7 @@ Require: path
 Path: <sip:abcd_9_2_2@xxatcf12yyy.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;lr>
 P-Charging-Vector: icid-value=0123456789-12345678-12-12345678-123;orig-ioi=void
 User-Agent: XXXX VOLTE
-Authorization: Digest username="123012345678901@ims.mnc000.mcc123.3gppnetwork.org",realm="ims.mnc000.mcc123.3gppnetwork.org",nonce="",uri="sip:ims.mnc000.mcc123.3gppnetwork.org",response="",integrity-protection=no
+Authorization: Digest username="123012345678901@ims.mnc000.mcc123.3gppnetwork.org",realm="ims.mnc000.mcc123.3gppnetwork.org",nonce="",uri="sip:ims.mnc000.mcc123.3gppnetwork.org",response="deadbeef",integrity-protection=no
 Feature-Caps: *;+g.3gpp.atcf="<tel:+01233456789>";+g.3gpp.atcf-mgmt-uri="<sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2>";+g.3gpp.atcf-path="<sip:abcd_9_2_2_123012345678901@12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org:5060;at_p=2_2>";+g.3gpp.srvcc;+3gpp.mid-call;+g.3gpp.srvcc-alerting;+g.3gpp.ps2cs-srcc-orig-pre-alerting
 P-Visited-Network-ID: 12345678901.xx.ims.mnc000.mcc123.3gppnetwork.org
 Allow: INVITE,CANCEL,BYE,ACK,REGISTER,OPTIONS,REFER,SUBSCRIBE,NOTIFY,MESSAGE,INFO,PRACK,UPDATE

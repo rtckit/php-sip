@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Header\FromHeader Class
-*/
+ * RTCKit\SIP\Header\FromHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -10,8 +10,8 @@ use RTCKit\SIP\Response;
 use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 
 /**
-* From Header Class
-*/
+ * From header class
+ */
 class FromHeader extends NameAddrHeader
 {
     /**
