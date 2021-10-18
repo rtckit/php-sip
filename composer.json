@@ -1,12 +1,15 @@
 {
   "name": "rtckit/sip",
-  "description": "Parser/Renderer for SIP protocol written in PHP",
-  "version": "0.6.1",
+  "description": "SIP protocol implementation written in PHP",
+  "version": "0.7.0",
   "type": "library",
   "keywords": [
     "sip",
     "session initiation protocol",
-    "voip"
+    "voip",
+    "rfc 3261",
+    "telephony",
+    "telco"
   ],
   "homepage": "https://github.com/rtckit/php-sip",
   "license": "MIT",
@@ -20,13 +23,17 @@
     "issues": "https://github.com/rtckit/php-sip/issues"
   },
   "require": {
-    "php": ">=7.4.0"
+    "php": ">=7.4.0",
+    "ext-ctype": "*"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",
     "phpunit/phpunit": "^9.5",
     "symfony/yaml": "^5.3",
-    "vimeo/psalm": "^4.8"
+    "vimeo/psalm": "^4.10"
+  },
+  "suggest": {
+    "ext-hash": "Enables RFC 8760 authentication via SHA(-512)-256 hashing"
   },
   "autoload": {
     "psr-4": {
