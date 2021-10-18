@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\ScalarHeader Class
-*/
+ * RTCKit\SIP\Header\ScalarHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -12,8 +12,8 @@ use RTCKit\SIP\Exception\InvalidScalarValueException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
-* Scalar Header Class
-*/
+ * Scalar header class
+ */
 class ScalarHeader
 {
     /** @var int Maximum allowed value (2^32 - 1) */

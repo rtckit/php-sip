@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\CSeqHeader Class
-*/
+ * RTCKit\SIP\Header\CSeqHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -13,8 +13,8 @@ use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Exception\InvalidScalarValueException;
 
 /**
-* CSeq Header Class
-*/
+ * CSeq header class
+ */
 class CSeqHeader
 {
     /** @var int Sequence number */

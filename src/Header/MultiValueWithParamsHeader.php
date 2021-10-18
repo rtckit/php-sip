@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Header\MultiValueWithParamsHeader Class
-*/
+ * RTCKit\SIP\Header\MultiValueWithParamsHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -12,8 +12,8 @@ use RTCKit\SIP\Exception\InvalidHeaderParameterException;
 use RTCKit\SIP\Exception\InvalidHeaderValueException;
 
 /**
-* MultiValueWithParamsHeader Class
-*/
+ * Multiple Value with Params header class
+ */
 class MultiValueWithParamsHeader
 {
     /** @var list<ValueWithParams> Header value(s) */

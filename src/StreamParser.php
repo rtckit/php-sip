@@ -1,14 +1,14 @@
 <?php
 /**
-* RTCKit\SIP\StreamParser Class
-*/
+ * RTCKit\SIP\StreamParser Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP;
 
 /**
-* Stream Parser Class
-*/
+ * Stream Parser Class
+ */
 class StreamParser
 {
     /* Stream parse process return statuses */

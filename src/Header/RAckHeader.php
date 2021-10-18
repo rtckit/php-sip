@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\RAckHeader Class
-*/
+ * RTCKit\SIP\Header\RAckHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -13,10 +13,10 @@ use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Exception\InvalidScalarValueException;
 
 /**
-* RAck Header Class
-*
-* https://datatracker.ietf.org/doc/html/rfc3262#section-7.2
-*/
+ * RAck header class
+ *
+ * https://datatracker.ietf.org/doc/html/rfc3262#section-7.2
+ */
 class RAckHeader
 {
     /** @var int RSeq sequence number */

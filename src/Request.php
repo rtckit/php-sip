@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Request Class
-*/
+ * RTCKit\SIP\Request Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP;
@@ -12,8 +12,8 @@ use RTCKit\SIP\Exception\InvalidRequestMethodException;
 use RTCKit\SIP\Exception\InvalidRequestURIException;
 
 /**
-* SIP Request class
-*/
+ * SIP Request class
+ */
 class Request extends Message
 {
     /** @var string Request method */

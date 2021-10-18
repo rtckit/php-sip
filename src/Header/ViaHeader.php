@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\ViaHeader Class
-*/
+ * RTCKit\SIP\Header\ViaHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
@@ -14,8 +14,8 @@ use RTCKit\SIP\Exception\InvalidHeaderValueException;
 use RTCKit\SIP\Exception\InvalidProtocolVersionException;
 
 /**
-* Via Header Class
-*/
+ * Via header class
+ */
 class ViaHeader
 {
     /** @var list<ViaValue> Via value(s) */

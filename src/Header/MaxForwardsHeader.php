@@ -1,14 +1,14 @@
 <?php
 /**
-* RTCKit\SIP\MaxForwardsHeader Class
-*/
+ * RTCKit\SIP\Header\MaxForwardsHeader Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP\Header;
 
 /**
-* Scalar Header Class
-*/
+ * Max-Forwards header class
+ */
 class MaxForwardsHeader extends ScalarHeader
 {
     /** @var int Maximum allowed value */

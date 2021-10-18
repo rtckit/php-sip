@@ -1,7 +1,7 @@
 <?php
 /**
-* RTCKit\SIP\Message Class
-*/
+ * RTCKit\SIP\Message Class
+ */
 declare(strict_types = 1);
 
 namespace RTCKit\SIP;
@@ -11,7 +11,8 @@ use RTCKit\SIP\Exception\InvalidCSeqValueException;
 use RTCKit\SIP\Exception\InvalidHeaderLineException;
 use RTCKit\SIP\Exception\InvalidHeaderSectionException;
 use RTCKit\SIP\Exception\SIPException;
-use RTCKit\SIP\Header\AuthHeader;
+use RTCKit\SIP\Header\AuthenticateHeader;
+use RTCKit\SIP\Header\AuthorizationHeader;
 use RTCKit\SIP\Header\CallIdHeader;
 use RTCKit\SIP\Header\ContactHeader;
 use RTCKit\SIP\Header\CSeqHeader;
@@ -28,8 +29,8 @@ use RTCKit\SIP\Header\SingleValueWithParamsHeader;
 use RTCKit\SIP\Header\ViaHeader;
 
 /**
-* Base SIP message class
-*/
+ * Base SIP message class
+ */
 class Message
 {
     /* Protocol constants */
@@ -107,10 +108,10 @@ class Message
     public NameAddrHeader $replyTo;
 
     /* Authentication/Authorization header fields */
-    public AuthHeader $authorization;
-    public AuthHeader $proxyAuthenticate;
-    public AuthHeader $proxyAuthorization;
-    public AuthHeader $wwwAuthenticate;
+    public AuthenticateHeader $wwwAuthenticate;
+    public AuthorizationHeader $authorization;
+    public AuthenticateHeader $proxyAuthenticate;
+    public AuthorizationHeader $proxyAuthorization;
 
     /* Generic common header fields */
     public Header $alertInfo;
@@ -136,7 +137,7 @@ class Message
     /** @var string Message body */
     public string $body;
 
-    /** @var array<string, Header> Additional/extension headers */
+    /** @var array<string,Header> Additional/extension headers */
     public array $extraHeaders = [];
 
     /**
@@ -203,7 +204,7 @@ class Message
         }
 
         if (!isset($boundary)) {
-            throw new InvalidHeaderSectionException('Malformed Message, missing CRLF separator after header section: ' . json_encode($lines), Response::BAD_REQUEST);
+            throw new InvalidHeaderSectionException('Malformed Message, missing CRLF separator after header section', Response::BAD_REQUEST);
         }
 
         foreach ($headers as $hname => $hbody) {
@@ -401,7 +402,9 @@ class Message
 
                     /* https://tools.ietf.org/html/rfc3261#section-20.7 */
                     case 'authorization':
-                        $msg->authorization = AuthHeader::parse($hbody);
+                        /** @var AuthorizationHeader $aux */
+                        $aux = AuthorizationHeader::parse($hbody);
+                        $msg->authorization = $aux;
 
                         continue 2;
 
@@ -419,13 +422,17 @@ class Message
 
                     /* https://tools.ietf.org/html/rfc3261#section-20.27 */
                     case 'proxy-authenticate':
-                        $msg->proxyAuthenticate = AuthHeader::parse($hbody);
+                        /** @var AuthenticateHeader $aux */
+                        $aux = AuthenticateHeader::parse($hbody);
+                        $msg->proxyAuthenticate = $aux;
 
                         continue 2;
 
                     /* https://tools.ietf.org/html/rfc3261#section-20.28 */
                     case 'proxy-authorization':
-                        $msg->proxyAuthorization = AuthHeader::parse($hbody);
+                        /** @var AuthorizationHeader $aux */
+                        $aux = AuthorizationHeader::parse($hbody);
+                        $msg->proxyAuthorization = $aux;
 
                         continue 2;
 
@@ -479,7 +486,9 @@ class Message
 
                     /* https://tools.ietf.org/html/rfc3261#section-20.44 */
                     case 'www-authenticate':
-                        $msg->wwwAuthenticate = AuthHeader::parse($hbody);
+                        /** @var AuthenticateHeader $aux */
+                        $aux = AuthenticateHeader::parse($hbody);
+                        $msg->wwwAuthenticate = $aux;
 
                         continue 2;
 
