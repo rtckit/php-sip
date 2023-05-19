@@ -20,7 +20,7 @@ stan: image
 	${RUN_PHP_CMD} ./vendor/bin/phpstan analyse -c ./etc/phpstan.neon -n -vvv --ansi --level=max src
 
 psalm: image
-	${RUN_PHP_CMD} ./vendor/bin/psalm --config=./etc/psalm.xml --show-info=true
+	${RUN_PHP_CMD} ./vendor/bin/psalm --config=./etc/psalm.xml
 	# ${RUN_PHP_CMD} ./vendor/bin/psalm --config=./etc/psalm.xml --php-version=8.0
 
 ci: stan psalm cover

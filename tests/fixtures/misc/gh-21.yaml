@@ -1,0 +1,13 @@
+# https://github.com/rtckit/php-sip/issues/21
+- |+
+  SIP/2.0 200 OK
+  Via: SIP/2.0/TCP 192.0.2.15;branch=z9hG4bKnuiqisi
+  From: Bob <sip:bob@example.com>;tag=7F94778B653B
+  To: Bob <sip:bob@example.com>;tag=6AF99445E44A
+  Call-ID: 16CB75F21C70
+  CSeq: 1 REGISTER
+  Supported: path, outbound
+  Require: outbound
+  Contact: <sip:e52@78.102.16.243:55497;transport=tls>;expires=111;received="sip:e52@78.102.16.243:55497";reg-id=1;+sip.instance="<d79966b435633699badcf12507380d51d4e97eab>",<sip:e52@78.102.16.243:17127;transport=tls>;expires=258;received="sip:e52@78.102.16.243:17127";reg-id=2;+sip.instance="<65be01c100f2ccd762df61057569f037bd46a367>"
+  Path: <sip:VskztcQ/S8p4WPbOnHbuyh5iJvJIW3ib@ep1.example.com;lr;ob>
+  Content-Length: 0

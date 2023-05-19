@@ -175,7 +175,7 @@ class NameAddrHeader
             }
         }
 
-        if (is_null($addr)) {
+        if (!is_string($addr)) {
             throw new InvalidHeaderLineException('Invalid name-addr line, missing addr-spec', Response::BAD_REQUEST);
         }
 
