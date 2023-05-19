@@ -44,9 +44,8 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
       - run: composer install
-      - run: pecl install pcov
       - uses: paambaati/codeclimate-action@v4.0.0
         with:
-          coverageCommand: php -d extension=pcov -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist --coverage-clover clover.xml
+          coverageCommand: php -d extension=xdebug -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist --coverage-clover clover.xml
           coverageLocations: clover.xml:clover
           debug: true
