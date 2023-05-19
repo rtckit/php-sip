@@ -45,6 +45,8 @@ jobs:
           php-version: ${{ matrix.php }}
       - run: composer install
       - uses: paambaati/codeclimate-action@v4.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
           coverageCommand: php -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist --coverage-clover clover.xml
           coverageLocations: clover.xml:clover
