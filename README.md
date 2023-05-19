@@ -193,7 +193,7 @@ In order to ensure high code quality, **RTCKit\SIP** uses [PHPStan](https://gith
 
 ```sh
 php -d memory_limit=-1 ./vendor/bin/phpstan analyse -c ./etc/phpstan.neon -n -vvv --ansi --level=max src
-php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml --show-info=true
+php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml
 ```
 
 ## License

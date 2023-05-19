@@ -33,7 +33,7 @@ class S31101Test extends RFC4475Case
         $this->assertEquals('Quoted string \\"\\"', $msg->contact->values[0]->name);
 
         /* an empty subject */
-        $this->assertEquals('', $msg->subject->values[0]);
+        $this->assertCount(0, $msg->subject->values);
 
         /* both comma separated and separately listed header field values */
         /* a mix of short and long form for the same header field name */

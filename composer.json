@@ -44,5 +44,18 @@
     "psr-4": {
       "RTCKit\\SIP\\": "tests/"
     }
+  },
+  "config": {
+      "allow-plugins": false,
+      "platform": {
+          "php": "7.4"
+      }
+  },
+  "scripts": {
+      "phpstan": "php -d memory_limit=-1 ./vendor/bin/phpstan analyse -c ./etc/phpstan.neon -n -vvv --ansi --level=max src",
+      "psalm": "php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml",
+      "test": "php -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist --debug",
+      "coverage": "php -d extension=pcov -d memory_limit=-1 ./vendor/bin/phpunit -c ./etc/phpunit.xml.dist --coverage-text --coverage-html=reports/coverage",
+      "profile": "php -d memory_limit=-1 ./examples/99-crude-benchmark.php"
   }
 }
