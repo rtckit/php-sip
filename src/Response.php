@@ -373,7 +373,7 @@ class Response extends Message
 
         $sttsLine = explode(' ', $startLine, 3);
 
-        if (!isset($sttsLine[2])) {
+        if (count($sttsLine) !== 3) {
             throw new InvalidMessageStartLineException('Malformed Status-Line: ' . $startLine, self::BAD_REQUEST);
         }
 

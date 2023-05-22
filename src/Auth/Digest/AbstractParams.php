@@ -142,7 +142,8 @@ abstract class AbstractParams implements ParamsInterface
 
                 default:
                     if ($challenge) {
-                        /** @var ChallengeParams $params */
+                        assert($params instanceof ChallengeParams);
+
                         switch ($pk) {
                             case 'domain':
                                 $params->domain = $pv;
@@ -165,7 +166,8 @@ abstract class AbstractParams implements ParamsInterface
                                 break 2;
                         }
                     } else {
-                        /** @var ResponseParams $params */
+                        assert($params instanceof ResponseParams);
+
                         switch ($pk) {
                             case 'username':
                                 $params->username = $pv;

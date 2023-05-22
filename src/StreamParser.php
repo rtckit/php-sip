@@ -59,6 +59,8 @@ class StreamParser
                     break;
                 }
 
+                assert(count($blocks) === 2);
+
                 $this->message = Message::parse($this->buffer, true);
                 $this->buffer = $blocks[1];
             } else {
@@ -91,7 +93,7 @@ class StreamParser
             unset($this->message);
 
             $status = self::SUCCESS;
-        } while ($status === self::SUCCESS);
+        } while (true);
 
         return (isset($messages[0]))
             ? self::SUCCESS

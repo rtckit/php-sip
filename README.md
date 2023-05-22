@@ -6,8 +6,10 @@
 
 [RFC 3261](https://tools.ietf.org/html/rfc3261) compliant SIP parsing and rendering library for PHP 7.4.
 
-[![Build Status](https://travis-ci.com/rtckit/php-sip.svg?branch=main)](https://travis-ci.com/rtckit/php-sip)
+[![CI Status](https://github.com/rtckit/php-sip/workflows/CI/badge.svg)](https://github.com/rtckit/php-sip/actions/workflows/ci.yaml)
+[![Psalm Type Coverage](https://shepherd.dev/github/rtckit/php-sip/coverage.svg)](https://shepherd.dev/github/rtckit/php-sip)
 [![Latest Stable Version](https://poser.pugx.org/rtckit/sip/v/stable.png)](https://packagist.org/packages/rtckit/sip)
+[![Installs on Packagist](https://img.shields.io/packagist/dt/rtckit/sip?color=blue&label=Installs%20on%20Packagist)](https://packagist.org/packages/rtckit/sip)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/aff5ee8e8ef3b51689c2/test_coverage)](https://codeclimate.com/github/rtckit/php-sip/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/aff5ee8e8ef3b51689c2/maintainability)](https://codeclimate.com/github/rtckit/php-sip/maintainability)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -193,7 +195,7 @@ In order to ensure high code quality, **RTCKit\SIP** uses [PHPStan](https://gith
 
 ```sh
 php -d memory_limit=-1 ./vendor/bin/phpstan analyse -c ./etc/phpstan.neon -n -vvv --ansi --level=max src
-php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml --show-info=true
+php -d memory_limit=-1 ./vendor/bin/psalm --config=./etc/psalm.xml
 ```
 
 ## License

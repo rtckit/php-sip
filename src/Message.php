@@ -174,7 +174,7 @@ class Message
 
                 $hvalue .= $lines[$i];
             } else {
-                if (isset($hname, $hvalue)) {
+                if (isset($hname, $hvalue) && strlen($hvalue)) {
                     $headers[$hname][] = $hvalue;
                 }
 
@@ -199,7 +199,7 @@ class Message
             }
         }
 
-        if (isset($hname, $hvalue[0])) {
+        if (isset($hname, $hvalue) && strlen($hvalue)) {
             $headers[$hname][] = $hvalue;
         }
 

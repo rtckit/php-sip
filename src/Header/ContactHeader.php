@@ -37,6 +37,31 @@ class ContactHeader
     {
         $ret = new static;
 
+        $input = $hbody;
+        $hbody = [];
+
+        foreach ($input as $hline) {
+            $segments = explode(',', $hline);
+            $buffer = $comma = '';
+
+            foreach ($segments as $segment) {
+                $buffer .= $comma . $segment;
+
+                if (!(substr_count($segment, '"') % 2) && (substr_count($segment, '<') === substr_count($segment, '>'))) {
+                    $hbody[] = $buffer;
+                    $buffer = $comma = '';
+
+                    continue;
+                }
+
+                $comma = ',';
+            }
+
+            if (isset($buffer[0])) {
+                $hbody[] = $buffer;
+            }
+        }
+
         foreach ($hbody as $hline) {
             $val = new ContactValue;
 
@@ -47,7 +72,7 @@ class ContactHeader
             $qfrom = null;
             $afrom = null;
             $base = 0;
-            $addr = null;
+            $addr = false;
 
             for ($i = 0; $i <= $len; $i++) {
                 if (!$quoted) {
@@ -174,7 +199,7 @@ class ContactHeader
                             }
                         }
 
-                        if (!is_null($addr)) {
+                        if (is_string($addr)) {
                             $val->uri = URI::parse($addr);
                             $ret->values[] = $val;
                             $addr = null;
@@ -200,7 +225,7 @@ class ContactHeader
                 }
             }
 
-            if (!is_null($addr)) {
+            if (is_string($addr)) {
                 $val->uri = URI::parse($addr);
                 $ret->values[] = $val;
             }
